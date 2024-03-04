@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class etapasproc.prueba extends Component
+class Prueba extends Component
 {
     /**
      * Create a new component instance.
@@ -19,7 +19,7 @@ class etapasproc.prueba extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View|string
     {
         return view('components.etapasproc.prueba');
     }

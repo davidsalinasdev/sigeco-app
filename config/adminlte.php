@@ -132,7 +132,7 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => true,//false,
+    'usermenu_header' => true, //false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
@@ -405,7 +405,7 @@ return [
                     'url'  => '/account',
                     'icon' => 'fas fa-fw fa-user',
                 ],
-                
+
             ],
         ],
 
