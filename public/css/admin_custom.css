@@ -1,0 +1,10 @@
+/* Customs css here! { */
+.table-header {
+    background: #116572;
+}
+
+.table-header__encabezado th {
+    font-size: 12px !important;
+    color: #FFFFFF;
+    padding: 15px;
+}
