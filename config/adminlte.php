@@ -315,7 +315,7 @@ return [
             'icon' => 'fa fa-home',
         ],
         [
-            'text'      => 'Bandeja | Trayectoria',
+            'text'      => 'Trayectoria',
             'icon'      => 'fas fa-route',
             'can'       => 'crud-trayectoria',
             'submenu'   => [
@@ -333,7 +333,7 @@ return [
             'can'       => 'crud-procesoscont',
             'submenu'   => [
                 [
-                    'text'      => 'Procesos hasta 20.000Bs',
+                    'text'      => 'Lista de Procesos',
                     'url'       => '/procesoscont',
                     'icon'      => 'far fa-play-circle',
                     'can'       => 'crud-procesoscont',
@@ -408,6 +408,20 @@ return [
 
             ],
         ],
+
+        [
+            'text'      => 'Configuraciones',
+            'icon'      => 'fab fa-whmcs',
+            'submenu'   => [
+                [
+                    'text'  => 'Mod. esp. técnicas',
+                    'url'   => '/updatedtecnicas',
+                    'icon'  => 'fab fa-wpforms',
+                    'can'   => 'crud-usuario',
+                ],
+            ],
+        ],
+
 
     ],
 
