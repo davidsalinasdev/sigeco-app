@@ -14,7 +14,7 @@ use App\Models\Docsgen;
 use App\Models\Docstec;
 use App\Models\Det_docstec;
 use App\Models\Listaverif;
-
+use App\View\Components\Prueba;
 //use Barryvdh\DomPDF\PDF;
 //use Barryvdh\DomPDF\Facade as PDF;
 //use PDF;
@@ -60,10 +60,10 @@ class ProcesoscontController extends Controller
         $id_miuni = $unidadorg->id; //22;
 
         $procesosconts = Procesoscont::select("*")
-        ->where('id_unid',$id_miuni)
-        //->where('estado',0)
-        ->orderBy('fecha_reg', 'desc')
-        ->get();
+            ->where('id_unid', $id_miuni)
+            //->where('estado',0)
+            ->orderBy('fecha_reg', 'desc')
+            ->get();
 
         return view('procesoscont.index', compact('procesosconts'));
     }
@@ -89,20 +89,20 @@ class ProcesoscontController extends Controller
         $id_miuni = $unidadorg->id; //22;
 
         $procesosc->id_unid = $id_miuni;
-        
+
         $procesosc->id_mod = $request->opciones;
-        
+
         //$procesosc->id_pac = $request->id_pac;
-        
+
         //formamos el nuevo codigo a asignar 
         $mod = Modalidades::find($request->opciones);
         $sigla = $mod->sigla;
         $cantregmod = Procesoscont::withTrashed()->where('id_mod', '=', $request->opciones)->count();
         $pcodigo = $cantregmod + 1;
         $gestion = date('Y');
-        $procesosc->codigo = $sigla.$gestion."-".$pcodigo;
-        
-        $procesosc->tipo_cont = "";//$request->tipo_cont;
+        $procesosc->codigo = $sigla . $gestion . "-" . $pcodigo;
+
+        $procesosc->tipo_cont = ""; //$request->tipo_cont;
         $procesosc->objeto = $request->objeto;
         $procesosc->precio_ref = floatval($request->precio_ref);
         $procesosc->gestion = date('Y');
@@ -110,11 +110,10 @@ class ProcesoscontController extends Controller
         $procesosc->estado = 0;
         $procesosc->observacion = "";
         $procesosc->autorizado = 0;
-        
+
         $procesosc->save();
-        
+
         return redirect()->route('procesoscont.index');
-     
     }
 
     public function edit($id)
@@ -139,17 +138,17 @@ class ProcesoscontController extends Controller
         $id_miuni = $unidadorg->id; //22;
 
         $procesosc->id_unid = $id_miuni;
-        
+
         //$procesosc->id_mod = $request->opciones;
         //$procesosc->id_pac = $request->id_pac;
-        $procesosc->tipo_cont = "";//$request->tipo_cont;
+        $procesosc->tipo_cont = ""; //$request->tipo_cont;
         $procesosc->objeto = $request->objeto;
         $procesosc->precio_ref = floatval($request->precio_ref);
         $procesosc->gestion = date('Y');
         $procesosc->fecha_reg = date('Y-m-d');
         $procesosc->estado = 0;
         $procesosc->observacion = "";
-        
+
         $procesosc->save();
 
         return redirect()->route('procesoscont.index');
@@ -181,8 +180,8 @@ class ProcesoscontController extends Controller
         $doctec->otro1 = $request->otro1;
         $doctec->otro2 = $request->otro2;
         $doctec->observacion = $request->observacion;
-        $doctec->total = floatval($request->total);//completar
-        
+        $doctec->total = floatval($request->total); //completar
+
         try {
 
             $doctec->save();
@@ -192,7 +191,7 @@ class ProcesoscontController extends Controller
             $cantidades1 = $request->cantidad1;
             $precios1 = $request->precio1;
             $subtotales1 = $request->subtotal1;
-            
+
             $litems1 = count($items1);
             $lproductos1 = count($productos1);
             $lunidades1 = count($unidades1);
@@ -204,10 +203,10 @@ class ProcesoscontController extends Controller
             $maximo = max($longs);
 
             for ($indice = 0; $indice < $maximo; $indice++) {
-                
+
                 $det_doctec = new Det_docstec();
-            
-                $det_doctec->id_docstec = $doctec->id;//recien creado
+
+                $det_doctec->id_docstec = $doctec->id; //recien creado
                 $det_doctec->item = isset($items1[$indice]) ? $items1[$indice] : null;
                 $det_doctec->descripcion = isset($productos1[$indice]) ? $productos1[$indice] : null;
                 $det_doctec->unidad = isset($unidades1[$indice]) ? $unidades1[$indice] : null;
@@ -216,7 +215,6 @@ class ProcesoscontController extends Controller
                 $det_doctec->subtotal = isset($subtotales1[$indice]) ? $subtotales1[$indice] : null;
 
                 $det_doctec->save();
-
             }
 
             //recibimos datos para derivar
@@ -224,12 +222,12 @@ class ProcesoscontController extends Controller
 
             //22-01-2024
             $nom_doc = $request->nomdoc;
-            
+
             //22-01-2024
-            switch($nom_doc){
+            switch ($nom_doc) {
                 case 'ESPECIFICACIONES TÉCNICAS':
                     //obtener el id de la unidad solicitante
-                    $proceso = Procesoscont::find($idproc); 
+                    $proceso = Procesoscont::find($idproc);
                     $idunid_dest = $proceso->id_unid; //en especificaciones técnicas retorna a la unidad solicitante 
                     break;
                 default:
@@ -241,7 +239,7 @@ class ProcesoscontController extends Controller
             $resulder = $this->storeder_modal($idtray, $idunid_dest, $obstray, "");
 
             $iddoc = $doctec->id;
-            
+
             $datos = [
                 'code' => 200,
                 'status' => 'success',
@@ -269,7 +267,7 @@ class ProcesoscontController extends Controller
         // dd($data);
 
         $idproc = $request->idp;
-        
+
         try {
             //recibimos datos para derivar
             $idtray = $request->idtray;
@@ -279,20 +277,19 @@ class ProcesoscontController extends Controller
             $benef = $request->benef;
             $docref = $request->docref;
 
-            if ($nom_doc == 'INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE SERVICIO')
-            {
+            if ($nom_doc == 'INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE SERVICIO') {
                 //se actualiza BD Procesos, columna beneficiario, columnan doc referencial
                 $procesob = Procesoscont::find($idproc);
                 $procesob->benef = $benef;
                 $procesob->docref = $docref;
                 $procesob->save();
             }
-            
+
             //22-01-2024
-            switch($nom_doc){
+            switch ($nom_doc) {
                 case 'ESPECIFICACIONES TÉCNICAS':
                     //obtener el id de la unidad solicitante
-                    $proceso = Procesoscont::find($idproc); 
+                    $proceso = Procesoscont::find($idproc);
                     $idunid_dest = $proceso->id_unid; //en especificaciones técnicas retorna a la unidad solicitante 
                     break;
                 default:
@@ -301,9 +298,9 @@ class ProcesoscontController extends Controller
             }
 
             $obstray = $request->observaciontray;
-           
+
             $archivos = "no entra";
-            
+
             //prepramos achivos recibidos para mandar en storeder_modal
 
             $archivos = $request->filem1;
@@ -345,10 +342,10 @@ class ProcesoscontController extends Controller
         $contenido = $request->contenido;
 
         $idproc = $request->idp;
-        
+
         // Iniciar la transacción
         DB::beginTransaction();
-        
+
         try {
 
             //recibimos datos para derivar
@@ -359,20 +356,19 @@ class ProcesoscontController extends Controller
             $benef = $request->benefoc;
             $docref = $request->docrefoc;
 
-            if ($nom_doc == 'REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA')
-            {
+            if ($nom_doc == 'REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA') {
                 //se actualiza BD Procesos, columna beneficiario, columnan doc referencial
                 $procesob = Procesoscont::find($idproc);
                 $procesob->benef = $benef;
                 $procesob->docref = $docref;
                 $procesob->save();
             }
-            
+
             //22-01-2024
-            switch($nom_doc){
+            switch ($nom_doc) {
                 case 'ESPECIFICACIONES TÉCNICAS':
                     //obtener el id de la unidad solicitante
-                    $proceso = Procesoscont::find($idproc); 
+                    $proceso = Procesoscont::find($idproc);
                     $idunid_dest = $proceso->id_unid; //en especificaciones técnicas retorna a la unidad solicitante 
                     break;
                 default:
@@ -380,10 +376,10 @@ class ProcesoscontController extends Controller
                     break;
             }
 
-            $obstray = $contenido;//observaciontrayoc;
-           
+            $obstray = $contenido; //observaciontrayoc;
+
             $archivos = "no entra";
-            
+
             //prepramos achivos recibidos para mandar en storeder_modal
 
             $archivos = $request->filem1;
@@ -409,12 +405,11 @@ class ProcesoscontController extends Controller
                 'resulder' => $resulder,
                 'contenido' => $contenido,
             ];
-
         } catch (Exception $e) {
 
             // En caso de error, revertir la transacción
             DB::rollBack();
-            
+
             $datos = [
                 'code' => 400,
                 'status' => 'error',
@@ -428,8 +423,8 @@ class ProcesoscontController extends Controller
     public function storeder_modal($idtray, $idunid_dest, $obstray, $archivos)
     {
 
-        $trayant = Trayectoria::find($idtray);//idtray viene como parámetro
-       
+        $trayant = Trayectoria::find($idtray); //idtray viene como parámetro
+
         $trayect = new Trayectoria();
 
         $trayect->id_proceso = $trayant->id_proceso;
@@ -438,13 +433,13 @@ class ProcesoscontController extends Controller
         $trayect->id_esgte = $trayant->id_esgte;
         $trayect->id_uorigen = $trayant->id_uorigen;
         $trayect->id_uactual = $trayant->id_uactual;
-        $trayect->id_udestino = $idunid_dest;//viene como parámetro
+        $trayect->id_udestino = $idunid_dest; //viene como parámetro
         $trayect->fecha_ing = $trayant->fecha_ing;
         $trayect->fecha_env = date('Y-m-d');
         $trayect->estado = "derivado";
-        $trayect->observacion = $obstray;//viene como parámetro
+        $trayect->observacion = $obstray; //viene como parámetro
         $trayect->atendido = 0;
-        
+
         $trayect->save();
 
         //se actualiza atendido=1 de trayectoria anterior 
@@ -458,11 +453,10 @@ class ProcesoscontController extends Controller
 
         foreach ($resultados1 as $resultado1) {
             $lista1[] = $resultado1->id;
-
         }
 
         // Verificamos si se enviaron archivos
-        if ($archivos != null && $archivos != '' ){
+        if ($archivos != null && $archivos != '') {
             $cont = 0;
             $i = 0;
 
@@ -482,12 +476,12 @@ class ProcesoscontController extends Controller
                     $extension = pathinfo($namefile, PATHINFO_EXTENSION);
 
                     $fechcrea = date('dmYHis');
-                    $namefile = $solonombre.$fechcrea.$cont.".".$extension;
-                    
+                    $namefile = $solonombre . $fechcrea . $cont . "." . $extension;
+
                     // Guardamos el archivo en una ubicación específica
                     //'public/files'
                     //'public/files/'
-                    
+
                     // $archivo->move('files', $namefile);
                     // $path = 'files/' . $namefile;
 
@@ -500,31 +494,30 @@ class ProcesoscontController extends Controller
 
                     $listaver = new Listaverif;
 
-                    $listaver->id_tray = $trayect->id;//recien se creo el registro de la trayectoria
+                    $listaver->id_tray = $trayect->id; //recien se creo el registro de la trayectoria
                     $listaver->id_doc = $lista1[$i];
 
                     $listaver->namefile = $namefile;
                     $listaver->path = $path;
                     $listaver->ok = 1;
                     $listaver->observacion = "";
-            
-                    $listaver->save();
 
+                    $listaver->save();
                 }
                 $i++;
             }
         }
-        return "procesado";//redirect()->route('trayectoria.index');
+        return "procesado"; //redirect()->route('trayectoria.index');
     }
 
     public function pdfdt($id)
     {
-        
+
         $doctec = Docstec::find($id);
 
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -533,13 +526,13 @@ class ProcesoscontController extends Controller
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
         $doctec = Docstec::select("*")
-                            ->where('id_proc', $id)
-                            ->where('nom_doc', $nomd)
-                            ->first();
+            ->where('id_proc', $id)
+            ->where('nom_doc', $nomd)
+            ->first();
 
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -549,8 +542,8 @@ class ProcesoscontController extends Controller
         $doctec = Docstec::find($id);
 
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -559,13 +552,13 @@ class ProcesoscontController extends Controller
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
         $doctec = Docstec::select("*")
-                            ->where('id_proc', $id)
-                            ->where('nom_doc', $nomd)
-                            ->first();
+            ->where('id_proc', $id)
+            ->where('nom_doc', $nomd)
+            ->first();
 
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -575,8 +568,8 @@ class ProcesoscontController extends Controller
         $doctec = Docstec::find($id);
 
         $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -585,13 +578,13 @@ class ProcesoscontController extends Controller
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
         $doctec = Docstec::select("*")
-                            ->where('id_proc', $id)
-                            ->where('nom_doc', $nomd)
-                            ->first();
+            ->where('id_proc', $id)
+            ->where('nom_doc', $nomd)
+            ->first();
 
         $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
@@ -607,11 +600,11 @@ class ProcesoscontController extends Controller
 
         $pdf = PDF::loadView('procesoscont.pdf_proc', compact('proceso'));
         $pdf->setPaper('Letter');
-                    
+
         $filename = 'proceso.pdf';
         return $pdf->stream($filename);
     }
-    
+
     public function autorizar($idproc, $idtray)
     {
         try {
@@ -624,7 +617,7 @@ class ProcesoscontController extends Controller
             $procesosc->save();
 
             $trayec = Trayectoria::find($idtray);
-            return view('trayectoria.derivar', compact('trayec','procesosc',));
+            return view('trayectoria.derivar', compact('trayec', 'procesosc',));
 
             //return redirect()->route('trayectoria.index');
             //return redirect()->route('trayectoria/'.$idtray.'/derivar');
@@ -632,8 +625,5 @@ class ProcesoscontController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        
     }
-
-    
 }

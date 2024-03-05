@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
+use Illuminate\Validation\Rule;
+
 use App\Models\Unidadesorg;
 use App\Models\Modalidades;
 use App\Models\Procesoscont;
@@ -67,7 +69,7 @@ class TrayectoriaController extends Controller
             })
             //->paginate(10);
             // Modificado por davidsalinasdev
-            ->orderBy('trayectorias.fecha_ing', 'desc')
+            ->orderBy('trayectorias.created_at', 'desc')
             ->get();
 
         // echo '<pre>';

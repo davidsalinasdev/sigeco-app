@@ -412,12 +412,12 @@ return [
         [
             'text'      => 'Configuraciones',
             'icon'      => 'fab fa-whmcs',
+            'can'  => 'crud-usuario',
             'submenu'   => [
                 [
                     'text'  => 'Mod. esp. técnicas',
                     'url'   => '/updatedtecnicas',
-                    'icon'  => 'fab fa-wpforms',
-                    'can'   => 'crud-usuario',
+                    'icon'  => 'fab fa-wpforms'
                 ],
             ],
         ],

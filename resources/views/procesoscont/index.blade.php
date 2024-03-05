@@ -12,8 +12,9 @@
     </div>
     <div class="section-body">
         <div class="row">
+
             <a class="btn btn-primary" href="{{route('procesoscont.crear')}}"><i class="fa fa-plus"></i> Nueva Solicitud de Proceso</a>
-            <hr>
+
             <div class="col-12 table-responsive bg-white p-4 mt-3">
                 <table id="proces" class="table table-striped mt-2" style="width: 100%;">
                     <thead class="table-info table-header">
@@ -33,6 +34,7 @@
                         use App\Models\Unidadesorg;
                         use App\Models\Modalidades;
                         @endphp
+
                         @foreach($procesosconts as $procesoscont)
                         <tr>
                             <td style="display: none;">{{$procesoscont->id}}</td>
@@ -49,24 +51,20 @@
                             @if ($procesoscont->estado == 0)
                             <td>
                                 {{--Editar--}}
-                                <a href="{{ route('procesoscont.editar', $procesoscont->id) }}" alt="Editar">
-                                    <button class="btn btn-primary">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
+                                <a href="{{ route('procesoscont.editar', $procesoscont->id) }}" alt="Editar" class="btn btn-warning" title="Editar">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 {{--Eliminar--}}
                                 <form action="{{route('procesoscont.destroy',$procesoscont->id)}}" method="POST" style="display: inline-block;" onsubmit="return confirm('Está seguro?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-primary" type="submit">
+                                    <button class="btn btn-danger" type="submit" title="Eliminar">
                                         <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>
                                 {{--Iniciar--}}
-                                <a href="{{ route('trayectoria.iniciarproc', $procesoscont->id) }}" alt="Iniciar">
-                                    <button class="btn btn-success">
-                                        <i class="far fa-play-circle"></i>
-                                    </button>
+                                <a href="{{ route('trayectoria.iniciarproc', $procesoscont->id) }}" class="btn btn-success mt-1" alt="Iniciar" title="Iniciar">
+                                    <i class="far fa-play-circle"></i>
                                 </a>
                             </td>
                             @else
@@ -104,7 +102,10 @@
         $('#proces').DataTable({
             language: {
                 "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-            }
+            },
+            "order": [
+                [0, "desc"]
+            ]
         });
     });
 </script>
