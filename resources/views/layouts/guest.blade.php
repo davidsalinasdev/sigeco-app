@@ -29,6 +29,10 @@
             {{ $slot }}
         </div>
     </div>
+
+    <!-- Con la siguiente línea -->
+    <script src="{{ asset('js/custom_script.js') }}"></script>
+    <script src="{{ asset('js/custom_script.js') }}"></script>
 </body>
 
 </html>

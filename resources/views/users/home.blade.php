@@ -1,3 +1,5 @@
+<!-- PAGINA PRINCIPAL DE PLANTILLA ADMIN LTE ADMIN LTE -->
+
 @extends('adminlte::page')
 
 @section('title', 'Inicio')
@@ -31,6 +33,6 @@
 
 @section('js')
 <script>
-    console.log('Hi!');
+    console.log('Hi! Soy una plantilla');
 </script>
 @stop

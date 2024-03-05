@@ -39,7 +39,6 @@ class TrayectoriaController extends Controller
         $this->middleware('permission:crud-trayectoria', ['only' => ['storeder']]);
         $this->middleware('permission:crud-trayectoria', ['only' => ['descargararch']]);
         $this->middleware('permission:crud-trayectoria', ['only' => ['descargarplanti']]);
-
     }
 
     public function index()
@@ -50,31 +49,32 @@ class TrayectoriaController extends Controller
         $unidadorg = Unidadesorg::where('nombre', $nameUnidadorg)->first();
         //UNIDAD
         $id_miuni = $unidadorg->id; //22;
-        
+
         $procesosconts = DB::table('procesosconts')
-        ->selectRaw('*, procesosconts.id as idproc, trayectorias.id as idtray, procesosconts.estado as estadoproc, trayectorias.estado as estadotray, procesosconts.observacion as observacionproc, trayectorias.observacion as observaciontray')
-        ->join('trayectorias', 'procesosconts.id', '=', 'trayectorias.id_proceso')
-        ->where(function ($query) use ($id_miuni) {
-            $query->where('trayectorias.id_udestino', $id_miuni)
-                  ->where('procesosconts.estado', 1)
-                  ->where('trayectorias.atendido', 0)
-                  ->whereIn('trayectorias.estado', ['iniciado', 'derivado']);//para recibir
-        })
-        ->orWhere(function ($query) use ($id_miuni) {
-            $query->where('trayectorias.id_uactual', $id_miuni)
-                  ->where('procesosconts.estado', 1)
-                  ->where('trayectorias.atendido', 0)
-                  ->where('trayectorias.estado', 'recibido');//para derivar o finalizar
-        })
-        //->paginate(10);
-        ->orderBy('trayectorias.fecha_ing', 'desc')
-        ->get();
-               
+            ->selectRaw('*, procesosconts.id as idproc, trayectorias.id as idtray, procesosconts.estado as estadoproc, trayectorias.estado as estadotray, procesosconts.observacion as observacionproc, trayectorias.observacion as observaciontray')
+            ->join('trayectorias', 'procesosconts.id', '=', 'trayectorias.id_proceso')
+            ->where(function ($query) use ($id_miuni) {
+                $query->where('trayectorias.id_udestino', $id_miuni)
+                    ->where('procesosconts.estado', 1)
+                    ->where('trayectorias.atendido', 0)
+                    ->whereIn('trayectorias.estado', ['iniciado', 'derivado']); //para recibir
+            })
+            ->orWhere(function ($query) use ($id_miuni) {
+                $query->where('trayectorias.id_uactual', $id_miuni)
+                    ->where('procesosconts.estado', 1)
+                    ->where('trayectorias.atendido', 0)
+                    ->where('trayectorias.estado', 'recibido'); //para derivar o finalizar
+            })
+            //->paginate(10);
+            // Modificado por davidsalinasdev
+            ->orderBy('trayectorias.fecha_ing', 'desc')
+            ->get();
+
         // echo '<pre>';
         // print_r($procesosconts);
         // echo '</pre>';
         // die();
-        
+
         return view('trayectoria.index', compact('procesosconts'));
     }
 
@@ -84,7 +84,7 @@ class TrayectoriaController extends Controller
         return view('trayectoria.iniciar', compact('procesosc'));
     }
 
-    public function iniciarpac($id)//no está en uso
+    public function iniciarpac($id) //no está en uso
     {
         $programa = Pac::find($id);
         return view('trayectoria.iniciarpac', compact('programa'));
@@ -94,59 +94,59 @@ class TrayectoriaController extends Controller
     {
         $trayec = Trayectoria::find($idtray);
         $procesosc = Procesoscont::find($trayec->id_proceso);
-        return view('trayectoria.recibir', compact('trayec','procesosc'));
+        return view('trayectoria.recibir', compact('trayec', 'procesosc'));
     }
 
     public function derivarproc($idtray)
     {
         $trayec = Trayectoria::find($idtray);
         $procesosc = Procesoscont::find($trayec->id_proceso);
-        return view('trayectoria.derivar', compact('trayec','procesosc',));
+        return view('trayectoria.derivar', compact('trayec', 'procesosc',));
     }
 
     public function seguirproc($idproc, $deproc)
     {
-        
-        $trayects = Trayectoria::select('*')
-        ->where('id_proceso', '=', $idproc)
-        ->where(function ($query) {
-            $query->where('estado', 'iniciado')
-                ->orWhere('estado', 'derivado')
-                ->orWhere('estado', 'finalizado')
-                ->orWhere(function ($query1) {
-                    $query1->where('estado', '=', 'recibido')
-                        ->where('atendido', '=', 0);
-                });
-        })
-        ->orderBy('id_eactual')
-        ->get();
 
-        return view('trayectoria.seguir', compact('trayects','idproc', 'deproc'));
+        $trayects = Trayectoria::select('*')
+            ->where('id_proceso', '=', $idproc)
+            ->where(function ($query) {
+                $query->where('estado', 'iniciado')
+                    ->orWhere('estado', 'derivado')
+                    ->orWhere('estado', 'finalizado')
+                    ->orWhere(function ($query1) {
+                        $query1->where('estado', '=', 'recibido')
+                            ->where('atendido', '=', 0);
+                    });
+            })
+            ->orderBy('id_eactual')
+            ->get();
+
+        return view('trayectoria.seguir', compact('trayects', 'idproc', 'deproc'));
     }
 
     public function storenew(Request $request)
     {
-        $idp = $request->idp;//id del proceso
+        $idp = $request->idp; //id del proceso
 
         $procesosc = Procesoscont::find($idp);
         $procesosc->estado = 1;
         $procesosc->save();
 
         //registrar el inicio en la tabla trayectorias
-        $idmod=$procesosc->id_mod;
-        
+        $idmod = $procesosc->id_mod;
+
         //etapa actual
         $eact = Etapasproc::select("*")
-                            ->where('id_mod',$idmod)
-                            ->where('nro_etapa',1)
-                            ->first();
+            ->where('id_mod', $idmod)
+            ->where('nro_etapa', 1)
+            ->first();
 
         //etapa siguiente
-        $nesig=$eact->sig_etapa;
+        $nesig = $eact->sig_etapa;
         $esig = Etapasproc::select("*")
-                            ->where('id_mod',$idmod)
-                            ->where('nro_etapa',$nesig)
-                            ->first();
+            ->where('id_mod', $idmod)
+            ->where('nro_etapa', $nesig)
+            ->first();
 
         $trayect = new Trayectoria();
 
@@ -162,7 +162,7 @@ class TrayectoriaController extends Controller
         $trayect->estado = "iniciado";
         $trayect->observacion = "";
         $trayect->atendido = 0;
-        
+
         $trayect->save();
 
         //LISTA DE VERIFICACIÓN***********
@@ -180,7 +180,7 @@ class TrayectoriaController extends Controller
             $archivos = $request->file('files');
             $cont = 0;
             $i = 0;
-            
+
             // Procesamos cada archivo
             foreach ($archivos as $archivo) {
                 $cont++;
@@ -193,12 +193,12 @@ class TrayectoriaController extends Controller
                     $extension = pathinfo($namefile, PATHINFO_EXTENSION);
 
                     $fechcrea = date('dmYHis');
-                    $namefile = $solonombre.$fechcrea.$cont.".".$extension;
-                    
+                    $namefile = $solonombre . $fechcrea . $cont . "." . $extension;
+
                     // Guardamos el archivo en una ubicación específica
                     //'public/files'
                     //'public/files/'
-                    
+
                     // $archivo->move('files', $namefile);
                     // $path = 'files/' . $namefile;
 
@@ -206,22 +206,21 @@ class TrayectoriaController extends Controller
                     $path = 'app/files/' . $namefile; // Ruta para acceder al archivo
 
                     $listaver = new Listaverif;
-                    
-                    $listaver->id_tray = $trayect->id;//recien se creo el registro de la trayectoria
+
+                    $listaver->id_tray = $trayect->id; //recien se creo el registro de la trayectoria
                     $listaver->id_doc = $lista1[$i];
 
                     $listaver->namefile = $namefile;
                     $listaver->path = $path;
                     $listaver->ok = 1;
                     $listaver->observacion = "";
-            
-                    $listaver->save();
 
+                    $listaver->save();
                 }
                 $i++;
             }
         }
-   
+
         return redirect()->route('trayectoria.index');
     }
 
@@ -229,11 +228,11 @@ class TrayectoriaController extends Controller
     {
         //registrar el pac en la tabla procesosconts
 
-        $programa = Pac::find($id);//id del pac
+        $programa = Pac::find($id); //id del pac
 
         $procesosc = new Procesoscont();
-        
-        $procesosc->id_unid = $programa->id_unid;//unidad solicitante
+
+        $procesosc->id_unid = $programa->id_unid; //unidad solicitante
         $procesosc->id_mod = $programa->id_mod;
         $procesosc->id_pac = $programa->id;
 
@@ -243,7 +242,7 @@ class TrayectoriaController extends Controller
         $cantregmod = Procesoscont::withTrashed()->where('id_mod', '=', $programa->id_mod)->count();
         $pcodigo = $cantregmod + 1;
         $gestion = date('Y');
-        $procesosc->codigo = $sigla.$gestion."-".$pcodigo;
+        $procesosc->codigo = $sigla . $gestion . "-" . $pcodigo;
 
         $procesosc->tipo_cont = $programa->tipo_cont;
         $procesosc->objeto = $programa->objeto;
@@ -258,26 +257,26 @@ class TrayectoriaController extends Controller
         //pac aprobado
         $programa->estado = 1;
         $programa->save();
-        
+
         //registrar el inicio en la tabla trayectorias
-        $idmod=$procesosc->id_mod;
-                
+        $idmod = $procesosc->id_mod;
+
         //etapa actual
         $eact = Etapasproc::select("*")
-                            ->where('id_mod',$idmod)
-                            ->where('nro_etapa',1)
-                            ->first();
+            ->where('id_mod', $idmod)
+            ->where('nro_etapa', 1)
+            ->first();
 
         //etapa siguiente
-        $nesig=$eact->sig_etapa;
+        $nesig = $eact->sig_etapa;
         $esig = Etapasproc::select("*")
-                            ->where('id_mod',$idmod)
-                            ->where('nro_etapa',$nesig)
-                            ->first();
+            ->where('id_mod', $idmod)
+            ->where('nro_etapa', $nesig)
+            ->first();
 
         $trayect = new Trayectoria();
 
-        $trayect->id_proceso = $procesosc->id;//id del proceso recientemente registrado
+        $trayect->id_proceso = $procesosc->id; //id del proceso recientemente registrado
         $trayect->id_eanterior = $eact->id;
         $trayect->id_eactual = $eact->id;
         $trayect->id_esgte = $esig->id;
@@ -298,7 +297,7 @@ class TrayectoriaController extends Controller
 
         $trayect->id_uorigen = $id_uorigen; //unidad del administrador que da inicio al pac aprobado
         $trayect->id_uactual = $procesosc->id_unid;
-        $trayect->id_udestino = $procesosc->id_unid;//unidad solicitante
+        $trayect->id_udestino = $procesosc->id_unid; //unidad solicitante
         $trayect->fecha_ing = date('Y-m-d');
         $trayect->fecha_env = date('Y-m-d');
         $trayect->estado = "iniciado";
@@ -318,13 +317,13 @@ class TrayectoriaController extends Controller
 
         // }
 
-        
+
         // // Verificamos si se enviaron archivos
         // if ($request->hasFile('files')) {
         //     $archivos = $request->file('files');
         //     $cont = 0;
         //     $i = 0;
-            
+
         //     // Procesamos cada archivo
         //     foreach ($archivos as $archivo) {
         //         $cont++;
@@ -338,11 +337,11 @@ class TrayectoriaController extends Controller
 
         //             $fechcrea = date('dmYHis');
         //             $namefile = $solonombre.$fechcrea.$cont.".".$extension;
-                    
+
         //             // Guardamos el archivo en una ubicación específica
         //             //'public/files'
         //             //'public/files/'
-                    
+
         //             // $archivo->move('files', $namefile);
         //             // $path = 'files/' . $namefile;
 
@@ -350,7 +349,7 @@ class TrayectoriaController extends Controller
         //             $path = 'app/files/' . $namefile; // Ruta para acceder al archivo
 
         //             $listaver = new Listaverif;
-                    
+
         //             $listaver->id_tray = $trayect->id;//recien se creo el registro de la trayectoria
         //             $listaver->id_doc = $lista1[$i];
 
@@ -358,13 +357,13 @@ class TrayectoriaController extends Controller
         //             $listaver->path = $path;
         //             $listaver->ok = 1;
         //             $listaver->observacion = "";
-            
+
         //             $listaver->save();
         //         }
         //         $i++;
         //     }
         // }
- 
+
         return redirect()->route('trayectoria.index');
     }
 
@@ -374,22 +373,22 @@ class TrayectoriaController extends Controller
 
         $trayant = Trayectoria::find($idtray);
         $proceso = Procesoscont::find($trayant->id_proceso);
-       
+
         $idmod = $proceso->id_mod;
-        
+
         //etapa actual
         $eact = Etapasproc::select("*")
-                            ->where('id_mod',$idmod)
-                            ->where('id',$trayant->id_esgte)
-                            ->first();
-        
+            ->where('id_mod', $idmod)
+            ->where('id', $trayant->id_esgte)
+            ->first();
+
         //etapa siguiente
         $nesig = $eact->sig_etapa;
-        if ($nesig <> 0){//si no es etapa final
+        if ($nesig <> 0) { //si no es etapa final
             $esig = Etapasproc::select("*")
-                                ->where('id_mod',$idmod)
-                                ->where('nro_etapa',$nesig)
-                                ->first();
+                ->where('id_mod', $idmod)
+                ->where('nro_etapa', $nesig)
+                ->first();
         }
 
         $trayect = new Trayectoria();
@@ -397,24 +396,24 @@ class TrayectoriaController extends Controller
         $trayect->id_proceso = $trayant->id_proceso;
         $trayect->id_eanterior = $trayant->id_eactual;
         $trayect->id_eactual = $trayant->id_esgte;
-        
-        if ($nesig <> 0){//si no es etapa final
+
+        if ($nesig <> 0) { //si no es etapa final
             $trayect->id_esgte = $esig->id;
             $trayect->atendido = 0;
             $trayect->estado = "recibido";
-        }else{//si es etapa final
+        } else { //si es etapa final
             $trayect->id_esgte = 0;
             $trayect->atendido = 1;
             $trayect->estado = "finalizado";
         }
-        
+
         $trayect->id_uorigen = $trayant->id_uactual;
         $trayect->id_uactual = $trayant->id_udestino;
         //$trayect->id_udestino = "";
         $trayect->fecha_ing = date('Y-m-d');
         //$trayect->fecha_env = "";
         $trayect->observacion = $request->observaciontray;
-        
+
         $trayect->save();
 
         //se actualiza atendido=1 de trayectoria anterior 
@@ -429,11 +428,11 @@ class TrayectoriaController extends Controller
         //muestra los datos que llegan del formulario
         // $data = $request->all();
         // dd($data);
-        
+
         $idtray = $request->idtray;
 
         $trayant = Trayectoria::find($idtray);
-       
+
         $trayect = new Trayectoria();
 
         $trayect->id_proceso = $trayant->id_proceso;
@@ -447,9 +446,9 @@ class TrayectoriaController extends Controller
         $proceso = Procesoscont::find($trayant->id_proceso);
         //obtener el nombre del documento
         $nom_doc = $request->nom_doc;
-        
+
         //11-01-2024
-        switch($nom_doc){
+        switch ($nom_doc) {
             case 'INFORME DE INEXISTENCIA DE ACTIVOS':
                 $trayect->id_udestino =  $proceso->id_unid; //vuelve a la unidad solicitante
                 break;
@@ -466,7 +465,7 @@ class TrayectoriaController extends Controller
         $trayect->estado = "derivado";
         $trayect->observacion = $request->observaciontray;
         $trayect->atendido = 0;
-        
+
         $trayect->save();
 
         //se actualiza atendido=1 de trayectoria anterior 
@@ -480,7 +479,6 @@ class TrayectoriaController extends Controller
 
         foreach ($resultados1 as $resultado1) {
             $lista1[] = $resultado1->id;
-
         }
 
         // Verificamos si se enviaron archivos
@@ -501,12 +499,12 @@ class TrayectoriaController extends Controller
                     $extension = pathinfo($namefile, PATHINFO_EXTENSION);
 
                     $fechcrea = date('dmYHis');
-                    $namefile = $solonombre.$fechcrea.$cont.".".$extension;
-                    
+                    $namefile = $solonombre . $fechcrea . $cont . "." . $extension;
+
                     // Guardamos el archivo en una ubicación específica
                     //'public/files'
                     //'public/files/'
-                    
+
                     // $archivo->move('files', $namefile);
                     // $path = 'files/' . $namefile;
 
@@ -515,16 +513,15 @@ class TrayectoriaController extends Controller
 
                     $listaver = new Listaverif;
 
-                    $listaver->id_tray = $trayect->id;//recien se creo el registro de ñña trayectoria
+                    $listaver->id_tray = $trayect->id; //recien se creo el registro de ñña trayectoria
                     $listaver->id_doc = $lista1[$i];
 
                     $listaver->namefile = $namefile;
                     $listaver->path = $path;
                     $listaver->ok = 1;
                     $listaver->observacion = "";
-            
-                    $listaver->save();
 
+                    $listaver->save();
                 }
                 $i++;
             }
@@ -541,37 +538,34 @@ class TrayectoriaController extends Controller
         if (!$archivo) {
             return abort(404); // Puede que quieras manejar el caso en que el archivo no se encuentra.
         }
-    
+
         // Obten la ruta del archivo
         $ruta = $archivo->path; // Asumiendo que la ruta del archivo se almacena en la columna 'path'
-    
+
         // Genera las cabeceras para la descarga
         $headers = [
             'Content-Type' => 'application/octet-stream', // Tipo MIME adecuado para tu archivo
             'Content-Disposition' => "attachment; filename={$archivo->namefile}", // Nombre del archivo
         ];
-    
-        return response()->download(storage_path($ruta), $archivo->namefile, $headers);
 
+        return response()->download(storage_path($ruta), $archivo->namefile, $headers);
     }
 
     public function descargarplanti()
     {
         $arch = "informe de seleccion.docx";
-        
+
         // Obten la ruta del archivo
         $ruta = "app/files/INFORME DE SELECCION DE PROVEEDOR.docx"; // Asumiendo que la ruta del archivo se almacena en la columna 'path'
-    
+
         // Genera las cabeceras para la descarga
         $headers = [
             //'application/msword'); // o 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' para archivos DOCX
             'Content-Type' => 'octet-stream', // Tipo MIME adecuado para tu archivo
             'Content-Disposition' => "attachment; filename={$arch}", // Nombre del archivo
         ];
-    
+
         //return response()->download(storage_path($ruta), $arch, $headers);
         return response()->file(storage_path($ruta), $headers);
-
     }
-  
 }

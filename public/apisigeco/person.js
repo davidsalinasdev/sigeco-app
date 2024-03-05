@@ -36,3 +36,6 @@ fetch(`${url}/${id}`)
 
 })
 .catch(err => console.log(err))
+
+
+console.log('Hola Mundo');
