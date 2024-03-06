@@ -8,7 +8,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h3 class="page__heading p-3">Seguimiento a Proceso</h3>
+        <h4 class="page__heading p-3 text-uppercase">Seguimiento a Proceso</h4>
     </div>
     <div class="section-body">
         <div class="row">
@@ -237,9 +237,6 @@
             language: {
                 "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             },
-            order: [
-                [6, 'desc']
-            ] // La columna de "Fecha Ingreso" es la séptima columna (índice 6 en base cero)
         });
     });
 </script>
