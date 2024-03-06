@@ -12,4 +12,10 @@ class ConfiguracionesController extends Controller
     {
         return view('configuraciones.configuracion');
     }
+
+
+    // Metodo buscar datos
+    function buscarDatos()
+    {
+    }
 }

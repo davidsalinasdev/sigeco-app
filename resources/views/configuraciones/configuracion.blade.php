@@ -30,28 +30,30 @@
                             <!-- title row -->
                             <div class="row">
                                 <div class="col-12">
-                                    <h4>
-                                        <i class="fas fa-globe"></i> Cofiguraciones SIGECO
-                                        <small class="float-right">Fecha: 2/10/2024</small>
-                                    </h4>
+                                    <p>
+                                        <img width="20" src="img/sigeco.png"> Gestión buscar y modificar procesos
+                                    </p>
                                 </div>
                                 <!-- /.col -->
                             </div>
                             <!-- info row -->
                             <div class="row invoice-info justify-content-center">
-                                <div class="col-sm-4 invoice-col">
-                                    <address class="buscar-sigeco">
-                                        <strong>Buscar proceso</strong><br>
-                                        <input type="text" class="form-control">
-                                        <button class="btn btn-primary mt-2"><i class="fa fa-search"></i> BUSCAR</button>
-                                    </address>
+
+                                <div class="col-xl-4 invoice-col">
+                                    <div class="buscar-sigeco">
+                                        <label>Buscar proceso</label><br>
+                                        <input type="text" id="input_buscar_proceso" class="form-control" placeholder="Ingrese un número de proceso">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary mt-2 " id="btn_buscar_proceso"><i class="fa fa-search"></i> BUSCAR</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
                             <!-- /.row -->
 
                             <!-- Table row -->
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-12 table-responsive">
                                     <table class="table table-striped">
                                         <thead>
@@ -85,3 +87,47 @@
     </div>
 </section>
 @stop
+
+<!-- Seccion javaScript -->
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const input_buscar_proceso = document.getElementById('input_buscar_proceso');
+
+        // Evento click button
+        $('#btn_buscar_proceso').click(function(e) {
+            e.preventDefault();
+
+            realizarBusqueda();
+
+        });
+
+
+        // Funcion buscar proceso
+        function realizarBusqueda() {
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("configuraciones.buscardatos") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    gestion_buscar: input_buscar_proceso.value
+                },
+                beforeSend: function() {
+                    console.log('Esta buscando....aqui_ubicacion');
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        }
+
+    });
+</script>
+@stop
+<!-- FIN Seccion javaScript -->

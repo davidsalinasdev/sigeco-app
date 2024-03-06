@@ -416,7 +416,7 @@ return [
             'submenu'   => [
                 [
                     'text'  => 'Mod. esp. técnicas',
-                    'url'   => '/updatedtecnicas',
+                    'url'   => '/configuraciones',
                     'icon'  => 'fab fa-wpforms'
                 ],
             ],

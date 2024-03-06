@@ -137,8 +137,9 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
     Route::get('pacs/{programa}/pdfpac', [PacController::class, 'pdfpac'])->name('pacs.pdfpac');
 
 
-    // Configuraciones con crud en laravel
-    Route::get('configuraciones/{id}', [ConfiguracionesController::class, 'updated_esp_tecnicas'])->name('configuraciones.updated_esp_tecnicas');
+    // Configuraciones rutas DSP-UGE
+    Route::get('configuraciones', [ConfiguracionesController::class, 'updated_esp_tecnicas'])->name('configuraciones.updated_esp_tecnicas');
+    Route::post('buscardatos', [PacController::class, 'buscarDatos'])->name('configuraciones.buscardatos');
 });
 
 Route::middleware('auth')->group(function () {
