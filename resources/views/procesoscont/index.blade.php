@@ -8,19 +8,19 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h3 class="page__heading p-3">Procesos de Contratación</h3>
+        <h4 class="page__heading p-3 text-uppercase">Procesos de Contratación</h4>
     </div>
     <div class="section-body">
         <div class="row">
-
-            <a class="btn btn-primary" href="{{route('procesoscont.crear')}}"><i class="fa fa-plus"></i> Nueva Solicitud de Proceso</a>
-
+            <div class="col-12 d-flex justify-content-end">
+                <a class="btn btn-primary text-sm text-uppercase" href="{{route('procesoscont.crear')}}"><i class="fa fa-plus"></i> Nueva Solicitud de Proceso</a>
+            </div>
             <div class="col-12 table-responsive bg-white p-4 mt-3">
                 <table id="proces" class="table table-striped mt-2" style="width: 100%;">
                     <thead class="table-info table-header">
                         <tr class="table-header__encabezado">
                             <th style="display: none;">ID</th>
-                            <th style="display: #fff;">Código</th>
+                            <th style="display: #fff; width: 8%;">Código</th>
                             <th style="display: #fff;">Unidad</th>
                             <th style="display: #fff;">Modalidad</th>
                             <th style="display: #fff;">Objeto</th>

@@ -25,6 +25,9 @@
             $proceso = Procesoscont::find($idproc);
             $usolic = Unidadesorg::find($proceso->id_unid);
             $modalidad = Modalidades::find($proceso->id_mod);
+
+
+
             @endphp
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -56,6 +59,8 @@
                 <table id="trays" class="table table-striped mt-2" style="width: 100%;">
                     <thead class="table-info table-header">
                         <tr class="table-header__encabezado">
+                            <th style="display: none;">Fecha creacion</th>
+                            <th style="display: #fff;width: 5%; ">#</th>
                             <th style="display: #fff;">Etapa en Remitente</th>
                             <th style="display: #fff;">Etapa en Destinatario</th>
                             <th style="display: #fff;">Unid. Remitente</th>
@@ -68,6 +73,8 @@
                     <tbody>
                         @foreach($trayects as $trayect)
                         <tr>
+                            <td style="display: none;">{{$trayect->created_at}}</td>
+                            <td>{{ $loop->index + 1 }}</td>
                             @php
                             //$unidad = Unidadesorg::find($procesoscont->id_unid);
                             //$modalidad = Modalidades::find($procesoscont->id_mod);
@@ -237,6 +244,10 @@
             language: {
                 "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             },
+            order: [
+                [0, 'asc']
+            ], // La columna de "Fecha Ingreso" es la séptima columna (índice 6 en base cero)
+            pageLength: 25 // Establece el número de filas por página
         });
     });
 </script>

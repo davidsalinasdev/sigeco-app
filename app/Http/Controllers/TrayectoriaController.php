@@ -126,6 +126,7 @@ class TrayectoriaController extends Controller
         return view('trayectoria.seguir', compact('trayects', 'idproc', 'deproc'));
     }
 
+
     public function storenew(Request $request)
     {
         $idp = $request->idp; //id del proceso

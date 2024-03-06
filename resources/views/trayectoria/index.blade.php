@@ -21,7 +21,7 @@
                         <tr class="table-header__encabezado">
                             <th style="display: none;">ID</th>
                             <th style="display: none;">Fecha creacion</th>
-                            <th style="display: #fff;">Código</th>
+                            <th style="display: #fff;width: 8%;">Código</th>
                             <th style="display: #fff;">Objeto</th>
                             <th style="display: #fff;">Etapa en Remitente</th>
                             <th style="display: #fff;">Etapa actual</th>
