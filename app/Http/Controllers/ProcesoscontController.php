@@ -541,6 +541,11 @@ class ProcesoscontController extends Controller
     {
         $doctec = Docstec::find($id);
 
+        // echo '<pre>';
+        // var_dump($doctec);
+        // echo '</pre>';
+        // die();
+
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
         $pdf->setPaper('Letter');
 

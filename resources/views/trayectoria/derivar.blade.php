@@ -134,8 +134,11 @@
                                         $nom_doc = "";
 
                                         //documentos generados de la etapa actual
+
                                         $ideact = $trayec->id_eactual;
                                         $resultados1 = Docsgen::where('id_etapa', $ideact)->get();
+
+
 
                                         foreach ($resultados1 as $resultado1) {
                                         $lista1[] = $resultado1->id;
@@ -165,6 +168,9 @@
                                             <div class="form-group">
                                                 <label>NºEtapa&nbsp;&nbsp;&nbsp;Doc.Generado</label>
                                                 @foreach ($verifs as $verif)
+
+
+                                                <!-- Logica para cada checkbox -->
                                                 <div class="form-check">
 
                                                     {{--se verifica si el documento está en la lista de documentos de la etapa, se tickea y se pinta de azul--}}
@@ -209,14 +215,17 @@
 
                                                     {{--verificamos si ya existe el documento técnico en la BD--}}
                                                     @php
+
                                                     $nom_doc = $verif['nom_doc'];
+
+                                                    // Consulta
                                                     $doctec = Docstec::select("*")
                                                     ->where('id_proc', $procesosc->id)
                                                     ->where('nom_doc', $nom_doc)
                                                     ->first();
 
 
-                                                    //print_r($doctec);
+                                                    // print_r($doctec);
                                                     @endphp
 
                                                     {{-----SI EXISTE EL DOC ESPECIFICACIONES TÉCNICAS-----}}
@@ -228,7 +237,8 @@
                                                         Imprimir
                                                     </a>
                                                     @else
-                                                    {{--BOTON MODAL--}}
+                                                    <!-- Modificado por DavidSP -->
+                                                    {{--SI NO EXISTE EL DOCUMENTO TENEMOS QUE ELABORAR DESPLEGANDO  MODAL--}}
                                                     <button type="button" class="btn btn-primary btn-sm" id="crearBtn" data-toggle="modal" data-target="#modal-xl">
                                                         <i class="fa fa-plus"></i> Elaborar
                                                     </button>
@@ -241,6 +251,7 @@
                                                     @endif
 
                                                     @break
+
                                                     @case('INFORME DE INEXISTENCIA DE ACTIVOS')
                                                     {{-- Script para ocultar el elemento --}}
                                                     <script>
@@ -459,6 +470,8 @@
                                                         {!! Form::label($verif['iddoc'], $verif['nom_doc'], ['class' => 'form-check-label']) !!}
                                                         @endif
                                                 </div>
+
+
                                                 @endforeach
                                             </div>
                                         </div>

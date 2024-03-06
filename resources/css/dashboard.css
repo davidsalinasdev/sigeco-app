@@ -4,6 +4,7 @@
 }
 
 .bg-c-blue {
+    background-color: linear-gradient(45deg, #73b4ff, #e7e8e9);
     background-color: linear-gradient(45deg, #73b4ff, #4099ff);
 }
 

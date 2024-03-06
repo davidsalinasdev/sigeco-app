@@ -14,6 +14,8 @@ use App\Http\Controllers\ProcesoscontController;
 use App\Http\Controllers\TrayectoriaController;
 use App\Http\Controllers\ListaverifController;
 use App\Http\Controllers\PacController;
+// Controladores por DAVIDSP
+use App\Http\Controllers\ConfiguracionesController;
 
 // use App\Http\Controlers\Controller;
 
@@ -42,7 +44,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/account', function () {
             return view('users.account');
         });
-});
+    });
 
 // middleware superadmin access
 Route::middleware(['auth', 'verified', 'can:crud-usuario'])
@@ -51,30 +53,29 @@ Route::middleware(['auth', 'verified', 'can:crud-usuario'])
         Route::get('/dashboard', function () {
             return view('dashboard');
         });
-});
+    });
 
 Route::middleware(['auth', 'role:Administrador'])->group(function () {
-        Route::get('/benef', [BenefController::class, 'index'])->name('benef.index');
-        Route::get('benef/crear', [BenefController::class, 'create'])->name('benef.crear');
-        Route::post('benef/store', [BenefController::class, 'store'])->name('benef.store');
-        Route::get('benef/{id}/editar', [BenefController::class, 'edit'])->name('benef.editar');
-        Route::put('benef/{id}/update', [BenefController::class, 'update'])->name('benef.update');
-        Route::delete('benef/{id}/delete', [BenefController::class, 'destroy'])->name('benef.destroy');
-        
-        Route::get('/unidadesorg', [UnidadesorgController::class, 'index'])->name('unidadesorg.index');
-        Route::get('unidadesorg/crear', [UnidadesorgController::class, 'create'])->name('unidadesorg.crear');
-        Route::post('unidadesorg/store', [UnidadesorgController::class, 'store'])->name('unidadesorg.store');
-        Route::get('unidadesorg/{id}/editar', [UnidadesorgController::class, 'edit'])->name('unidadesorg.editar');
-        Route::put('unidadesorg/{id}/update', [UnidadesorgController::class, 'update'])->name('unidadesorg.update');
-        Route::delete('unidadesorg/{id}/delete', [UnidadesorgController::class, 'destroy'])->name('unidadesorg.destroy');
-        
-        Route::get('/etapasproc', [EtapasprocController::class, 'index'])->name('etapasproc.index');
-        Route::get('etapasproc/crear', [EtapasprocController::class, 'create'])->name('etapasproc.crear');
-        Route::post('etapasproc/store', [EtapasprocController::class, 'store'])->name('etapasproc.store');
-        Route::get('etapasproc/{id}/editar', [EtapasprocController::class, 'edit'])->name('etapasproc.editar');
-        Route::put('etapasproc/{id}/update', [EtapasprocController::class, 'update'])->name('etapasproc.update');
-        Route::delete('etapasproc/{id}/delete', [EtapasprocController::class, 'destroy'])->name('etapasproc.destroy');
+    Route::get('/benef', [BenefController::class, 'index'])->name('benef.index');
+    Route::get('benef/crear', [BenefController::class, 'create'])->name('benef.crear');
+    Route::post('benef/store', [BenefController::class, 'store'])->name('benef.store');
+    Route::get('benef/{id}/editar', [BenefController::class, 'edit'])->name('benef.editar');
+    Route::put('benef/{id}/update', [BenefController::class, 'update'])->name('benef.update');
+    Route::delete('benef/{id}/delete', [BenefController::class, 'destroy'])->name('benef.destroy');
 
+    Route::get('/unidadesorg', [UnidadesorgController::class, 'index'])->name('unidadesorg.index');
+    Route::get('unidadesorg/crear', [UnidadesorgController::class, 'create'])->name('unidadesorg.crear');
+    Route::post('unidadesorg/store', [UnidadesorgController::class, 'store'])->name('unidadesorg.store');
+    Route::get('unidadesorg/{id}/editar', [UnidadesorgController::class, 'edit'])->name('unidadesorg.editar');
+    Route::put('unidadesorg/{id}/update', [UnidadesorgController::class, 'update'])->name('unidadesorg.update');
+    Route::delete('unidadesorg/{id}/delete', [UnidadesorgController::class, 'destroy'])->name('unidadesorg.destroy');
+
+    Route::get('/etapasproc', [EtapasprocController::class, 'index'])->name('etapasproc.index');
+    Route::get('etapasproc/crear', [EtapasprocController::class, 'create'])->name('etapasproc.crear');
+    Route::post('etapasproc/store', [EtapasprocController::class, 'store'])->name('etapasproc.store');
+    Route::get('etapasproc/{id}/editar', [EtapasprocController::class, 'edit'])->name('etapasproc.editar');
+    Route::put('etapasproc/{id}/update', [EtapasprocController::class, 'update'])->name('etapasproc.update');
+    Route::delete('etapasproc/{id}/delete', [EtapasprocController::class, 'destroy'])->name('etapasproc.destroy');
 });
 
 /**
@@ -84,9 +85,9 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
  * Este grupo de rutas abarca las funcionalidades relacionadas con la gestión de perfiles de usuario,
  */
 
- Route::get('/home', [UserController::class, 'home'])->name('home');
- 
- Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
+Route::get('/home', [UserController::class, 'home'])->name('home');
+
+Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
 
     // Rutas que solo pueden ser accedidas por usuarios con el rol 'Operador'
     Route::get('/procesoscont', [ProcesoscontController::class, 'index'])->name('procesoscont.index');
@@ -105,18 +106,18 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
     Route::get('procesoscont/{doctec}/pdfos', [ProcesoscontController::class, 'pdfos'])->name('procesoscont.pdfos');
     Route::get('procesoscont/{doctec}/pdfos2', [ProcesoscontController::class, 'pdfos2'])->name('procesoscont.pdfos2');
     Route::get('procesoscont/{doctec}/pdfoc', [ProcesoscontController::class, 'pdfoc'])->name('procesoscont.pdfoc');
-    Route::get('procesoscont/{doctec}/pdfoc2', [ProcesoscontController::class, 'pdfoc2'])->name('procesoscont.pdfoc2');    
-    Route::get('procesoscont/{proceso}/pdf_proc', [ProcesoscontController::class, 'pdf_proc'])->name('procesoscont.pdf_proc');    
-    Route::get('procesoscont/{idproc}/{idtray}/autorizar', [ProcesoscontController::class, 'autorizar'])->name('procesoscont.autorizar');    
-    
+    Route::get('procesoscont/{doctec}/pdfoc2', [ProcesoscontController::class, 'pdfoc2'])->name('procesoscont.pdfoc2');
+    Route::get('procesoscont/{proceso}/pdf_proc', [ProcesoscontController::class, 'pdf_proc'])->name('procesoscont.pdf_proc');
+    Route::get('procesoscont/{idproc}/{idtray}/autorizar', [ProcesoscontController::class, 'autorizar'])->name('procesoscont.autorizar');
+
     Route::get('/trayectoria', [TrayectoriaController::class, 'index'])->name('trayectoria.index');
     Route::get('trayectoria/{id}/iniciar', [TrayectoriaController::class, 'iniciarproc'])->name('trayectoria.iniciarproc');
     //Route::get('trayectoria/{id}/iniciarpac', [TrayectoriaController::class, 'iniciarpac'])->name('trayectoria.iniciarpac');
     Route::get('trayectoria/{id}/recibir/', [TrayectoriaController::class, 'recibirproc'])->name('trayectoria.recibirproc');
     Route::get('trayectoria/{id}/derivar', [TrayectoriaController::class, 'derivarproc'])->name('trayectoria.derivarproc');
-    
+
     Route::get('trayectoria/{idproc}/{deproc}/seguir', [TrayectoriaController::class, 'seguirproc'])->name('trayectoria.seguirproc');
-    
+
     Route::post('trayectoria/storenew', [TrayectoriaController::class, 'storenew'])->name('trayectoria.storenew');
     Route::get('trayectoria/{id}/storenewp', [TrayectoriaController::class, 'storenewp'])->name('trayectoria.storenewp');
     Route::post('trayectoria/storerec', [TrayectoriaController::class, 'storerec'])->name('trayectoria.storerec');
@@ -135,9 +136,12 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
     Route::delete('pacs/{id}/delete', [PacController::class, 'destroy'])->name('pacs.destroy');
     Route::get('pacs/{programa}/pdfpac', [PacController::class, 'pdfpac'])->name('pacs.pdfpac');
 
- });
 
- Route::middleware('auth')->group(function () {
+    // Configuraciones con crud en laravel
+    Route::get('configuraciones/{id}', [ConfiguracionesController::class, 'updated_esp_tecnicas'])->name('configuraciones.updated_esp_tecnicas');
+});
+
+Route::middleware('auth')->group(function () {
     // Perfil del usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -145,7 +149,6 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
 
     // Cuenta de usuario
     Route::get('/account', [UserController::class, 'account_details'])->name('users.account');
-    
 });
 
 // routes defaults make crud
