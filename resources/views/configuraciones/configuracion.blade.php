@@ -18,7 +18,7 @@
 
 <section class="section">
     <div class="section-header">
-        <h4 class="page__heading p-3 text-uppercase">Modificar especificaciones tecnicas</h3>
+        <h4 class="page__heading p-3 text-uppercase">Modificar especificaciones técnicas</h3>
     </div>
     <div class="section-body">
         <div class="row">
@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <p>
-                                        <img width="20" src="img/sigeco.png"> Gestión buscar y modificar procesos
+                                        Gestión modificar especificaciones técnicas
                                     </p>
                                 </div>
                                 <!-- /.col -->
@@ -55,24 +55,18 @@
                             <!-- Table row -->
                             <div class="row mt-3">
                                 <div class="col-12 table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
+                                    <table id="editar-esp" class="table table-striped">
+                                        <thead class="table-info">
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Codigo</th>
-                                                <th>Objeto</th>
-                                                <th>Precio referencial</th>
-                                                <th>Acciones</th>
+                                                <th style="width: 8%;">ID</th>
+                                                <th style="width: 10%;">Codigo</th>
+                                                <th style="width: 40%;">Objeto</th>
+                                                <th style="width: 15%;">Precio referencial</th>
+                                                <th style="width: 7%;">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Call of Duty</td>
-                                                <td>455-981-221</td>
-                                                <td>El snort testosterone trophy driving gloves handsome</td>
-                                                <td>$64.50</td>
-                                            </tr>
+                                        <tbody id="lista-proceso">
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -103,6 +97,19 @@
 
         });
 
+        // Evento keydown en el campo de entrada para utilizar ENTER
+        $('#input_buscar_proceso').keydown(function(e) {
+
+            if (input_buscar_proceso.value === '') {
+
+                console.log('Vacio');
+            } else
+            if (e.keyCode === 13) { // 13 es el código de la tecla "Enter"
+                e.preventDefault(); // Evita el comportamiento predeterminado del "Enter"
+                realizarBusqueda();
+            }
+        });
+
 
         // Funcion buscar proceso
         function realizarBusqueda() {
@@ -118,7 +125,31 @@
                     console.log('Esta buscando....aqui_ubicacion');
                 },
                 success: function(response) {
-                    console.log(response);
+
+                    const {
+                        code,
+                        status,
+                        proceso
+                    } = response;
+
+                    if (proceso == null) {
+                        toastr.error('No se encontro ningun dato', 'Sistema de contrataciones');
+                    } else {
+
+                        console.log(proceso);
+                        toastr.success('Proceso encontrado', 'Sistema de contrataciones');
+
+                        $('#lista-proceso').empty();
+                        let newRow = '<tr>' +
+                            '<td>' + proceso.id + '</td>' +
+                            '<td>' + proceso.codigo + '</td>' +
+                            '<td>' + proceso.objeto + '</td>' +
+                            '<td>' + proceso.precio_ref + '</td>' +
+                            `<td> <a href="/editaresptecnicas/${proceso.id}" alt="Editar" class="btn btn-warning" title="Editar"><i class = "fas fa-pencil-alt"> </i></a></td >` +
+                            '</tr>';
+                        $('#lista-proceso').append(newRow);
+
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -127,6 +158,22 @@
 
         }
 
+    });
+</script>
+
+@parent
+<!-- Tu script de DataTables -->
+<script>
+    $(document).ready(function() {
+        // Inicializa DataTable
+        $('#editar-esp').DataTable({
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            },
+            lengthChange: false, // Oculta el mensaje de registros por página
+            searching: false // Deshabilita la caja de búsqueda
+            // info: false, // Oculta el contador de registros
+        });
     });
 </script>
 @stop

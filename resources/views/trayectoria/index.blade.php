@@ -70,6 +70,8 @@
                                     <i class="far fa-eye"></i>
                                 </a>
                             </td>
+
+                            <!-- Aqui deriva si ya esta recibido -->
                             @else{{-- estadotray="recibido"   --}}
                             <td>
                                 {{--Derivar--}}

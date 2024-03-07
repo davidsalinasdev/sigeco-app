@@ -513,7 +513,7 @@
             </div>
         </div>
 
-        {{--MODAL ESPECIFICACIONES TÉCNICAS--}}
+        <!-- ********* 1.- MODAL ESPECIFICACIONES TÉCNICAS******* -->
         <div class="modal fade show" id="modal-xl" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -529,6 +529,9 @@
                                 <div class="card">
                                     <div class="card-body">
 
+
+
+
                                         @php
                                         $idp = $procesosc->id;
                                         $proceso = Procesoscont::find($idp);
@@ -537,6 +540,7 @@
                                         $cont = 1;
                                         $total = 0;
                                         @endphp
+
 
                                         <div class="row">
                                             <div class="col-12 col-xl-6 card">{{-- col-12 col-xl-4 card MODAL PRIMERA COLUMNA--}}
@@ -597,6 +601,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-12 col-xl-6 card">{{--MODAL SEGUNDA COLUMNA--}}
                                                 <div class="card-body">
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -847,7 +852,11 @@
         </div>
         <!-- /.modal-dialog -->
 
-        <!-- MODAL ORDEN DE SERVICIO -->
+
+
+
+
+        <!-- ********** 2.- MODAL ORDEN DE SERVICIO************* -->
         <div class="modal fade show" id="modalOS" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -1108,7 +1117,10 @@
         </div>
         <!-- /.modal-dialog -->
 
-        <!-- MODAL ORDEN DE COMPRA -->
+
+
+
+        <!-- *********** 3.- MODAL ORDEN DE COMPRA*************** -->
         <div class="modal fade show" id="modalOC" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">

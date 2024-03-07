@@ -139,7 +139,8 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
 
     // Configuraciones rutas DSP-UGE
     Route::get('configuraciones', [ConfiguracionesController::class, 'updated_esp_tecnicas'])->name('configuraciones.updated_esp_tecnicas');
-    Route::post('buscardatos', [PacController::class, 'buscarDatos'])->name('configuraciones.buscardatos');
+    Route::post('buscardatos', [ConfiguracionesController::class, 'buscarDatos'])->name('configuraciones.buscardatos');
+    Route::get('editaresptecnicas/{id}', [ConfiguracionesController::class, 'editarEspTecnicas'])->name('configuraciones.editaresptecnicas');
 });
 
 Route::middleware('auth')->group(function () {

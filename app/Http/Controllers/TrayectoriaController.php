@@ -103,6 +103,12 @@ class TrayectoriaController extends Controller
     {
         $trayec = Trayectoria::find($idtray);
         $procesosc = Procesoscont::find($trayec->id_proceso);
+
+        // echo '<pre>';
+        // print_r($procesosc);
+        // echo '</pre>';
+        // die();
+
         return view('trayectoria.derivar', compact('trayec', 'procesosc',));
     }
 
