@@ -924,9 +924,6 @@
                             // Función para validar campos requeridos en todas las ubicaciones
                             function validarCamposRequeridos(selectores) {
 
-                                console.log('Hola mundo');
-
-                                return;
                                 var validacionExitosa = true;
 
                                 selectores.forEach(function(selector) {
