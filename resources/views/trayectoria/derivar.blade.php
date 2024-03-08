@@ -6,6 +6,16 @@
 @stop
 
 @section('content')
+
+<!-- Estilos de pagina -->
+<style>
+    @media (min-width: 1200px) {
+        .modal-xl {
+            max-width: 1400px !important;
+        }
+    }
+</style>
+
 <section class="section">
     <div class="section-header">
         <h4 class="page__heading p-3 text-uppercase">Derivar Proceso</h3>
@@ -513,6 +523,7 @@
             </div>
         </div>
 
+
         <!-- ********* 1.- MODAL ESPECIFICACIONES TÉCNICAS******* -->
         <div class="modal fade show" id="modal-xl" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
@@ -526,11 +537,8 @@
                         </div>
                         <div class="modal-body">
                             <div class="col-lg-12">
-                                <div class="card">
+                                <div class="">
                                     <div class="card-body">
-
-
-
 
                                         @php
                                         $idp = $procesosc->id;
@@ -539,45 +547,47 @@
                                         $modalidad = Modalidades::find($proceso->id_mod);
                                         $cont = 1;
                                         $total = 0;
-                                        @endphp
 
+                                        $sigla = $modalidad->sigla;
+
+                                        @endphp
 
                                         <div class="row">
                                             <div class="col-12 col-xl-6 card">{{-- col-12 col-xl-4 card MODAL PRIMERA COLUMNA--}}
                                                 <div class="card-body">
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Código</label>
+                                                            <label>Código:</label>
                                                             {{$proceso->codigo}}
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Unidad Solicitante</label>
+                                                            <label>Unidad Solicitante:</label>
                                                             {{$usolic->nombre}}
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Objeto</label>
+                                                            <label>Objeto:</label>
                                                             {{$proceso->objeto}}
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Precio Referencial</label>
-                                                            <label id="precioReferencial">{{$proceso->precio_ref}}</label>
+                                                            <label>Precio Referencial:</label>
+                                                            <span id="precioReferencial">{{$proceso->precio_ref}}</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Modalidad</label>
+                                                            <label>Modalidad:</label>
                                                             {{$modalidad->nombre}}
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label>Unidad Org. Destino</label>
+                                                            <label>Unidad Org. Destino:</label>
                                                             {{$usolic->nombre}}
 
                                                             {{-- @php
@@ -595,7 +605,7 @@
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label for="observaciontray">Observación</label>
+                                                            <label for="observaciontray">Observación:</label>
                                                             <textarea id="observaciontray" name="observaciontray" class="form-control" rows="2" style="width: 90%;"></textarea>
                                                         </div>
                                                     </div>
@@ -604,52 +614,101 @@
 
                                             <div class="col-12 col-xl-6 card">{{--MODAL SEGUNDA COLUMNA--}}
                                                 <div class="card-body">
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="plazo_ent">Plazo de entrega<span class="text-danger">*</span></label>
-                                                            <textarea id="plazo_ent" name="plazo_ent" class="form-control" required rows="2" style="width: 90%;"></textarea>
-                                                            <div class="invalid-feedback">
-                                                                Este campo es obligatorio.
+
+                                                    <div class="form-group">
+                                                        <label for="plazo_ent">Plazo de entrega<span class="text-danger">*</span></label><br>
+
+
+                                                        <input id="plazo_entrega" name="plazo_entrega" type="number" style="width: 70px;" min="1" value="1">
+
+
+                                                        @if($sigla=='CMB' || $sigla=='CMBCP' || $sigla=='ANPEB' || $sigla=='LPNB')
+                                                        <!-- Bienes -->
+                                                        <span id="bys"> dia(s) calendario, a partir del dia siguiente habil a la suscripción <span id="contrato">de la órden de compra</span></span>
+                                                        @endif
+
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        <!-- Servicio -->
+                                                        <span id="bys"> dia(s) calendario, a partir del dia siguiente habil a la suscripción <span id="contrato">de la órden de servicio</span></span>
+                                                        @endif
+
+                                                        <!-- Input que maneja la sigla -->
+                                                        <input type="hidden" value="{{$sigla}}" id="sigla">
+
+                                                        <!-- <textarea id="plazo_ent" name="plazo_ent" class="form-control" required rows="2" style="width: 90%;"></textarea> -->
+
+                                                        <div class="invalid-feedback">
+                                                            Este campo es obligatorio.
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label for="garantia">Garantía<span class="text-danger">*</span></label>
+
+                                                        <div class="form-group" bis_skin_checked="1">
+                                                            <p>1 Documento escrito por la empresa:</p>
+                                                            <select id="garantia_escrito" name="garantia_escrito" class="form-control">
+                                                                <option selected="">Requiere</option>
+                                                                <option>No requiere</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group" bis_skin_checked="1">
+                                                            <p for="garantia_funcionamiento">Garantia de funcionamiento:</p>
+                                                            <select id="garantia_funcionamiento" name="garantia_funcionamiento" class="form-control">
+                                                                <option selected="">Requiere</option>
+                                                                <option>No requiere</option>
+                                                            </select>
+                                                        </div>
+
+
+                                                        <!-- <textarea id="garantia" name="garantia" class="form-control" required="required" rows="2" style="width: 90%;"></textarea> -->
+
+
+                                                        <div class="invalid-feedback">
+                                                            Este campo es obligatorio.
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label for="lugmed_ent">Lugar y medio de entrega<span class="text-danger">*</span></label>
+
+
+                                                        <!-- Seleccionar lugar de entrega -->
+                                                        <div class="bd-example">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_uno" value="option1" checked="">
+                                                                <label class="form-check-label" for="lugar_entrega">
+                                                                    Av. Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).
+                                                                </label>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="garantia">Garantía<span class="text-danger">*</span></label>
-                                                            <textarea id="garantia" name="garantia" class="form-control" required="required" rows="2" style="width: 90%;"></textarea>
-                                                            <div class="invalid-feedback">
-                                                                Este campo es obligatorio.
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_dos" value="option2">
+                                                                <label class="form-check-label" for="lugar_entrega">
+                                                                    Otro
+                                                                </label>
                                                             </div>
+                                                            <textarea id="lugar_entrega_otros" name="lugar_entrega_otros" class="form-control" required="required" rows="2" style="width: 90%;"></textarea>
                                                         </div>
+
+
+                                                        <div class="invalid-feedback">
+                                                            Este campo es obligatorio.
+                                                        </div>
+
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="lugmed_ent">Lugar y medio de entrega<span class="text-danger">*</span></label>
-                                                            <textarea id="lugmed_ent" name="lugmed_ent" class="form-control" required="required" rows="2" style="width: 90%;"></textarea>
-                                                            <div class="invalid-feedback">
-                                                                Este campo es obligatorio.
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="otro1">Otra información (1)</label>
-                                                            <textarea id="otro1" name="otro1" class="form-control" rows="3" style="width: 90%;"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="otro2">Otra información (2)</label>
-                                                            <textarea id="otro2" name="otro2" class="form-control" rows="3" style="width: 90%;"></textarea>
-                                                        </div>
-                                                    </div> --}}
+
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-12 table-responsive bg-white p-4 mt-3">{{--DETALLE PRODUCTOS--}}
                                             <table id="doctec" class="table table-striped mt-2" style="width: 100%;">
-                                                <thead class="table-header">
-                                                    <tr class="table-header__encabezado">
+                                                <thead class="table-info">
+                                                    <tr class="">
                                                         <th style="display: #fff;" class="col-md-auto">Item</th>
                                                         <th style="display: #fff;" class="col-md-4">Descripción</th>
                                                         <th style="display: #fff;" class="col-md-auto">Unidad</th>
@@ -694,12 +753,66 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
 
+                        // Garantia
+                        const garantia_escrito = document.getElementById('garantia_escrito');
+                        const garantia_funcionamiento = document.getElementById('garantia_funcionamiento');
+
+                        // Lugar de entrega
+                        const lugar_entrega_otros = document.getElementById('lugar_entrega_otros');
+                        const lugar_entrega = document.querySelector('input[name="lugar_entrega"]:checked')
+
+                        // Sigla de la modalidad
+                        const sigla = document.querySelector('#sigla');
+
+                        // Plazo de entrega
+                        let plazo_entrega = document.getElementById('plazo_entrega');
+                        let plazo_entrega_bys = document.getElementById('bys');
+
+                        // Mayor a 15
+                        const contratoB = document.getElementById('contrato');
+
+
+
+
+                        // Logica para plazo de entrega
+                        plazo_entrega.addEventListener('input', () => {
+
+
+                            if (Number(plazo_entrega.value) > 15) {
+
+
+                                plazo_entrega_bys = document.getElementById('bys');
+                                plazo_entrega = document.getElementById('plazo_entrega');
+                                contrato.innerText = 'del contrato.';
+
+                            }
+                            if (Number(plazo_entrega.value) <= 15) {
+
+                                plazo_entrega_bys = document.getElementById('bys');
+                                plazo_entrega = document.getElementById('plazo_entrega');
+                                contrato.innerText = 'de la órden de compra.';
+                            }
+                            console.log(bys.innerText);
+                        });
+
                         document.getElementById("enviarFormulario").addEventListener("click", () => {
 
                             // document.getElementById('enviarFormulario').setAttribute('disabled', 'true');
 
-                            var selectores = ['#plazo_ent', '#garantia', '#lugmed_ent'] //'#doctec tbody tr']
+                            // Muestra de datos
+                            console.log(plazo_entrega.value);
+                            console.log(garantia_escrito.value);
+                            console.log(garantia_funcionamiento.value);
+                            console.log(lugar_entrega.value);
+                            console.log(lugar_entrega_otros.value);
+                            console.log(sigla.value);
+
+
+
+
+                            var selectores = ['#plazo_entrega'] //'#doctec tbody tr']
                             if (validarCamposRequeridos(selectores)) {
+                                // if (true) {
                                 //todos los elementos
                                 var formulario = document.getElementById("formul");
                                 //console.log(formulario);
@@ -765,6 +878,8 @@
 
                                 console.log(datosFormulario);
 
+                                // return;
+
                                 // Realizar la petición AJAX
                                 $.ajax({
                                     url: '{{route("procesoscont.store_docstec")}}',
@@ -808,6 +923,10 @@
 
                             // Función para validar campos requeridos en todas las ubicaciones
                             function validarCamposRequeridos(selectores) {
+
+                                console.log('Hola mundo');
+
+                                return;
                                 var validacionExitosa = true;
 
                                 selectores.forEach(function(selector) {

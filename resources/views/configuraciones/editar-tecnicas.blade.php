@@ -46,6 +46,7 @@ use App\Models\Docstec;
                                                         $usolic = Unidadesorg::find($proceso->id_unid);
                                                         $modalidad = Modalidades::find($proceso->id_mod);
 
+                                                        // Para llenar datos DSP
                                                         $tecnico = Docstec::find($proceso->id);
 
                                                         $cont = 1;
