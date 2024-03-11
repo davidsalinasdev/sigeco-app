@@ -242,7 +242,7 @@
                                                     @if ($doctec)
 
                                                     {{--BOTON Ver/Imprimir--}}
-                                                    <a class="btn btn-primary" id="impBtn" href="{{route('procesoscont.pdfdt', $doctec->id)}}" target="_blank">
+                                                    <a class="btn btn-primary btn-sm" id="impBtn" href="{{route('procesoscont.pdfdt', $doctec->id)}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -254,7 +254,7 @@
                                                     </button>
 
                                                     <!-- Botón oculto que se mostrará después de cerrar el modal -->
-                                                    <a class="btn btn-primary d-none" id="impBtn2" href="{{route('procesoscont.pdfdt2', $procesosc->id)}}" target="_blank">
+                                                    <a class="btn btn-primary d-none btn-sm" id="impBtn2" href="{{route('procesoscont.pdfdt2', $procesosc->id)}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -373,7 +373,7 @@
                                                     {{-----SI EXISTE EL BENEFICIARIO-----}}
                                                     @if ($benef)
                                                     {{--BOTON Ver/Imprimir--}}
-                                                    <a class="btn btn-primary" id="impBtnOS" href="{{route('procesoscont.pdfos', $doctec->id)}}" target="_blank">
+                                                    <a class="btn btn-primary btn-sm" id="impBtnOS" href="{{route('procesoscont.pdfos', $doctec->id)}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -384,7 +384,7 @@
                                                     </button>
 
                                                     <!-- Botón oculto que se mostrará después de cerrar el modal -->
-                                                    <a class="btn btn-primary d-none" id="impBtn2OS" href="{{route('procesoscont.pdfos2', $procesosc->id)}}" target="_blank">
+                                                    <a class="btn btn-primary d-none btn-sm" id="impBtn2OS" href="{{route('procesoscont.pdfos2', $procesosc->id)}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -616,8 +616,14 @@
                                                 <div class="card-body">
 
                                                     <div class="form-group">
+                                                        @if($sigla=='CMB' || $sigla=='CMBCP' || $sigla=='ANPEB' || $sigla=='LPNB')
                                                         <label for="plazo_ent">Plazo de entrega<span class="text-danger">*</span></label><br>
+                                                        @endif
 
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        <!-- Servicio -->
+                                                        <label for="plazo_ent">Plazo del servicio<span class="text-danger">*</span></label><br>
+                                                        @endif
 
                                                         <input id="plazo_entrega" name="plazo_entrega" type="number" style="width: 70px;" min="1" value="1">
 
@@ -648,9 +654,10 @@
                                                         <label for="garantia">Garantía<span class="text-danger">*</span></label>
 
                                                         <div class="form-group" bis_skin_checked="1">
-                                                            <p>1 Documento escrito por la empresa:</p>
+                                                            <p>1 documento escrito por la empresa:</p>
                                                             <select id="garantia_escrito" name="garantia_escrito" class="form-control">
-                                                                <option selected="">Requiere</option>
+                                                                <option selected="" disabled>-seleccionar-</option>
+                                                                <option>Requiere</option>
                                                                 <option>No requiere</option>
                                                             </select>
                                                         </div>
@@ -658,7 +665,8 @@
                                                         <div class="form-group" bis_skin_checked="1">
                                                             <p for="garantia_funcionamiento">Garantia de funcionamiento:</p>
                                                             <select id="garantia_funcionamiento" name="garantia_funcionamiento" class="form-control">
-                                                                <option selected="">Requiere</option>
+                                                                <option selected="" disabled>-selecionar-</option>
+                                                                <option>Requiere</option>
                                                                 <option>No requiere</option>
                                                             </select>
                                                         </div>
@@ -674,24 +682,53 @@
 
 
                                                     <div class="form-group">
-                                                        <label for="lugmed_ent">Lugar y medio de entrega<span class="text-danger">*</span></label>
 
+
+                                                        @if($sigla=='CMB' || $sigla=='CMBCP' || $sigla=='ANPEB' || $sigla=='LPNB')
+                                                        <label for="lugmed_ent">Lugar y medio de entrega<span class="text-danger">*</span></label>
+                                                        @endif
+
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        <!-- Servicio -->
+                                                        <label for="lugmed_ent">Lugar del servicio<span class="text-danger">*</span></label>
+                                                        @endif
+
+
+                                                        <script>
+                                                            // Función para habilitar o deshabilitar el textarea según la opción seleccionada
+                                                            function gestionarOpcion() {
+
+                                                                const lugarEntregaOtro = document.getElementById("lugar_entrega_otros");
+                                                                const lugarEntregaUno = document.getElementById("lugar_entrega_uno");
+                                                                const lugarEntregaDos = document.getElementById("lugar_entrega_dos");
+
+                                                                lugarEntregaOtro.disabled = !lugarEntregaDos.checked;
+
+                                                                if (lugarEntregaDos.checked) {
+                                                                    lugarEntregaOtro.focus();
+                                                                }
+                                                                if (lugarEntregaUno.checked) {
+                                                                    lugarEntregaOtro.disabled = lugarEntregaUno.checked;
+                                                                    lugarEntregaOtro.value = "";
+                                                                }
+                                                            }
+                                                        </script>
 
                                                         <!-- Seleccionar lugar de entrega -->
                                                         <div class="bd-example">
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_uno" value="option1" checked="">
-                                                                <label class="form-check-label" for="lugar_entrega">
+                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_uno" value="option1" checked="" onchange="gestionarOpcion()">
+                                                                <label class="form-check-label" for="lugar_entrega_uno">
                                                                     Av. Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_dos" value="option2">
-                                                                <label class="form-check-label" for="lugar_entrega">
+                                                                <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_dos" value="option2" onchange="gestionarOpcion()">
+                                                                <label class="form-check-label" for="lugar_entrega_dos">
                                                                     Otro
                                                                 </label>
                                                             </div>
-                                                            <textarea id="lugar_entrega_otros" name="lugar_entrega_otros" class="form-control" required="required" rows="2" style="width: 90%;"></textarea>
+                                                            <textarea id="lugar_entrega_otros" name="lugar_entrega_otros" class="form-control" required="required" rows="2" style="width: 90%;" disabled></textarea>
                                                         </div>
 
 
@@ -754,15 +791,15 @@
                     document.addEventListener('DOMContentLoaded', () => {
 
                         // Garantia
-                        const garantia_escrito = document.getElementById('garantia_escrito');
-                        const garantia_funcionamiento = document.getElementById('garantia_funcionamiento');
+                        let garantia_escrito = document.getElementById('garantia_escrito');
+                        let garantia_funcionamiento = document.getElementById('garantia_funcionamiento');
 
                         // Lugar de entrega
-                        const lugar_entrega_otros = document.getElementById('lugar_entrega_otros');
+                        let lugar_entrega_otros = document.getElementById('lugar_entrega_otros');
                         const lugar_entrega = document.querySelector('input[name="lugar_entrega"]:checked')
 
                         // Sigla de la modalidad
-                        const sigla = document.querySelector('#sigla');
+                        const sigla = document.querySelector('#sigla').value;
 
                         // Plazo de entrega
                         let plazo_entrega = document.getElementById('plazo_entrega');
@@ -772,153 +809,223 @@
                         const contratoB = document.getElementById('contrato');
 
 
-
-
                         // Logica para plazo de entrega
                         plazo_entrega.addEventListener('input', () => {
 
 
                             if (Number(plazo_entrega.value) > 15) {
 
-
                                 plazo_entrega_bys = document.getElementById('bys');
                                 plazo_entrega = document.getElementById('plazo_entrega');
                                 contrato.innerText = 'del contrato.';
-
+                                console.log('uno');
                             }
                             if (Number(plazo_entrega.value) <= 15) {
 
+                                console.log('dos');
+                                console.log(sigla);
                                 plazo_entrega_bys = document.getElementById('bys');
                                 plazo_entrega = document.getElementById('plazo_entrega');
-                                contrato.innerText = 'de la órden de compra.';
+                                if (sigla === 'CMB' || sigla === 'CMBCP' || sigla === 'ANPEB' || sigla === 'LPNB') {
+                                    contrato.innerText = 'de la órden de compra.';
+                                }
+
+                                if (sigla === 'CMS' || sigla === 'CMSCP' || sigla === 'ANPES' || sigla === 'LPNS' || sigla === 'CDBS') {
+                                    contrato.innerText = 'de la órden de servicio.';
+                                }
+
                             }
-                            console.log(bys.innerText);
+                            // console.log(bys.innerText);
                         });
 
+
+                        // Evento btn para enviarel formulario a guardar
                         document.getElementById("enviarFormulario").addEventListener("click", () => {
 
                             // document.getElementById('enviarFormulario').setAttribute('disabled', 'true');
 
                             // Muestra de datos
-                            console.log(plazo_entrega.value);
-                            console.log(garantia_escrito.value);
-                            console.log(garantia_funcionamiento.value);
-                            console.log(lugar_entrega.value);
-                            console.log(lugar_entrega_otros.value);
-                            console.log(sigla.value);
+                            // console.log(plazo_entrega.value);
+                            // console.log(garantia_escrito.value);
+                            // console.log(garantia_funcionamiento.value);
+                            // console.log(lugar_entrega.value);
+                            // console.log(lugar_entrega_otros.value);
+                            // console.log(sigla.value);
 
+                            let selectores = [];
 
+                            // 3.- Datos de lugar y medio de entrega
+                            let entrega_uno = document.getElementById('lugar_entrega_uno');
+                            let entrega_dos = document.getElementById('lugar_entrega_dos');
+                            let otro = document.getElementById('lugar_entrega_otros');
 
+                            if (entrega_uno.checked) {
+                                selectores = ['#plazo_entrega'] //'#doctec tbody tr']
+                            }
+                            if (entrega_dos.checked) {
+                                selectores = ['#plazo_entrega', '#lugar_entrega_otros'] //'#doctec tbody tr']
+                            }
 
-                            var selectores = ['#plazo_entrega'] //'#doctec tbody tr']
                             if (validarCamposRequeridos(selectores)) {
-                                // if (true) {
-                                //todos los elementos
-                                var formulario = document.getElementById("formul");
-                                //console.log(formulario);
-                                var elementos = formulario.elements;
-                                //console.log(elementos);
-                                var datosFormulario = {};
+                                if (validarFormularioSelection()) {
 
-                                for (var i = 0; i < elementos.length; i++) {
-                                    var elemento = elementos[i];
-                                    if (elemento.type !== "button") {
-                                        datosFormulario[elemento.name] = elemento.value;
+
+                                    let direccion = '';
+
+                                    // 1.- Datos plazo de entrega
+                                    const dias = document.getElementById('plazo_entrega');
+                                    const texto_entrega = document.getElementById('bys');
+
+                                    const plzo_entrega = {
+                                        dias: dias.value,
+                                        textoEntrega: texto_entrega.innerText
                                     }
-                                }
 
-                                // var datosJSON = JSON.stringify(datosFormulario);
-                                // console.log(datosJSON);
+                                    const jsonPlzoEntrega = JSON.stringify({
+                                        plzo_entrega
+                                    });
 
-                                var items = document.getElementsByName("item[]");
-                                var productos = document.getElementsByName("producto[]");
-                                var unidades = document.getElementsByName("unidad[]");
-                                var cantidades = document.getElementsByName("cantidad[]");
-                                var precios = document.getElementsByName("precio[]");
-                                var subtotales = document.getElementsByName("subtotal[]");
+                                    // console.log(jsonPlzoEntrega);
 
-                                datosFormulario['total'] = 0;
+                                    // 2.- Datos garantia escrito
+                                    garantia_escrito = document.getElementById('garantia_escrito');
+                                    garantia_funcionamiento = document.getElementById('garantia_funcionamiento');
 
-                                datosFormulario['item1'] = [];
-                                datosFormulario['producto1'] = [];
-                                datosFormulario['unidad1'] = [];
-                                datosFormulario['cantidad1'] = [];
-                                datosFormulario['precio1'] = [];
-                                datosFormulario['subtotal1'] = [];
+                                    // console.log(garantia_escrito.value);
+                                    // console.log(garantia_funcionamiento.value);
 
-                                for (var i = 0; i < items.length; i++) {
-                                    var itemValue = items[i].value;
-                                    datosFormulario['item1'][i] = itemValue;
-                                }
-                                for (var i = 0; i < productos.length; i++) {
-                                    var productoValue = productos[i].value;
-                                    datosFormulario['producto1'][i] = productoValue;
-                                }
-                                for (var i = 0; i < unidades.length; i++) {
-                                    var unidadValue = unidades[i].value;
-                                    datosFormulario['unidad1'][i] = unidadValue;
-                                }
-                                for (var i = 0; i < cantidades.length; i++) {
-                                    var cantidadValue = cantidades[i].value;
-                                    datosFormulario['cantidad1'][i] = cantidadValue;
-                                }
-                                for (var i = 0; i < precios.length; i++) {
-                                    var precioValue = precios[i].value;
-                                    datosFormulario['precio1'][i] = precioValue;
-                                }
+                                    const garantia_texto = `1 documento escrito por la empresa: ${garantia_escrito.value}\nGarantia de funcionamiento: ${garantia_funcionamiento.value}`;
 
-                                let sumtotal = 0;
-                                for (var i = 0; i < subtotales.length; i++) {
-                                    var subtotalValue = subtotales[i].value;
-                                    datosFormulario['subtotal1'][i] = subtotalValue;
+                                    // console.log(garantia_texto);
 
-                                    sumtotal += subtotalValue;
-                                }
-                                datosFormulario['total'] = sumtotal;
+                                    // 3.- Datos de lugar y medio de entrega
+                                    entrega_uno = document.getElementById('lugar_entrega_uno');
+                                    entrega_dos = document.getElementById('lugar_entrega_dos');
+                                    otro = document.getElementById('lugar_entrega_otros');
 
-                                console.log(datosFormulario);
-
-                                // return;
-
-                                // Realizar la petición AJAX
-                                $.ajax({
-                                    url: '{{route("procesoscont.store_docstec")}}',
-                                    type: 'POST',
-
-                                    data: datosFormulario,
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    },
-
-                                    success: function(respuesta) {
-                                        // Manejar la respuesta exitosa del servidor aquí
-                                        console.log(respuesta);
-
-                                        //MODAL
-                                        // Cerrar el modal usando Bootstrap y jQuery
-                                        $('#modal-xl').modal('hide');
-                                        // Eliminar la clase 'show' del modal y del backdrop
-                                        $('#modal-xl').removeClass('show');
-                                        $('.modal-backdrop').remove(); // Elimina completamente el backdrop
-                                        // Eliminar la clase 'modal-open' del body
-                                        $('body').removeClass('modal-open');
-
-                                        //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
-                                        // Ocultar el botón de crear y mostrar el nuevo botón
-                                        $('#crearBtn').addClass('d-none');
-                                        $('#impBtn2').removeClass('d-none');
-
-                                        // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
-
-                                    },
-
-                                    error: function(error) {
-                                        console.log(error);
-                                        // Manejar cualquier error que ocurra durante la solicitud
+                                    if (entrega_uno.checked) {
+                                        direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).'
                                     }
-                                });
+                                    if (entrega_dos.checked) {
+                                        direccion = otro.value;
+                                    }
+                                    // console.log(direccion);
+                                    // return;
+
+
+                                    //todos los elementos
+                                    var formulario = document.getElementById("formul");
+                                    //console.log(formulario);
+                                    var elementos = formulario.elements;
+                                    //console.log(elementos);
+                                    var datosFormulario = {};
+
+                                    for (var i = 0; i < elementos.length; i++) {
+                                        var elemento = elementos[i];
+                                        if (elemento.type !== "button") {
+                                            datosFormulario[elemento.name] = elemento.value;
+                                        }
+                                    }
+
+                                    // var datosJSON = JSON.stringify(datosFormulario);
+                                    // console.log(datosJSON);
+
+                                    var items = document.getElementsByName("item[]");
+                                    var productos = document.getElementsByName("producto[]");
+                                    var unidades = document.getElementsByName("unidad[]");
+                                    var cantidades = document.getElementsByName("cantidad[]");
+                                    var precios = document.getElementsByName("precio[]");
+                                    var subtotales = document.getElementsByName("subtotal[]");
+
+                                    // Datos de formulario modificados
+                                    datosFormulario['plazo_entrega'] = jsonPlzoEntrega;
+                                    datosFormulario['garantia'] = garantia_texto;
+                                    datosFormulario['lugar_entrega'] = direccion;
+
+                                    datosFormulario['total'] = 0;
+
+                                    datosFormulario['item1'] = [];
+                                    datosFormulario['producto1'] = [];
+                                    datosFormulario['unidad1'] = [];
+                                    datosFormulario['cantidad1'] = [];
+                                    datosFormulario['precio1'] = [];
+                                    datosFormulario['subtotal1'] = [];
+
+                                    for (var i = 0; i < items.length; i++) {
+                                        var itemValue = items[i].value;
+                                        datosFormulario['item1'][i] = itemValue;
+                                    }
+                                    for (var i = 0; i < productos.length; i++) {
+                                        var productoValue = productos[i].value;
+                                        datosFormulario['producto1'][i] = productoValue;
+                                    }
+                                    for (var i = 0; i < unidades.length; i++) {
+                                        var unidadValue = unidades[i].value;
+                                        datosFormulario['unidad1'][i] = unidadValue;
+                                    }
+                                    for (var i = 0; i < cantidades.length; i++) {
+                                        var cantidadValue = cantidades[i].value;
+                                        datosFormulario['cantidad1'][i] = cantidadValue;
+                                    }
+                                    for (var i = 0; i < precios.length; i++) {
+                                        var precioValue = precios[i].value;
+                                        datosFormulario['precio1'][i] = precioValue;
+                                    }
+
+                                    let sumtotal = 0;
+                                    for (var i = 0; i < subtotales.length; i++) {
+                                        var subtotalValue = subtotales[i].value;
+                                        datosFormulario['subtotal1'][i] = subtotalValue;
+
+                                        sumtotal += subtotalValue;
+                                    }
+                                    datosFormulario['total'] = sumtotal;
+
+                                    // console.log(datosFormulario);
+
+                                    // return;
+
+                                    // Realizar la petición AJAX
+                                    $.ajax({
+                                        url: '{{route("procesoscont.store_docstec")}}',
+                                        type: 'POST',
+
+                                        data: datosFormulario,
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+
+                                        success: function(respuesta) {
+                                            // Manejar la respuesta exitosa del servidor aquí
+                                            // console.log(respuesta);
+
+                                            //MODAL
+                                            // Cerrar el modal usando Bootstrap y jQuery
+                                            $('#modal-xl').modal('hide');
+                                            // Eliminar la clase 'show' del modal y del backdrop
+                                            $('#modal-xl').removeClass('show');
+                                            $('.modal-backdrop').remove(); // Elimina completamente el backdrop
+                                            // Eliminar la clase 'modal-open' del body
+                                            $('body').removeClass('modal-open');
+
+                                            //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
+                                            // Ocultar el botón de crear y mostrar el nuevo botón
+                                            $('#crearBtn').addClass('d-none');
+                                            $('#impBtn2').removeClass('d-none');
+
+                                            // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
+                                            toastr.success('Se derivo correctamente', 'SIGECO');
+
+                                        },
+
+                                        error: function(error) {
+                                            console.log(error);
+                                            // Manejar cualquier error que ocurra durante la solicitud
+                                        }
+                                    });
+                                }
                             } else {
-                                alert('Por favor, complete todos los campos requeridos');
+                                toastr.error('Por favor, complete todos los campos requeridos', ' SIGECO');
                             }
 
                             // Función para validar campos requeridos en todas las ubicaciones
@@ -955,6 +1062,19 @@
                                 });
 
                                 return validacionExitosa;
+                            }
+
+                            // Validación de seleción
+                            function validarFormularioSelection() {
+                                var garantiaEscrito = document.getElementById("garantia_escrito").value;
+                                var garantiaFuncionamiento = document.getElementById("garantia_funcionamiento").value;
+
+                                if (garantiaEscrito === "-seleccionar-" || garantiaFuncionamiento === "-selecionar-") {
+                                    toastr.error('Por favor, complete todos los campos requeridos', ' SIGECO');
+                                    return false; // Evitar que el formulario se envíe
+                                }
+                                // Si todo está bien, el formulario se enviará
+                                return true;
                             }
 
                         });
@@ -1676,7 +1796,7 @@
 
                 var precioReferencial = parseFloat($('#precioReferencial').text()) || 0;
 
-                console.log(precioReferencial);
+                // console.log(precioReferencial);
 
                 $('#doctec tbody tr').each(function() {
                     total += parseFloat($(this).find('input[name^="subtotal"]').val()) || 0;

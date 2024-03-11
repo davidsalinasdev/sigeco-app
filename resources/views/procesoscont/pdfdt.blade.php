@@ -260,7 +260,7 @@
                         @endif
                     </td>
                     <td>
-                        {{$doctec->plazo_ent}}
+                        {{ $doctec->plazo_ent }}
                     </td>
                 </tr>
                 <tr>
@@ -268,8 +268,11 @@
                         <label><b>Garantía:&nbsp;</b></label>
                     </td>
                     <td>
-                        {{$doctec->garantia}}
+                        <p>
+                            {!! nl2br(e($doctec->garantia)) !!}
+                        </p>
                     </td>
+
                 </tr>
                 <tr>
                     <td>

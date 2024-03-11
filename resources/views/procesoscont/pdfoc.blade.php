@@ -7,166 +7,202 @@
                 .contenedor-fla-1 {
                     background-color: #4FC3F7;
                 }
+
                 .padre {
                     flex-direction: row;
                     flex-wrap: nowrap;
                     justify-content: center;
                 }
+
                 .padre-flex {
                     padding: 15px;
                 }
+
                 .padre-son-2 {
-                        width: 30%;
+                    width: 30%;
                 }
+
                 .padre-info {
                     padding: 15px;
                 }
+
                 /* Seccion-2 */
                 .padre-seccion-2 {
                     display: flex;
                     flex-direction: row;
                 }
+
                 .seccion2-son {
                     width: 280px;
                     margin-bottom: 0px;
                 }
+
                 .seccion2-son-parrafo {
                     font-size: 14px;
                 }
+
                 .seccion2-son:nth-child(1) {
                     margin-right: 20px;
                 }
+
                 .seccion2-son:nth-child(2) {
                     margin-right: 20px;
                 }
+
                 .seccion2-son:nth-child(3) {
                     margin-right: 20px;
                 }
+
                 .seccion2-son {
                     margin-bottom: 10px;
                 }
+
                 .secc-form {
                     width: 100%;
                 }
+
                 /* Seccion-3 */
                 .padre-seccion-3 {
                     display: flex;
                     flex-direction: row;
                 }
+
                 .parrafo-contruyente {
                     margin-bottom: 0px;
                 }
-                .padre-secc-son-3{
+
+                .padre-secc-son-3 {
                     margin-right: 25px;
                 }
+
                 .parrafo-contruyente {
                     margin-bottom: 10px;
                     padding-left: 15px;
                 }
+
                 /* Seccion-5 */
                 .contenedor-fla-gris {
                     background-color: #e0e7ff;
                 }
+
                 .padre-gris {
                     flex-direction: row;
                     flex-wrap: nowrap;
                     justify-content: center;
                 }
+
                 .padre-info-gris {
                     padding: 15px;
                 }
+
                 /* Seccion-22 */
                 .padre-seccion-22 {
                     display: flex;
                     flex-direction: row;
                     padding: 0px 15px 15px 15px;
                 }
+
                 .parrafo-contruyente-22 {
                     margin-bottom: 10px;
                     padding-left: 15px;
                 }
-                .padre-secc-son-22{
+
+                .padre-secc-son-22 {
                     margin-right: 25px;
                 }
+
                 /* Seccion-31 */
                 .contenedor-fla-osc {
                     background-color: #d6d3d1;
                 }
+
                 .padre-osc {
                     flex-direction: row;
                     flex-wrap: nowrap;
                     justify-content: left;
                 }
+
                 .padre-info-osc {
                     padding: 15px;
                 }
+
                 /*cabecera*/
-                .titulogob{
+                .titulogob {
                     font-size: 17px;
                     margin-bottom: 0px;
                     text-align: center;
                 }
-                .tituloimp{
+
+                .tituloimp {
                     font-size: 14px;
                     margin-bottom: 0px;
                     text-align: center;
                 }
-                .subtituloimp{
+
+                .subtituloimp {
                     font-size: 13px;
                     margin-bottom: 0px;
                     text-align: center;
                 }
+
                 #detallecen {
                     width: 100%;
                     border-collapse: collapse;
                 }
+
                 #detallecen td {
                     vertical-align: top;
                     padding: 5px;
                 }
+
                 #detallecen label {
                     font-size: 20px;
                     font-weight: bold;
                 }
+
                 #detalle {
                     width: 100%;
                     border-collapse: collapse;
                 }
+
                 #detalle th {
                     border: 1px solid black;
                     padding: 8px;
                     text-align: center;
                     font-size: 12px;
                 }
+
                 #detalle td {
                     border: 1px solid black;
                     padding: 8px;
                     font-size: 11px;
                 }
-                .pdependencia{
+
+                .pdependencia {
                     font-size: 11px;
                     margin-bottom: 0px;
                     text-align: center;
                 }
             </style>
             @php
-                use App\Models\Unidadesorg;
-                use App\Models\Modalidades;
-                use App\Models\Procesoscont;
-                use App\Models\Docstec;
-                use App\Models\Det_docstec;
-                
-                
-                $proceso = Procesoscont::find($doctec->id_proc);
-                $usolic = Unidadesorg::find($proceso->id_unid);
-                $modalidad = Modalidades::find($proceso->id_mod);
+            use App\Models\Unidadesorg;
+            use App\Models\Modalidades;
+            use App\Models\Procesoscont;
+            use App\Models\Docstec;
+            use App\Models\Det_docstec;
 
-                $detdocs = Det_docstec::select("*")
-                    ->where('id_docstec',$doctec->id)
-                    ->get();
 
-                $cont = 1;
-                $total = 0;
+            $proceso = Procesoscont::find($doctec->id_proc);
+            $usolic = Unidadesorg::find($proceso->id_unid);
+            $modalidad = Modalidades::find($proceso->id_mod);
+
+            $detdocs = Det_docstec::select("*")
+            ->where('id_docstec',$doctec->id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+            $cont = 1;
+            $total = 0;
             @endphp
             <table id="detallecen">
                 <tr>
@@ -204,7 +240,7 @@
                     <td>
                         <label><b>Unidad Solicitante:&nbsp;</b></label>
                         {{$usolic->nombre}}
-                    </td>
+                </td>
                 </tr>
                 <tr>
                     <td>
@@ -246,30 +282,30 @@
                 </thead>
                 <tbody>
                     @foreach($detdocs as $detdoc)
-                        <tr>
-                            <td align="center" width="3%">{{$detdoc->item}}</td>
-                            <td align="center" width="8%">
-                                @if ($detdoc->cantidad <> 0)
-                                    {{$detdoc->cantidad}}
+                    <tr>
+                        <td align="center" width="3%">{{$detdoc->item}}</td>
+                        <td align="center" width="8%">
+                            @if ($detdoc->cantidad <> 0)
+                                {{$detdoc->cantidad}}
                                 @endif
-                            </td>
-                            <td align="center" width="8%">{{$detdoc->unidad}}</td>
-                            <td align="left" width="30%">{!! nl2br(e($detdoc->descripcion)) !!}</td>
-                            <td align="right" width="8%">
-                                @if ($detdoc->precio <> 0)
-                                    {{number_format($detdoc->precio,2,',','.')}}
+                        </td>
+                        <td align="center" width="8%">{{$detdoc->unidad}}</td>
+                        <td align="left" width="30%">{!! nl2br(e($detdoc->descripcion)) !!}</td>
+                        <td align="right" width="8%">
+                            @if ($detdoc->precio <> 0)
+                                {{number_format($detdoc->precio,2,',','.')}}
                                 @endif
-                            </td>
-                            <td align="right" width="8%">
-                                @if ($detdoc->subtotal <> 0)
-                                    {{number_format($detdoc->subtotal,2,',','.')}}
+                        </td>
+                        <td align="right" width="8%">
+                            @if ($detdoc->subtotal <> 0)
+                                {{number_format($detdoc->subtotal,2,',','.')}}
                                 @endif
-                            </td>
-                            @php
-                                $subtotal = $detdoc->subtotal;
-                                $total = $total + $subtotal;
-                            @endphp
-                        </tr>
+                        </td>
+                        @php
+                        $subtotal = $detdoc->subtotal;
+                        $total = $total + $subtotal;
+                        @endphp
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -277,11 +313,8 @@
             <br>
             <br>
             <br>
-            <center>.................................................</center
-            {{-- <h2 class="subtituloimp">{{ Auth::user()->name }}</h2>
+            <center>.................................................</center {{-- <h2 class="subtituloimp">{{ Auth::user()->name }}</h2>
             <h2 class="pdependencia">{{ Auth::user()->dependencia }}</h2> --}}
         </div>
     </div>
-</div> 
-
-
+</div>

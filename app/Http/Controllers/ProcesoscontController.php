@@ -174,9 +174,9 @@ class ProcesoscontController extends Controller
         $doctec->id_proc = $idproc;
         $doctec->nom_doc = $request->nomdoc;
         $doctec->fecha_crea = date('Y-m-d');
-        $doctec->plazo_ent = $request->plazo_ent;
+        $doctec->plazo_ent = $request->plazo_entrega;
         $doctec->garantia = $request->garantia;
-        $doctec->lugmed_ent = $request->lugmed_ent;
+        $doctec->lugmed_ent = $request->lugar_entrega;
         $doctec->otro1 = $request->otro1;
         $doctec->otro2 = $request->otro2;
         $doctec->observacion = $request->observacion;
@@ -515,6 +515,12 @@ class ProcesoscontController extends Controller
 
         $doctec = Docstec::find($id);
 
+
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $doctec->plazo_ent = $entrega['plzo_entrega']['dias'] . ' ' . $entrega['plzo_entrega']['textoEntrega'];
+
+
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
         $pdf->setPaper('Letter');
 
@@ -530,6 +536,10 @@ class ProcesoscontController extends Controller
             ->where('nom_doc', $nomd)
             ->first();
 
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $doctec->plazo_ent = $entrega['plzo_entrega']['dias'] . ' ' . $entrega['plzo_entrega']['textoEntrega'];
+
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
         $pdf->setPaper('Letter');
 
@@ -540,11 +550,6 @@ class ProcesoscontController extends Controller
     public function pdfos($id)
     {
         $doctec = Docstec::find($id);
-
-        // echo '<pre>';
-        // var_dump($doctec);
-        // echo '</pre>';
-        // die();
 
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
         $pdf->setPaper('Letter');
