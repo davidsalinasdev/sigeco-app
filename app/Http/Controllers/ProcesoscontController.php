@@ -518,7 +518,14 @@ class ProcesoscontController extends Controller
 
         // Decodificar la cadena JSON en un array PHP
         $entrega = json_decode($doctec->plazo_ent, true);
-        $doctec->plazo_ent = $entrega['plzo_entrega']['dias'] . ' ' . $entrega['plzo_entrega']['textoEntrega'];
+
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
+
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
 
 
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
@@ -538,7 +545,15 @@ class ProcesoscontController extends Controller
 
         // Decodificar la cadena JSON en un array PHP
         $entrega = json_decode($doctec->plazo_ent, true);
-        $doctec->plazo_ent = $entrega['plzo_entrega']['dias'] . ' ' . $entrega['plzo_entrega']['textoEntrega'];
+
+
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
+
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
 
         $pdf = PDF::loadView('procesoscont.pdfdt', compact('doctec'));
         $pdf->setPaper('Letter');
