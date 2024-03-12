@@ -103,9 +103,9 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
     Route::post('procesoscont/store_docstec_oc', [ProcesoscontController::class, 'store_docstec_oc'])->name('procesoscont.store_docstec_oc');
     Route::get('procesoscont/{doctec}/pdfdt', [ProcesoscontController::class, 'pdfdt'])->name('procesoscont.pdfdt');
     Route::get('procesoscont/{doctec}/pdfdt2', [ProcesoscontController::class, 'pdfdt2'])->name('procesoscont.pdfdt2');
-    Route::get('procesoscont/{doctec}/pdfos', [ProcesoscontController::class, 'pdfos'])->name('procesoscont.pdfos');
+    Route::get('procesoscont/{doctec}/{fecha}/pdfos', [ProcesoscontController::class, 'pdfos'])->name('procesoscont.pdfos');
     Route::get('procesoscont/{doctec}/pdfos2', [ProcesoscontController::class, 'pdfos2'])->name('procesoscont.pdfos2');
-    Route::get('procesoscont/{doctec}/pdfoc', [ProcesoscontController::class, 'pdfoc'])->name('procesoscont.pdfoc');
+    Route::get('procesoscont/{doctec}/{fecha}/pdfoc', [ProcesoscontController::class, 'pdfoc'])->name('procesoscont.pdfoc');
     Route::get('procesoscont/{doctec}/pdfoc2', [ProcesoscontController::class, 'pdfoc2'])->name('procesoscont.pdfoc2');
     Route::get('procesoscont/{proceso}/pdf_proc', [ProcesoscontController::class, 'pdf_proc'])->name('procesoscont.pdf_proc');
     Route::get('procesoscont/{idproc}/{idtray}/autorizar', [ProcesoscontController::class, 'autorizar'])->name('procesoscont.autorizar');

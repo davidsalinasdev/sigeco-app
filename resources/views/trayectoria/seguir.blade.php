@@ -171,7 +171,7 @@
 
                                     @if ($doctec)
                                     {{--BOTON Ver/Imprimir--}}
-                                    <a class="btn btn-primary" href="{{route('procesoscont.pdfos', $doctec->id)}}" target="_blank">
+                                    <a class="btn btn-primary" href="{{route('procesoscont.pdfos', ['doctec' => $doctec->id, 'fecha' => $trayect->fecha_ing])}}" target="_blank">
                                         <i class="far fa-file-pdf"></i>
                                         Ord.Serv.
                                     </a>
@@ -189,8 +189,9 @@
                                     @endphp
 
                                     @if ($doctec)
+                                    <!-- Modificar aqui -->
                                     {{--BOTON Ver/Imprimir--}}
-                                    <a class="btn btn-primary" href="{{route('procesoscont.pdfoc', $doctec->id)}}" target="_blank">
+                                    <a class="btn btn-primary" href="{{route('procesoscont.pdfoc', ['doctec' => $doctec->id, 'fecha' => $trayect->fecha_ing])}}" target="_blank">
                                         <i class="far fa-file-pdf"></i>
                                         Ord.Compra
                                     </a>

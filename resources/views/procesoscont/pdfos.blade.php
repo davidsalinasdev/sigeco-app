@@ -217,7 +217,8 @@
                 </tr>
             </table>
             <hr width="100%">
-            <p align="right">Cochabamba,&nbsp;{{date("d/m/Y")}}</p>
+            <!-- <p align="right">Cochabamba,&nbsp;{{date("d/m/Y")}}</p> -->
+            <p align="right">Cochabamba,&nbsp;{{date('d/m/Y', strtotime($doctec->updated_at))}}</p>
             <table>
                 <tr>
                     <td>

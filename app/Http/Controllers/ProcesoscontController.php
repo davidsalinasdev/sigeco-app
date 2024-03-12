@@ -601,7 +601,7 @@ class ProcesoscontController extends Controller
         return $pdf->stream($filename);
     }
 
-    public function pdfoc($id)
+    public function pdfoc($id, $fecha)
     {
         $doctec = Docstec::find($id);
 
@@ -615,14 +615,14 @@ class ProcesoscontController extends Controller
             $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
         }
 
-        $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec'));
+        $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec', 'fecha'));
         $pdf->setPaper('Letter');
 
         $filename = 'doctec.pdf';
         return $pdf->stream($filename);
     }
 
-    public function pdfoc2($id)
+    public function pdfoc2($id, $fecha)
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
         $doctec = Docstec::select("*")
@@ -630,7 +630,7 @@ class ProcesoscontController extends Controller
             ->where('nom_doc', $nomd)
             ->first();
 
-        $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec'));
+        $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec', 'fecha'));
         $pdf->setPaper('Letter');
 
         $filename = 'doctec.pdf';
