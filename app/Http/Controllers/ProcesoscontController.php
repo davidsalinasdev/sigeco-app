@@ -566,6 +566,8 @@ class ProcesoscontController extends Controller
     {
         $doctec = Docstec::find($id);
 
+
+
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
         $pdf->setPaper('Letter');
 
@@ -576,10 +578,21 @@ class ProcesoscontController extends Controller
     public function pdfos2($id)
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
+
         $doctec = Docstec::select("*")
             ->where('id_proc', $id)
             ->where('nom_doc', $nomd)
             ->first();
+
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
+
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
 
         $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
         $pdf->setPaper('Letter');
@@ -591,6 +604,16 @@ class ProcesoscontController extends Controller
     public function pdfoc($id)
     {
         $doctec = Docstec::find($id);
+
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
+
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
 
         $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec'));
         $pdf->setPaper('Letter');
