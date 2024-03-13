@@ -737,7 +737,16 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="lugar_entrega" id="lugar_entrega_uno" value="option1" checked="" onchange="gestionarOpcion()">
                                                                 <label class="form-check-label" for="lugar_entrega_uno">
+
+                                                                    @if($sigla=='CMB' || $sigla=='CMBCP' || $sigla=='ANPEB' || $sigla=='LPNB')
                                                                     Av. Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).
+                                                                    @endif
+
+                                                                    @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                                    <!-- Servicio -->
+                                                                    Av. Aroma Nº 327, frente a la Plaza San Sebastian.
+                                                                    @endif
+
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
@@ -921,8 +930,19 @@
                                     entrega_dos = document.getElementById('lugar_entrega_dos');
                                     otro = document.getElementById('lugar_entrega_otros');
 
+                                    // Sigla de la modalidad
+                                    let siglas = document.querySelector('#sigla').value;
+
                                     if (entrega_uno.checked) {
-                                        direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).'
+
+                                        if (siglas === 'CMB' || siglas === 'CMBCP' || siglas === 'ANPEB' || siglas === 'LPNB') {
+                                            direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).'
+                                        }
+
+                                        if (siglas === 'CMS' || siglas === 'CMSCP' || siglas === 'ANPES' || siglas === 'LPNS' || siglas === 'CDBS') {
+                                            direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian.'
+                                        }
+
                                     }
                                     if (entrega_dos.checked) {
                                         direccion = otro.value;

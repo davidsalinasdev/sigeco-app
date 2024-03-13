@@ -26,8 +26,6 @@
             $usolic = Unidadesorg::find($proceso->id_unid);
             $modalidad = Modalidades::find($proceso->id_mod);
 
-
-
             @endphp
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-12">
