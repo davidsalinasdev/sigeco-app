@@ -674,4 +674,19 @@ class ProcesoscontController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    // Generación de pdf DSP-UGE
+    function pdfInexAct($id)
+    {
+        $doctec = Docstec::where('id_proc', $id)->get();
+
+
+
+        // Envia datos a la vista
+        $pdf = PDF::loadView('procesoscont.pdf_inex_act', compact('doctec'));
+        $pdf->setPaper('Letter');
+
+        $filename = 'doctinexact.pdf';
+        return $pdf->stream($filename);
+    }
 }

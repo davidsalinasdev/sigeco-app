@@ -56,7 +56,7 @@
                                         {{--para dos columnas: class="row" class="col-xs-12 col-sm-6 col-md-6"--}}
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Código</label>
+                                                <label>Código:</label>
                                                 {{$procesosc->codigo}}
                                             </div>
                                         </div>
@@ -65,13 +65,13 @@
                                                 @php
                                                 $usolic = Unidadesorg::find($procesosc->id_unid);
                                                 @endphp
-                                                <label>Unidad Solicitante</label>
+                                                <label>Unidad Solicitante:</label>
                                                 {{$usolic->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Objeto</label>
+                                                <label>Objeto:</label>
                                                 {{$procesosc->objeto}}
                                             </div>
                                         </div>
@@ -80,13 +80,13 @@
                                                 @php
                                                 $modalidad = Modalidades::find($procesosc->id_mod);
                                                 @endphp
-                                                <label>Modalidad</label>
+                                                <label>Modalidad:</label>
                                                 {{$modalidad->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Etapa anterior</label>
+                                                <label>Etapa anterior:</label>
                                                 @php
                                                 $eant = Etapasproc::find($trayec->id_eanterior);
                                                 @endphp
@@ -98,7 +98,7 @@
                                                 @php
                                                 $eact = Etapasproc::find($trayec->id_eactual);
                                                 @endphp
-                                                <label>Etapa actual</label>
+                                                <label>Etapa actual:</label>
                                                 {{$eact->nom_etapa}}
                                             </div>
                                         </div>
@@ -107,7 +107,7 @@
                                                 @php
                                                 $esig = Etapasproc::find($trayec->id_esgte);
                                                 @endphp
-                                                <label>Etapa siguiente</label>
+                                                <label>Etapa siguiente:</label>
                                                 {{$esig->nom_etapa}}
                                             </div>
                                         </div>
@@ -116,7 +116,7 @@
                                                 @php
                                                 $uorigen = Unidadesorg::find($trayec->id_uorigen);
                                                 @endphp
-                                                <label>Unidad Org. Anterior</label>
+                                                <label>Unidad Org. Anterior:</label>
                                                 {{$uorigen->nombre}}
                                             </div>
                                         </div>
@@ -125,7 +125,7 @@
                                                 @php
                                                 $uactual = Unidadesorg::find($trayec->id_uactual);
                                                 @endphp
-                                                <label>Unidad Org. Actual</label>
+                                                <label>Unidad Org. Actual:</label>
                                                 {{$uactual->nombre}}
                                             </div>
                                         </div>
@@ -177,6 +177,14 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label>NºEtapa&nbsp;&nbsp;&nbsp;Doc.Generado</label>
+
+
+                                                @php
+
+
+                                                @endphp
+
+                                                <!-- Iteracion de una lista -->
                                                 @foreach ($verifs as $verif)
 
 
@@ -262,6 +270,8 @@
 
                                                     @break
 
+
+                                                    <!-- Aqui se deb modificar la Inexistencia de archivos -->
                                                     @case('INFORME DE INEXISTENCIA DE ACTIVOS')
                                                     {{-- Script para ocultar el elemento --}}
                                                     <script>
@@ -277,6 +287,7 @@
                                                     @php
                                                     $nom_doc = $verif['nom_doc'];
                                                     @endphp
+
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -451,15 +462,22 @@
                                                     @break
 
                                                     @default
+
+
+
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple> -->
+
+                                                    <a href="{{route('procesoscont.pdfinexact', $procesosc->id)}}" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-print"></i> Imprimir</a>
                                                     @error('file')
                                                     <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
                                                     @enderror
                                                     <br>
-                                                    <label style="font-size: 11px; color:rgb(189, 141, 68);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        ADJUNTAR{{" ".$verif['nom_doc']}}
+                                                    <label class="text-cyan" style="font-size: 11px; color:rgb(189, 141, 68);">
+                                                        <!-- ADJUNTAR{{" ".$verif['nom_doc']}} -->
+                                                        Partida 40000; ACTIVOS REALES <span class="text-red">(Derivar a la UNIDAD DE ADMINISTRACION DE BIENES).</span><br>
+                                                        Partida 30000; MATERIALES Y SUMINISTROS <span class="text-red">(Derivar al AREA DE ALAMACENES).</span>
                                                     </label>
 
                                                     @endswitch

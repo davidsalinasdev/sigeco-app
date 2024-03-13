@@ -22,13 +22,13 @@ class UserController extends Controller
         $this->middleware('permission:crud-usuario', ['only' => ['edit', 'update']]);
         $this->middleware('permission:crud-usuario', ['only' => ['destroy']]);
     }
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::get();//paginate(10); //Mostrar 10 registros por página
+        $users = User::get(); //paginate(10); //Mostrar 10 registros por pï¿½gina
         return view('users.index', compact('users'));
     }
 
@@ -139,7 +139,7 @@ class UserController extends Controller
     public function LoginSicoinst(Request $request)
     {
         $credentials = $request->only('email', 'password');
-    
+
         if ($credentials) {
             // AutenticaciÃ³n exitosa
             return response()->json([
@@ -156,5 +156,4 @@ class UserController extends Controller
             ], 401);
         }
     }
-    
 }

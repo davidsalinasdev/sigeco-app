@@ -141,6 +141,8 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
     Route::get('configuraciones', [ConfiguracionesController::class, 'updated_esp_tecnicas'])->name('configuraciones.updated_esp_tecnicas');
     Route::post('buscardatos', [ConfiguracionesController::class, 'buscarDatos'])->name('configuraciones.buscardatos');
     Route::get('editaresptecnicas/{id}', [ConfiguracionesController::class, 'editarEspTecnicas'])->name('configuraciones.editaresptecnicas');
+
+    Route::get('procesoscont/{id}/pdfinexact', [ProcesoscontController::class, 'pdfInexAct'])->name('procesoscont.pdfinexact');
 });
 
 Route::middleware('auth')->group(function () {

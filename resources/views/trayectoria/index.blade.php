@@ -37,10 +37,6 @@
                         use App\Models\Etapasproc;
                         @endphp
 
-
-
-
-
                         @foreach($procesosconts as $procesoscont)
                         <tr>
                             <td style="display: none;">{{$procesoscont->id}}</td>

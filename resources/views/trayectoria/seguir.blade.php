@@ -32,25 +32,25 @@
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
-                        <label>Código</label>
+                        <label>Código:</label>
                         {{$proceso->codigo}}
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
-                        <label>Unidad Solicitante</label>
+                        <label>Unidad Solicitante:</label>
                         {{$usolic->nombre}}
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
-                        <label>Objeto</label>
+                        <label>Objeto:</label>
                         {{$proceso->objeto}}
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
-                        <label>Modalidad</label>
+                        <label>Modalidad:</label>
                         {{$modalidad->nombre}}
                     </div>
                 </div>
@@ -178,6 +178,11 @@
                                     @endif
 
                                     @break
+
+                                    @case('SOLICITUD INFORME DE INEXISTENCIA DE ACTIVOS')
+                                    <a href="{{route('procesoscont.pdfinexact', $proceso->id)}}" class="btn btn-primary" target="_blank"><i class="far fa-file-pdf"></i>Inex.Act.</a>
+                                    @break
+
                                     @case('REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA')
 
                                     @php
