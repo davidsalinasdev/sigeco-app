@@ -18,6 +18,7 @@ use App\View\Components\Prueba;
 //use Barryvdh\DomPDF\PDF;
 //use Barryvdh\DomPDF\Facade as PDF;
 //use PDF;
+use Carbon\Carbon;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -515,7 +516,6 @@ class ProcesoscontController extends Controller
 
         $doctec = Docstec::find($id);
 
-
         // Decodificar la cadena JSON en un array PHP
         $entrega = json_decode($doctec->plazo_ent, true);
 
@@ -546,7 +546,6 @@ class ProcesoscontController extends Controller
         // Decodificar la cadena JSON en un array PHP
         $entrega = json_decode($doctec->plazo_ent, true);
 
-
         $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
         $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
 
@@ -562,13 +561,33 @@ class ProcesoscontController extends Controller
         return $pdf->stream($filename);
     }
 
-    public function pdfos($id)
+    public function pdfos($id, $fecha)
     {
+
+        if ($fecha == 'dateCustom') {
+            // Obtener la fecha actual
+            $fechaActual = Carbon::now();
+            // Formatear la fecha según tus necesidades
+            $fechaFormateada = $fechaActual->toDateString(); // Formato: YYYY-MM-DD
+            // También puedes formatear la fecha en otros formatos
+            $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
+        }
+
+
+
         $doctec = Docstec::find($id);
 
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
 
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
 
-        $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
+        $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec', 'fecha'));
         $pdf->setPaper('Letter');
 
         $filename = 'doctec.pdf';
@@ -594,7 +613,16 @@ class ProcesoscontController extends Controller
             $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
         }
 
-        $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec'));
+        // Obtener la fecha actual
+        $fechaActual = Carbon::now();
+
+        // Formatear la fecha según tus necesidades
+        $fechaFormateada = $fechaActual->toDateString(); // Formato: YYYY-MM-DD
+
+        // También puedes formatear la fecha en otros formatos
+        $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
+
+        $pdf = PDF::loadView('procesoscont.pdfos', compact('doctec', 'fecha'));
         $pdf->setPaper('Letter');
 
         $filename = 'doctec.pdf';
@@ -603,6 +631,16 @@ class ProcesoscontController extends Controller
 
     public function pdfoc($id, $fecha)
     {
+
+        if ($fecha == 'dateCustom') {
+            // Obtener la fecha actual
+            $fechaActual = Carbon::now();
+            // Formatear la fecha según tus necesidades
+            $fechaFormateada = $fechaActual->toDateString(); // Formato: YYYY-MM-DD
+            // También puedes formatear la fecha en otros formatos
+            $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
+        }
+
         $doctec = Docstec::find($id);
 
         // Decodificar la cadena JSON en un array PHP
@@ -622,13 +660,32 @@ class ProcesoscontController extends Controller
         return $pdf->stream($filename);
     }
 
-    public function pdfoc2($id, $fecha)
+    public function pdfoc2($id)
     {
         $nomd = "ESPECIFICACIONES TÉCNICAS";
         $doctec = Docstec::select("*")
             ->where('id_proc', $id)
             ->where('nom_doc', $nomd)
             ->first();
+
+        // Decodificar la cadena JSON en un array PHP
+        $entrega = json_decode($doctec->plazo_ent, true);
+        $valorDias = $entrega['plzo_entrega']['dias'] ?? null;
+        $valorTextoEntrega = $entrega['plzo_entrega']['textoEntrega'] ?? null;
+
+        if ($valorDias !== null && $valorTextoEntrega !== null) {
+            // Ambas partes de la concatenación no son nulas
+            $doctec->plazo_ent = $valorDias . ' ' . $valorTextoEntrega;
+        }
+
+        // Obtener la fecha actual
+        $fechaActual = Carbon::now();
+
+        // Formatear la fecha según tus necesidades
+        $fechaFormateada = $fechaActual->toDateString(); // Formato: YYYY-MM-DD
+
+        // También puedes formatear la fecha en otros formatos
+        $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
 
         $pdf = PDF::loadView('procesoscont.pdfoc', compact('doctec', 'fecha'));
         $pdf->setPaper('Letter');

@@ -328,16 +328,42 @@
                                                     </label>
                                                     @else
                                                     {{--BOTON Autorizar--}}
-                                                    <a href="{{ route('procesoscont.autorizar', ['idproc' => $procesosc->id, 'idtray' => $trayec->id]) }}" class="btn btn-success" onclick="confirmarAutorizacion()">
+                                                    <a class="btn btn-success text-white btn-sm" onclick="confirmarAutorizacion()">
                                                         <i class="fas fa-check-double"></i>Autorizar
                                                     </a>
 
                                                     <script>
                                                         function confirmarAutorizacion() {
-                                                            if (confirm('¿Está seguro de autorizar el inicio?')) {
-                                                                console.log('autorizará');
-                                                                window.location.href = "{{ route('procesoscont.autorizar', ['idproc' => $procesosc->id, 'idtray' => $trayec->id]) }}";
-                                                            }
+                                                            // if (confirm('¿Está seguro de autorizar el inicio?')) {
+                                                            //     console.log('autorizará');
+                                                            //     window.location.href = "{{ route('procesoscont.autorizar', ['idproc' => $procesosc->id, 'idtray' => $trayec->id]) }}";
+                                                            // }
+
+                                                            Swal.fire({
+                                                                title: "Esta seguro de autorizar el inicio?",
+                                                                text: "Esto no se podra revertir!",
+                                                                icon: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#3085d6",
+                                                                cancelButtonColor: "#d33",
+                                                                confirmButtonText: "Si, autorizar!",
+                                                                cancelButtonText: "Cancelar" // Aquí cambiamos el texto del botón "Cancelar" al español
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+
+                                                                    setTimeout(() => {
+                                                                        window.location.href = "{{ route('procesoscont.autorizar', ['idproc' => $procesosc->id, 'idtray' => $trayec->id]) }}";
+                                                                    }, 4000);
+
+                                                                    Swal.fire({
+                                                                        title: "Autorizado!",
+                                                                        text: "El proceso se autorizó correctamente",
+                                                                        icon: "success"
+                                                                    });
+
+                                                                }
+                                                            });
+
                                                         }
                                                     </script>
                                                     @endif
@@ -384,7 +410,7 @@
                                                     {{-----SI EXISTE EL BENEFICIARIO-----}}
                                                     @if ($benef)
                                                     {{--BOTON Ver/Imprimir--}}
-                                                    <a class="btn btn-primary btn-sm" id="impBtnOS" href="{{route('procesoscont.pdfos', $doctec->id)}}" target="_blank">
+                                                    <a class="btn btn-primary btn-sm" id="impBtnOS" href="{{route('procesoscont.pdfos', ['doctec' => $doctec->id, 'fecha' => 'dateCustom'])}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -442,7 +468,7 @@
                                                     {{-----SI EXISTE EL BENEFICIARIO-----}}
                                                     @if ($benef)
                                                     {{--BOTON Ver/Imprimir--}}
-                                                    <a class="btn btn-primary" id="impBtnOC" href="{{route('procesoscont.pdfoc', $doctec->id)}}" target="_blank">
+                                                    <a class="btn btn-primary" id="impBtnOC" href="{{route('procesoscont.pdfoc', ['doctec' => $doctec->id, 'fecha' => 'dateCustom'])}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -461,14 +487,64 @@
 
                                                     @break
 
-                                                    @default
+                                                    @case('SOLICITUD CERTIFICACIÓN PRESUPUESTARIA')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
 
+                                                    @case('SOLICITUD DE AUTORIZACIÓN DE INICIO')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('ACTA DE RECEPCIÓN - FACTURA DECLARADA - INGRESO Y SALIDA DE ALMACEN')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('SOLICITUD DE PAGO')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('VERIFICACIÓN DE DOCUMENTOS')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('REVISIÓN DE DOCUMENTOS')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('FIRMA ELECTRÓNICA')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('REGISTRO DE PAGO')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @case('REMISIÓN A ARCHIVOS INSTITUCIONALES')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+
+                                                    <!-- Servicios -->
+                                                    @case('ACTA DE CONFORMIDAD - FACTURA DECLARADA')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    @default
 
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple> -->
-
                                                     <a href="{{route('procesoscont.pdfinexact', $procesosc->id)}}" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-print"></i> Imprimir</a>
                                                     @error('file')
                                                     <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
@@ -1532,7 +1608,7 @@
                                                         });
                                                     </script> --}}
                                                     {{--editor QUILL--}}
-                                                    <div id="editor" class="w-100" style="height: 200px; border: 1px solid #ccc;">hola</div>
+                                                    <div id="editor" class="w-100" style="height: 200px; border: 1px solid #ccc;"></div>
 
                                                 </div>
                                             </div>

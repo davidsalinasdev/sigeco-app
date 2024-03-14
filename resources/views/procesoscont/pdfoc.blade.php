@@ -218,7 +218,7 @@
             </table>
             <hr width="100%">
             <!-- <p align="right">Cochabamba,&nbsp;{{date("d/m/Y")}}</p> -->
-            <p align="right">Cochabamba,&nbsp;{{date('d/m/Y', strtotime($fecha))}}</p>
+            <p align="right">Cochabamba,&nbsp;{{$fecha}}</p>
             <table>
                 <tr>
                     <td>
