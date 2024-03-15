@@ -220,7 +220,7 @@
             <hr width="100%">
             <p align="right">Cochabamba,&nbsp;{{date('d/m/Y', strtotime($doctec[0]->updated_at))}}</p>
             <p>De mi mayor consideración:</p>
-            <p>Mediante la presente, solicito que por la unidad que corresponda se emita el informe de enexistencia para <span style="text-transform: lowercase;">{{$proceso->objeto}}</span></p>
+            <p>Mediante la presente, solicito que por la unidad que corresponda se emita el informe de inexistencia para <span style="text-transform: lowercase;">{{$proceso->objeto}}</span></p>
             <br>
             <table id="detalle">
                 <thead>
