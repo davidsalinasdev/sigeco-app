@@ -42,7 +42,7 @@
                                     <div class="card-body">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Código</label>
+                                                <label>Código:</label>
                                                 {{$procesosc->codigo}}
                                             </div>
                                         </div>
@@ -51,13 +51,13 @@
                                                 @php
                                                 $usolic = Unidadesorg::find($procesosc->id_unid);
                                                 @endphp
-                                                <label>Unidad Solicitante</label>
+                                                <label>Unidad Solicitante:</label>
                                                 {{$usolic->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Objeto</label>
+                                                <label>Objeto:</label>
                                                 {{$procesosc->objeto}}
                                             </div>
                                         </div>
@@ -66,13 +66,13 @@
                                                 @php
                                                 $modalidad = Modalidades::find($procesosc->id_mod);
                                                 @endphp
-                                                <label>Modalidad</label>
+                                                <label>Modalidad:</label>
                                                 {{$modalidad->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Etapa anterior</label>
+                                                <label>Etapa anterior:</label>
                                                 Ninguna
                                             </div>
                                         </div>
@@ -85,7 +85,7 @@
                                                 ->where('nro_etapa',1)
                                                 ->first();
                                                 @endphp
-                                                <label>Etapa Actual</label>
+                                                <label>Etapa Actual:</label>
                                                 {{$eact->nom_etapa}}
                                             </div>
                                         </div>
@@ -98,7 +98,7 @@
                                                 ->where('nro_etapa',$nesig)
                                                 ->first();
                                                 @endphp
-                                                <label>Etapa Sgte.</label>
+                                                <label>Etapa Sgte.:</label>
                                                 {{$esig->nom_etapa}}
                                             </div>
                                         </div>
@@ -107,13 +107,13 @@
                                                 @php
                                                 $uorigen = Unidadesorg::find($procesosc->id_unid);
                                                 @endphp
-                                                <label>Unidad Org. Anterior</label>
+                                                <label>Unidad Org. Anterior:</label>
                                                 {{$uorigen->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Unidad Org. Actual</label>
+                                                <label>Unidad Org. Actual:</label>
                                                 {{$uorigen->nombre}}
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@
                                                 @php
                                                 $options = Unidadesorg::all();
                                                 @endphp
-                                                <label for="opciones">Unidad Org. Destino</label>
+                                                <label for="opciones">Unidad Org. Destino:</label>
                                                 <select name="opciones" id="opciones" required style="width: 500px;">
                                                     <option value="">Selecciona una opción</option>
                                                     @foreach($options as $option)

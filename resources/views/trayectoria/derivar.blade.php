@@ -554,6 +554,49 @@
                                                     <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
                                                     @break
 
+
+                                                    <!-- CMENCP -->
+                                                    @case('INVITACIÓN AL CONSULTOR - INFORME DE SELECCIÓN DE PROVEEDOR - NOTA DE ADJUDICACIÓN - INFORME DE VERIFICACIÓN DE DOCUMENTOS')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('CONTRATO')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('MEMORANDUM DE CONTRAPARTE DE SERVICIO')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('FORMULARIO 400 - SOLICITUD DE NOMBRAMIENTO DE RESPONSABLE DE RECEPCIÓN O COMISIÓN DE RECEPCIÓN')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('MEMORANDUMS NOMBRAMIENTO DE RESPONSABLE DE RECEPCION O COMISIÓN DE RECEPCION')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('INFORME DE CONFORMIDAD')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- CMENCP -->
+                                                    @case('LLENADO DE FORMULARIO 500')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
                                                     @default
 
 
