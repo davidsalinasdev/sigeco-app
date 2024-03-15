@@ -45,7 +45,8 @@
                                             ->where('nombre', '=', 'Contratación Menor Bienes (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Menor Servicio (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Menor de Consultores Individuales de Linea (1-20.000)')
-                                            ->orwhere('nombre', '=', 'Contratación Directa de Bienes y Servicios')
+                                            ->orwhere('nombre', '=', 'Contratación Menor de Consultorias por Producto (1-20.000)')
+                                            ->orwhere('nombre', '=', 'Contratación Menor Directa de Servicios')
                                             ->get();
                                             @endphp
                                             <label for="opciones">Modalidad</label>
