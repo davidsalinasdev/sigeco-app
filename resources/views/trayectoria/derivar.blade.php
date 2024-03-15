@@ -729,7 +729,7 @@
                                                         <label for="plazo_ent">Plazo de entrega<span class="text-danger">*</span></label><br>
                                                         @endif
 
-                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CMDS' )
                                                         <!-- Servicio -->
                                                         <label for="plazo_ent">Plazo del servicio<span class="text-danger">*</span></label><br>
                                                         @endif
@@ -742,7 +742,7 @@
                                                         <span id="bys"> dia(s) calendario, a partir del dia siguiente habil a la suscripción <span id="contrato">de la órden de compra</span></span>
                                                         @endif
 
-                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CMDS' )
                                                         <!-- Servicio -->
                                                         <span id="bys"> dia(s) calendario, a partir del dia siguiente habil a la suscripción <span id="contrato">de la órden de servicio</span></span>
                                                         @endif
@@ -797,7 +797,7 @@
                                                         <label for="lugmed_ent">Lugar y medio de entrega<span class="text-danger">*</span></label>
                                                         @endif
 
-                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                        @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CMDS' )
                                                         <!-- Servicio -->
                                                         <label for="lugmed_ent">Lugar del servicio<span class="text-danger">*</span></label>
                                                         @endif
@@ -833,7 +833,7 @@
                                                                     Av. Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).
                                                                     @endif
 
-                                                                    @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CDBS' )
+                                                                    @if($sigla=='CMS' || $sigla=='CMSCP' || $sigla=='ANPES' || $sigla=='LPNS' || $sigla=='CMDS' )
                                                                     <!-- Servicio -->
                                                                     Av. Aroma Nº 327, frente a la Plaza San Sebastian.
                                                                     @endif
@@ -948,7 +948,7 @@
                                     contrato.innerText = 'de la órden de compra.';
                                 }
 
-                                if (sigla === 'CMS' || sigla === 'CMSCP' || sigla === 'ANPES' || sigla === 'LPNS' || sigla === 'CDBS') {
+                                if (sigla === 'CMS' || sigla === 'CMSCP' || sigla === 'ANPES' || sigla === 'LPNS' || sigla === 'CMDS') {
                                     contrato.innerText = 'de la órden de servicio.';
                                 }
 
@@ -1030,7 +1030,7 @@
                                             direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian(Almacenes de la gobernación).'
                                         }
 
-                                        if (siglas === 'CMS' || siglas === 'CMSCP' || siglas === 'ANPES' || siglas === 'LPNS' || siglas === 'CDBS') {
+                                        if (siglas === 'CMS' || siglas === 'CMSCP' || siglas === 'ANPES' || siglas === 'LPNS' || siglas === 'CMDS') {
                                             direccion = 'Av.Aroma Nº 327, frente a la Plaza San Sebastian.'
                                         }
 

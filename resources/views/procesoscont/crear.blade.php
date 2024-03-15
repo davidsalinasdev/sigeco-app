@@ -47,6 +47,7 @@
                                             ->orwhere('nombre', '=', 'Contratación Menor de Consultores Individuales de Linea (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Menor de Consultorias por Producto (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Menor Directa de Servicios (1-20.000)')
+                                            ->orderBy('id', 'asc')
                                             ->get();
                                             @endphp
                                             <label for="opciones">Modalidad</label>
