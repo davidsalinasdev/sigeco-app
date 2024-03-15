@@ -44,7 +44,7 @@
                                             $options = Modalidades::select("*")
                                             ->where('nombre', '=', 'Contratación Menor Bienes (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Menor Servicio (1-20.000)')
-                                            ->orwhere('nombre', '=', 'Contratación Menor Consultoría (1-20.000)')
+                                            ->orwhere('nombre', '=', 'Contratación Menor de Consultores Individuales de Linea (1-20.000)')
                                             ->orwhere('nombre', '=', 'Contratación Directa de Bienes y Servicios')
                                             ->get();
                                             @endphp
