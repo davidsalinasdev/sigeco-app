@@ -33,85 +33,87 @@
                     </thead>
                     <tbody>
                         @php
-                           use App\Models\Unidadesorg;
-                           use App\Models\Modalidades;
-                           use App\Models\Procesoscont;
+                        use App\Models\Unidadesorg;
+                        use App\Models\Modalidades;
+                        use App\Models\Procesoscont;
+
                         @endphp
                         @foreach($programas as $programa)
-                            <tr>
-                                <td style="display: none;">{{$programa->id}}</td>
+                        <tr>
+                            <td style="display: none;">{{$programa->id}}</td>
+                            @php
+                            $unidad = Unidadesorg::find($programa->id_unid);
+                            $modalidad = Modalidades::find($programa->id_mod);
+
+                            if ($programa->estado == 1) {
+                            $proceso = Procesoscont::select("*")
+                            ->where('id_pac', $programa->id)
+                            ->first();
+
+                            $codigo = $proceso->codigo;
+
+                            }else{
+                            $codigo = "";
+                            }
+
+                            @endphp
+                            <td>{{$codigo}}</td>
+                            <td>{{$unidad->nombre}}</td>
+                            <td>{{$modalidad->nombre}}</td>
+                            <td>{{$programa->objeto}}</td>
+                            <td>{{$programa->precio_ref}}</td>
+                            @if ($programa->estado == 0)
+                            <td>Sin aprobar</td>
+                            @else
+                            <td>Aprobado</td>
+                            @endif
+                            @if ($programa->estado == 0)
+                            <td>
+                                {{--Editar--}}
+                                <a href="{{ route('pacs.editar', $programa->id) }}" alt="Editar">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                </a>
+                                {{--Eliminar--}}
+                                <form action="{{route('pacs.destroy',$programa->id)}}" method="POST" style="display: inline-block;" onsubmit="return confirm('Está seguro?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                                {{--Aprobar/Iniciar--}}
+                                <a href="{{ route('trayectoria.storenewp', $programa->id) }}" alt="Aprobar" onclick="return confirm('¿Está seguro de aprobar el PAC?')">
+                                    <button class="btn btn-success">
+                                        <i class="fas fa-check-double"></i>
+                                    </button>
+                                </a>
+
+                            </td>
+                            @else
+                            <td>
+                                {{--BOTON Ver/Imprimir--}}
+                                <a class="btn btn-primary" href="{{route('pacs.pdfpac', $programa->id)}}" target="_blank">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+
                                 @php
-                                    $unidad = Unidadesorg::find($programa->id_unid);
-                                    $modalidad = Modalidades::find($programa->id_mod);
-                                    
-                                    if ($programa->estado == 1) {
-                                        $proceso = Procesoscont::select("*")
-                                            ->where('id_pac', $programa->id)
-                                            ->first();
-
-                                        $codigo = $proceso->codigo;
-                                    }else{
-                                        $codigo = "";
-                                    }
-                                
+                                $proceso = Procesoscont::where('id_pac', $programa->id)->first();
+                                $idproc = $proceso->id;
                                 @endphp
-                                <td>{{$codigo}}</td>
-                                <td>{{$unidad->nombre}}</td>
-                                <td>{{$modalidad->nombre}}</td>
-                                <td>{{$programa->objeto}}</td>
-                                <td>{{$programa->precio_ref}}</td>
-                                @if ($programa->estado == 0)
-                                    <td>Sin aprobar</td>
-                                @else
-                                    <td>Aprobado</td>
-                                @endif
-                                @if ($programa->estado == 0)
-                                    <td>
-                                        {{--Editar--}}
-                                        <a href="{{ route('pacs.editar', $programa->id) }}" alt="Editar">
-                                            <button class="btn btn-primary">
-                                                <i class="fas fa-pencil-alt"></i> 
-                                            </button>
-                                        </a>
-                                        {{--Eliminar--}}
-                                        <form action="{{route('pacs.destroy',$programa->id)}}" method="POST" style="display: inline-block;" onsubmit="return confirm('Está seguro?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="far fa-trash-alt"></i> 
-                                            </button>
-                                        </form>
-                                        {{--Aprobar/Iniciar--}}
-                                        <a href="{{ route('trayectoria.storenewp', $programa->id) }}" alt="Aprobar" onclick="return confirm('¿Está seguro de aprobar el PAC?')">
-                                            <button class="btn btn-success">
-                                                <i class="fas fa-check-double"></i> 
-                                            </button>
-                                        </a>
+                                {{--Seguimiento--}}
+                                <a href="{{ route('trayectoria.seguirproc', ['idproc' => $idproc, 'deproc' => '2']) }}" alt="Seguimiento">
+                                    <button class="btn btn-primary">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </a>
 
-                                    </td>
-                                @else
-                                    <td>
-                                        {{--BOTON Ver/Imprimir--}}
-                                        <a class="btn btn-primary" href="{{route('pacs.pdfpac', $programa->id)}}" target="_blank">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </a>
-                                        
-                                        @php
-                                            $proceso = Procesoscont::where('id_pac', $programa->id)->first();
-                                            $idproc = $proceso->id;
-                                        @endphp
-                                        {{--Seguimiento--}}
-                                        <a href="{{ route('trayectoria.seguirproc', ['idproc' => $idproc, 'deproc' => '2']) }}" alt="Seguimiento">
-                                            <button class="btn btn-primary">
-                                                <i class="far fa-eye"></i>
-                                            </button>
-                                        </a>
+                            </td>
 
-                                    </td>
+                            @endif
 
-                                @endif
-
-                            </tr>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

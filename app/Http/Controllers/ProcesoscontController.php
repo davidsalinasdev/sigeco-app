@@ -573,7 +573,7 @@ class ProcesoscontController extends Controller
             $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
         }
 
-
+        $fecha = Carbon::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
 
         $doctec = Docstec::find($id);
 
@@ -640,6 +640,8 @@ class ProcesoscontController extends Controller
             // También puedes formatear la fecha en otros formatos
             $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
         }
+
+        $fecha = Carbon::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
 
         $doctec = Docstec::find($id);
 

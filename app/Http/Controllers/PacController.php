@@ -51,12 +51,17 @@ class PacController extends Controller
         $id_miuni = $unidadorg->id; //22;
 
         $programas = Pac::select("*")
-        ->where('id_unid',$id_miuni)
+            ->where('id_unid', $id_miuni)
 
-        ->orderBy('fecha_reg', 'desc')
-        ->get();
+            ->orderBy('fecha_reg', 'desc')
+            ->get();
         //->paginate(10);
-        
+
+        // echo '<pre>';
+        // print_r($programas);
+        // echo '</pre>';
+        // die();
+
         return view('pacs.index', compact('programas'));
     }
 
@@ -82,7 +87,7 @@ class PacController extends Controller
         //UNIDAD
         $id_miuni = $unidadorg->id; //22;
 
-        $programa->id_unid = $id_miuni;//$request->unidades;//unidad solicitante
+        $programa->id_unid = $id_miuni; //$request->unidades;//unidad solicitante
         $programa->id_mod = $request->opciones;
         $programa->tipo_cont = "";
         $programa->cuce = "";
@@ -96,12 +101,12 @@ class PacController extends Controller
         $programa->fecha_reg = date('Y-m-d');
         $programa->estado = 0;
         $programa->observacion = "";
-        
+
         $programa->save();
-        
+
         return redirect()->route('pacs.index');
     }
-    
+
     public function edit($id)
     {
         $programa = Pac::find($id);
@@ -125,7 +130,7 @@ class PacController extends Controller
 
         $programa = Pac::find($id);
 
-        $programa->id_unid = $id_miuni;//$request->unidades;//unidad solicitante
+        $programa->id_unid = $id_miuni; //$request->unidades;//unidad solicitante
         $programa->id_mod = $request->opciones;
         $programa->tipo_cont = "";
         $programa->cuce = "";
@@ -139,9 +144,9 @@ class PacController extends Controller
         $programa->fecha_reg = date('Y-m-d');
         $programa->estado = 0;
         $programa->observacion = "";
-        
+
         $programa->save();
-        
+
         return redirect()->route('pacs.index');
     }
 
@@ -155,10 +160,9 @@ class PacController extends Controller
     {
         $programa = Pac::find($id);
         $pdf = PDF::loadView('pacs.pdfpac', compact('programa'));
-        $pdf ->setPaper('Letter');
-        
+        $pdf->setPaper('Letter');
+
         $filename = 'programa.pdf';
         return $pdf->stream($filename);
     }
-
 }

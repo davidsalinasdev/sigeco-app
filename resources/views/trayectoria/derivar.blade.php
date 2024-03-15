@@ -273,7 +273,7 @@
 
                                                     <!-- Aqui se deb modificar la Inexistencia de archivos -->
                                                     @case('INFORME DE INEXISTENCIA DE ACTIVOS')
-                                                    {{-- Script para ocultar el elemento --}}
+                                                    {{-- Script para ocultar el select de unidad de destino --}}
                                                     <script>
                                                         document.addEventListener('DOMContentLoaded', function() {
                                                             // Ocultar el elemento por defecto al cargar la página
@@ -284,6 +284,8 @@
                                                             $('#opciones').removeAttr('required');
                                                         });
                                                     </script>
+
+                                                    <!-- Guarda el nombre de la etapa en una variable global -->
                                                     @php
                                                     $nom_doc = $verif['nom_doc'];
                                                     @endphp
@@ -291,12 +293,19 @@
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a>
+
+                                                    <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
                                                     @error('file')
                                                     <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
-                                                    @enderror
+                                                    @enderror -->
 
                                                     @break
+
+
+
+
                                                     @case('CERTIFICACIÓN PRESUPUESTARIA')
                                                     {{-- Script para ocultar el elemento --}}
                                                     <script>
@@ -535,6 +544,12 @@
 
                                                     <!-- Servicios -->
                                                     @case('ACTA DE CONFORMIDAD - FACTURA DECLARADA')
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    @break
+
+                                                    <!-- Servicios consultoria >  20000 -->
+                                                    @case('TERMINOS DE REFERENCIA TDR')
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
                                                     @break
@@ -1204,8 +1219,6 @@
 
 
 
-
-
         <!-- ********** 2.- MODAL ORDEN DE SERVICIO************* -->
         <div class="modal fade show" id="modalOS" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
@@ -1469,7 +1482,6 @@
 
 
 
-
         <!-- *********** 3.- MODAL ORDEN DE COMPRA*************** -->
         <div class="modal fade show" id="modalOC" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
@@ -1702,6 +1714,194 @@
                                         // Ocultar el botón de crear y mostrar el nuevo botón
                                         $('#crearBtnOC').addClass('d-none');
                                         $('#impBtn2OC').removeClass('d-none');
+
+                                        // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
+
+                                    },
+
+                                    error: function(error) {
+                                        console.log(error);
+                                        // Manejar cualquier error que ocurra durante la solicitud
+                                    }
+                                });
+                            } else {
+                                alert('Por favor, complete todos los campos requeridos');
+                            }
+
+                            // Función para validar campos requeridos en todas las ubicaciones
+                            function validarCamposRequeridos(selectores) {
+                                var validacionExitosa = true;
+
+                                selectores.forEach(function(selector) {
+                                    var elementos = $(selector);
+
+                                    elementos.each(function() {
+                                        // Verificar si es un textarea o input
+                                        if ($(this).is('textarea, input, select')) {
+                                            if (!$(this).val()) {
+                                                validacionExitosa = false;
+                                                return false; // Salir del bucle each si se encuentra un campo vacío
+                                            }
+                                        } else {
+                                            // Verificar otros elementos (si es necesario)
+                                            var camposRequeridos = $(this).find('[required]');
+
+                                            camposRequeridos.each(function() {
+                                                if (!$(this).val()) {
+                                                    validacionExitosa = false;
+                                                    return false; // Salir del bucle each si se encuentra un campo vacío
+                                                }
+                                            });
+                                        }
+
+                                        if (!validacionExitosa) {
+                                            return false; // Salir del bucle each si se encuentra una fila con campos vacíos
+                                        }
+                                    });
+                                });
+
+                                return validacionExitosa;
+                            }
+
+                        });
+
+                    });
+                </script>
+
+            </div>
+            <!-- /.modal-dialog -->
+
+        </div>
+        <!-- /.modal-dialog -->
+
+
+
+
+        <!-- ********** 2.- MODAL EVALUAR INEXISTENCIA De ACTIVOS FIJOS ************* -->
+        <div class="modal fade show" id="evaluacion" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <form id="formulOS">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Evaluación para informe de inexistencia de archivos</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        @php
+                                        $idp = $procesosc->id;
+                                        $proceso = Procesoscont::find($idp);
+                                        $usolic = Unidadesorg::find($proceso->id_unid);
+                                        $modalidad = Modalidades::find($proceso->id_mod);
+
+
+
+                                        $cont = 1;
+                                        $total = 0;
+                                        @endphp
+
+                                        <!-- Tabla de evaluación -->
+                                        <div class="col-12 table-responsive bg-white p-4 mt-3">
+                                            <table id="inexistencia" class="table table-striped mt-2" style="width: 100%;">
+                                                <thead class="table-info">
+                                                    <tr class="">
+                                                        <!-- <th style="display: none;">ID</th> -->
+                                                        <th style="display: #fff; width: 8%;">Item</th>
+                                                        <th style="display: #fff;">Descripción</th>
+                                                        <th style="display: #fff;">Cantidad solicitada</th>
+                                                        <th style="display: #fff;">disponibilidad</th>
+                                                        <th style="display: #fff;">Cantidad no disponible</th>
+                                                        <th style="display: #fff;">Estado</th>
+                                                        <th style="display: #fff; width: 7%;">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <input type="hidden" name="idp" value="{{ $idp }}">
+                            <input type="hidden" name="nomdoc" value="INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE SERVICIO">
+                            <input type="hidden" name="idtray" value="{{$trayec->id}}" />
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button id="enviarFormulariOS" type="button" class="btn btn-primary">Derivar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+
+
+
+                        document.getElementById("enviarFormulariOS").addEventListener("click", () => {
+                            var selectores = ['#benef', '#docref', '#opcionesm'] //'#doctec tbody tr']
+                            if (validarCamposRequeridos(selectores)) {
+                                //todos los elementos
+                                var formulario = document.getElementById("formulOS");
+                                //console.log(formulario);
+                                var elementos = formulario.elements;
+                                //console.log(elementos);
+                                var datosFormulario = {};
+
+                                for (var i = 0; i < elementos.length; i++) {
+                                    var elemento = elementos[i];
+                                    if (elemento.type !== "button") {
+                                        datosFormulario[elemento.name] = elemento.value;
+                                    }
+                                }
+
+                                // var datosJSON = JSON.stringify(datosFormulario);
+                                // console.log(datosJSON);
+
+                                var filesm = document.getElementsByName("filem[]");
+                                datosFormulario['filem1'] = [];
+                                for (var i = 0; i < filesm.length; i++) {
+                                    var filemValue = filesm[i].value;
+                                    datosFormulario['filem1'][i] = filemValue;
+                                }
+
+                                console.log(datosFormulario);
+
+                                // Realizar la petición AJAX
+                                $.ajax({
+                                    url: '{{route("procesoscont.store_docstec_os")}}',
+                                    type: 'POST',
+
+                                    data: datosFormulario,
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+
+                                    success: function(respuesta) {
+                                        // Manejar la respuesta exitosa del servidor aquí
+                                        console.log(respuesta);
+
+                                        //MODAL
+                                        // Cerrar el modal usando Bootstrap y jQuery
+                                        $('#modalOS').modal('hide');
+                                        // Eliminar la clase 'show' del modal y del backdrop
+                                        $('#modalOS').removeClass('show');
+                                        $('.modal-backdrop').remove(); // Elimina completamente el backdrop
+                                        // Eliminar la clase 'modal-open' del body
+                                        $('body').removeClass('modal-open');
+
+                                        //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
+                                        // Ocultar el botón de crear y mostrar el nuevo botón
+                                        $('#crearBtnOS').addClass('d-none');
+                                        $('#impBtn2OS').removeClass('d-none');
 
                                         // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
 
