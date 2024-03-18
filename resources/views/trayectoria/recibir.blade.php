@@ -42,7 +42,7 @@
                                     <div class="card-body">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Código</label>
+                                                <label>Código:</label>
                                                 {{$procesosc->codigo}}
                                             </div>
                                         </div>
@@ -51,13 +51,13 @@
                                                 @php
                                                 $usolic = Unidadesorg::find($procesosc->id_unid);
                                                 @endphp
-                                                <label>Unidad Solicitante</label>
+                                                <label>Unidad Solicitante:</label>
                                                 {{$usolic->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Objeto</label>
+                                                <label>Objeto:</label>
                                                 {{$procesosc->objeto}}
                                             </div>
                                         </div>
@@ -66,13 +66,13 @@
                                                 @php
                                                 $modalidad = Modalidades::find($procesosc->id_mod);
                                                 @endphp
-                                                <label>Modalidad</label>
+                                                <label>Modalidad:</label>
                                                 {{$modalidad->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label>Etapa anterior</label>
+                                                <label>Etapa anterior:</label>
                                                 @php
                                                 $eant = Etapasproc::find($trayec->id_eactual);
                                                 @endphp
@@ -84,7 +84,7 @@
                                                 @php
                                                 $eact = Etapasproc::find($trayec->id_esgte);
                                                 @endphp
-                                                <label>Etapa Actual</label>
+                                                <label>Etapa Actual:</label>
                                                 {{$eact->nom_etapa}}
                                             </div>
                                         </div>
@@ -100,7 +100,7 @@
                                                     ->first();
                                                     }
                                                     @endphp
-                                                    <label>Etapa Siguiente</label>
+                                                    <label>Etapa Siguiente:</label>
                                                     @if ($nesig <> 0)
                                                         {{$esig->nom_etapa}}
                                                         @else
@@ -113,7 +113,7 @@
                                                 @php
                                                 $uorigen = Unidadesorg::find($trayec->id_uactual);
                                                 @endphp
-                                                <label>Unidad Org. Anterior</label>
+                                                <label>Unidad Org. Anterior:</label>
                                                 {{$uorigen->nombre}}
                                             </div>
                                         </div>
@@ -122,13 +122,13 @@
                                                 @php
                                                 $uactual = Unidadesorg::find($trayec->id_udestino);
                                                 @endphp
-                                                <label>Unidad Org. Actual</label>
+                                                <label>Unidad Org. Actual:</label>
                                                 {{$uactual->nombre}}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label for="observaciontray">Observación</label>
+                                                <label for="observaciontray">Observación:</label>
                                                 {!! Form::textarea('observaciontray', null, array('class'=>'form-control', 'rows' => 4, 'style' => 'width: 60%;')) !!}
                                             </div>
                                         </div>
