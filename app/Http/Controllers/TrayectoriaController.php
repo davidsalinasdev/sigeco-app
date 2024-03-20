@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\Det_docstec;
 use Illuminate\Validation\Rule;
 
 use App\Models\Unidadesorg;
@@ -13,6 +13,7 @@ use App\Models\Pac;
 use App\Models\Trayectoria;
 use App\Models\Etapasproc;
 use App\Models\Docsgen;
+use App\Models\Docstec;
 use App\Models\Listaverif;
 
 use Illuminate\Http\Request;
@@ -101,15 +102,27 @@ class TrayectoriaController extends Controller
 
     public function derivarproc($idtray)
     {
+
+        $arrayDetalleTec = [];
+
         $trayec = Trayectoria::find($idtray);
         $procesosc = Procesoscont::find($trayec->id_proceso);
 
+
+
+        $idDocstec = Docstec::where('id_proc', $procesosc->id)->get();
+
+        if (!$idDocstec->isEmpty()) {
+            // Cunado no esta vacio encuentra especificaciones tecnicas
+            $arrayDetalleTec = Det_docstec::where('id_docstec', $idDocstec[0]->id)->get();
+        }
+
         // echo '<pre>';
-        // print_r($procesosc);
+        // print_r($idDocstec);
         // echo '</pre>';
         // die();
 
-        return view('trayectoria.derivar', compact('trayec', 'procesosc',));
+        return view('trayectoria.derivar', compact('trayec', 'procesosc', 'arrayDetalleTec'));
     }
 
     public function seguirproc($idproc, $deproc)

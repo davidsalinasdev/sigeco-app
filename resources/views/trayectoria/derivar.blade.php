@@ -43,6 +43,7 @@
                         use App\Models\Etapasproc;
                         use App\Models\Docsgen;
                         use App\Models\Docstec;
+                        use App\Models\Det_docstec;
                         @endphp
                         {!! Form::open(array('route'=>'trayectoria.storeder', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
                         {{-- {!! Form::open(array('route'=>'listaverif.store', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!} --}}
@@ -293,10 +294,10 @@
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <!-- <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
-                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a> -->
+                                                    <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a>
 
-                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple> -->
                                                     @error('file')
                                                     <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
                                                     @enderror
@@ -918,7 +919,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td><input id="item" type="text" name="item[]" class="form-control col-md-auto item" value="1"></td>
+                                                        <td><input id="item" type="text" name="item[]" class="form-control col-md-auto item" value="1" disabled></td>
                                                         <td><textarea id="producto" name="producto[]" class="form-control" rows="4" class="form-control col-md-4"></textarea></td>
                                                         <td><input id="unidad" type="text" name="unidad[]" class="form-control col-md-auto"></td>
                                                         <td><input id="cantidad" type="number" name="cantidad[]" class="form-control col-md-auto"></td>
@@ -1826,7 +1827,7 @@
                 <div class="modal-content">
                     <form id="formulOS">
                         <div class="modal-header">
-                            <h4 class="modal-title">Evaluación para informe de inexistencia de archivos</h4>
+                            <h4 class="modal-title text-uppercase">Evaluación para informe de inexistencia</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -1843,13 +1844,13 @@
                                         $modalidad = Modalidades::find($proceso->id_mod);
 
 
-
                                         $cont = 1;
                                         $total = 0;
                                         @endphp
 
                                         <!-- Tabla de evaluación -->
                                         <div class="col-12 table-responsive bg-white p-4 mt-3">
+                                            <span>Lista de Especificciones Técnicas</span>
                                             <table id="inexistencia" class="table table-striped mt-2" style="width: 100%;">
                                                 <thead class="table-info">
                                                     <tr class="">
@@ -1857,13 +1858,30 @@
                                                         <th style="display: #fff; width: 8%;">Item</th>
                                                         <th style="display: #fff;">Descripción</th>
                                                         <th style="display: #fff;">Cantidad solicitada</th>
-                                                        <th style="display: #fff;">disponibilidad</th>
+                                                        <th style="display: #fff;">Disponibilidad</th>
                                                         <th style="display: #fff;">Cantidad no disponible</th>
-                                                        <th style="display: #fff;">Estado</th>
-                                                        <th style="display: #fff; width: 7%;">Acciones</th>
+                                                        <!-- <th style="display: #fff;">Estado</th> -->
+                                                        <th style="display: #fff; width: 15%;">Acciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($arrayDetalleTec as $detalleTec)
+                                                    @if($detalleTec->item != null)
+                                                    <tr>
+                                                        <td>{{$detalleTec->item}}</td>
+                                                        <td>{{$detalleTec->descripcion}}</td>
+                                                        <td>{{$detalleTec->cantidad}}</td>
+                                                        <!-- Disponibilidad -->
+                                                        <td>
+                                                            <input class="form-control" value="0" type="number" min="0" step="1">
+                                                        </td>
+                                                        <td>{{$detalleTec->cantidad}}</td>
+                                                        <td>
+                                                            <a href="#" class=" btn btn-primary text-uppercase btn-sm"><i class="fas fa-save"></i> guardar</a>
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
