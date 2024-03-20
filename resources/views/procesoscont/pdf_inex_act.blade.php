@@ -212,7 +212,7 @@
                     </td>
                     <td>
                         <p class="titulogob">GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA</p>
-                        <h1 class="tituloimp">SOLICITUD DE INEXISTENCIA DE ACTIVOS PARA <span style="text-transform: uppercase;">{{$proceso->objeto}}</span></h1>
+                        <h1 class="tituloimp">SOLICITUD DE INEXISTENCIA <span style="text-transform: uppercase;">{{$proceso->objeto}}</span></h1>
                         <h2 class="subtituloimp">GESTIÓN: {{$proceso->gestion}}</h2>
                     </td>
                 </tr>
