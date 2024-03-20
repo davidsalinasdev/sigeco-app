@@ -45,18 +45,17 @@ class BenefController extends Controller
         ]);
 
         //$etapasp = $request->all();
-        
+
         $benef->razonsocial = $request->razonsocial;
         $benef->cinit = $request->cinit;
         $benef->domicilio_fiscal = $request->domicilio_fiscal;
         $benef->tipo_nit = $request->tipo_nit;
 
         $benef->observacion = "";
-        
+
         $benef->save();
-        
+
         return redirect()->route('benef.index');
-     
     }
 
     public function edit($id)
@@ -75,7 +74,7 @@ class BenefController extends Controller
         ]);
 
         //$input = $request->all();
-        
+
         $benef = Benef::find($id);
 
         $benef->razonsocial = $request->razonsocial;
@@ -84,7 +83,7 @@ class BenefController extends Controller
         $benef->tipo_nit = $request->tipo_nit;
 
         $benef->observacion = "";
-        
+
         $benef->save();
 
         return redirect()->route('benef.index');
@@ -95,5 +94,4 @@ class BenefController extends Controller
         Benef::find($id)->delete();
         return redirect()->route('benef.index');
     }
-
 }
