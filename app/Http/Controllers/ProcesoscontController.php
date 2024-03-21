@@ -168,6 +168,7 @@ class ProcesoscontController extends Controller
 
     public function store_docstec(Request $request)
     {
+
         $doctec = new Docstec();
 
         $idproc = $request->idp;
@@ -182,6 +183,9 @@ class ProcesoscontController extends Controller
         $doctec->otro2 = $request->otro2;
         $doctec->observacion = $request->observacion;
         $doctec->total = floatval($request->total); //completar
+
+
+        DB::beginTransaction();
 
         try {
 
@@ -215,6 +219,11 @@ class ProcesoscontController extends Controller
                 $det_doctec->precio = isset($precios1[$indice]) ? $precios1[$indice] : null;
                 $det_doctec->subtotal = isset($subtotales1[$indice]) ? $subtotales1[$indice] : null;
 
+                // Codigo añadido por DAVID-UGE
+                $det_doctec->disponibilidad = 0;
+                $det_doctec->cant_no_disponible = isset($cantidades1[$indice]) ? $cantidades1[$indice] : null;
+                $det_doctec->new_sub_total = isset($subtotales1[$indice]) ? $subtotales1[$indice] : null;
+
                 $det_doctec->save();
             }
 
@@ -241,6 +250,8 @@ class ProcesoscontController extends Controller
 
             $iddoc = $doctec->id;
 
+            DB::commit();
+
             $datos = [
                 'code' => 200,
                 'status' => 'success',
@@ -251,6 +262,8 @@ class ProcesoscontController extends Controller
 
             ];
         } catch (Exception $e) {
+
+            DB::rollback();
             $datos = [
                 'code' => 400,
                 'status' => 'error',

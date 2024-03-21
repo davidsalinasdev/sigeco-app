@@ -294,18 +294,14 @@
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <!-- <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
-                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a> -->
+                                                    <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a>
 
-                                                    <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple>
+                                                    <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple> -->
                                                     @error('file')
                                                     <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
                                                     @enderror
-
                                                     @break
-
-
-
 
                                                     @case('CERTIFICACIÓN PRESUPUESTARIA')
                                                     {{-- Script para ocultar el elemento --}}
@@ -1170,24 +1166,31 @@
 
                                         success: function(respuesta) {
                                             // Manejar la respuesta exitosa del servidor aquí
-                                            // console.log(respuesta);
+                                            console.log(respuesta);
 
-                                            //MODAL
-                                            // Cerrar el modal usando Bootstrap y jQuery
-                                            $('#modal-xl').modal('hide');
-                                            // Eliminar la clase 'show' del modal y del backdrop
-                                            $('#modal-xl').removeClass('show');
-                                            $('.modal-backdrop').remove(); // Elimina completamente el backdrop
-                                            // Eliminar la clase 'modal-open' del body
-                                            $('body').removeClass('modal-open');
 
-                                            //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
-                                            // Ocultar el botón de crear y mostrar el nuevo botón
-                                            $('#crearBtn').addClass('d-none');
-                                            $('#impBtn2').removeClass('d-none');
 
-                                            // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
-                                            toastr.success('Se derivo correctamente', 'SIGECO');
+                                            if (respuesta.status === 'error') {
+                                                toastr.error('Error al guardar los datos', 'SIGECO');
+                                            } else {
+
+                                                //MODAL
+                                                // Cerrar el modal usando Bootstrap y jQuery
+                                                $('#modal-xl').modal('hide');
+                                                // Eliminar la clase 'show' del modal y del backdrop
+                                                $('#modal-xl').removeClass('show');
+                                                $('.modal-backdrop').remove(); // Elimina completamente el backdrop
+                                                // Eliminar la clase 'modal-open' del body
+                                                $('body').removeClass('modal-open');
+
+                                                //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
+                                                // Ocultar el botón de crear y mostrar el nuevo botón
+                                                $('#crearBtn').addClass('d-none');
+                                                $('#impBtn2').removeClass('d-none');
+
+                                                // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
+                                                toastr.success('Se registró y derivó correctamente', 'SIGECO');
+                                            }
 
                                         },
 
@@ -1827,77 +1830,65 @@
                 <div class="modal-content">
                     <form id="formulOS">
                         <div class="modal-header">
-                            <h4 class="modal-title text-uppercase">Evaluación para informe de inexistencia</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+                            <h5 class="text-uppercase">Evaluación para informe de inexistencia</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
                         </div>
                         <div class="modal-body">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
+                            <div class="col-12">
 
-                                        @php
-                                        $idp = $procesosc->id;
-                                        $proceso = Procesoscont::find($idp);
-                                        $usolic = Unidadesorg::find($proceso->id_unid);
-                                        $modalidad = Modalidades::find($proceso->id_mod);
+                                @php
+                                $idp = $procesosc->id;
+                                $proceso = Procesoscont::find($idp);
+                                $usolic = Unidadesorg::find($proceso->id_unid);
+                                $modalidad = Modalidades::find($proceso->id_mod);
 
+                                $cont = 1;
+                                $total = 0;
+                                @endphp
 
-                                        $cont = 1;
-                                        $total = 0;
-                                        @endphp
-
-                                        <!-- Tabla de evaluación -->
-                                        <div class="col-12 table-responsive bg-white p-4 mt-3">
-                                            <span>Lista de Especificciones Técnicas</span>
-                                            <table id="inexistencia" class="table table-striped mt-2" style="width: 100%;">
-                                                <thead class="table-info">
-                                                    <tr class="">
-                                                        <!-- <th style="display: none;">ID</th> -->
-                                                        <th style="display: #fff; width: 8%;">Item</th>
-                                                        <th style="display: #fff;">Descripción</th>
-                                                        <th style="display: #fff;">Cantidad solicitada</th>
-                                                        <th style="display: #fff;">Disponibilidad</th>
-                                                        <th style="display: #fff;">Cantidad no disponible</th>
-                                                        <!-- <th style="display: #fff;">Estado</th> -->
-                                                        <th style="display: #fff; width: 15%;">Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($arrayDetalleTec as $detalleTec)
-                                                    @if($detalleTec->item != null)
-                                                    <tr>
-                                                        <td>{{$detalleTec->item}}</td>
-                                                        <td>{{$detalleTec->descripcion}}</td>
-                                                        <td>{{$detalleTec->cantidad}}</td>
-                                                        <!-- Disponibilidad -->
-                                                        <td>
-                                                            <input class="form-control" value="0" type="number" min="0" step="1">
-                                                        </td>
-                                                        <td>{{$detalleTec->cantidad}}</td>
-                                                        <td>
-                                                            <a href="#" class=" btn btn-primary text-uppercase btn-sm"><i class="fas fa-save"></i> guardar</a>
-                                                        </td>
-                                                    </tr>
-                                                    @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-                                    </div>
+                                <!-- Tabla de evaluación -->
+                                <div class="table-responsive bg-white">
+                                    <span>Lista de Especificaciones Técnicas</span>
+                                    <table id="inexistencia" class="table table-striped mt-2" style="width: 100%;">
+                                        <thead class="table-info">
+                                            <tr class="">
+                                                <!-- <th style="display: none;">ID</th> -->
+                                                <th style="width: 8%;">Item</th>
+                                                <th style="width: 35%;">Descripción</th>
+                                                <th>Cantidad solicitada</th>
+                                                <th>Disponibilidad</th>
+                                                <th>Cantidad no disponible</th>
+                                                <!-- <th style="display: #fff;">Estado</th> -->
+                                                <th style="display: #fff; width: 10%;">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($arrayDetalleTec as $detalleTec)
+                                            @if($detalleTec->item != null)
+                                            <tr>
+                                                <td>{{$detalleTec->item}}</td>
+                                                <td>{{$detalleTec->descripcion}}</td>
+                                                <td>{{$detalleTec->cantidad}}</td>
+                                                <!-- Disponibilidad -->
+                                                <td>
+                                                    <input class="form-control" value="{{$detalleTec->disponibilidad}}" type="number" min="0" step="1">
+                                                </td>
+                                                <td>{{$detalleTec->cant_no_disponible}}</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary text-uppercase btn-sm"><i class="fas fa-save"></i> guardar</a>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <input type="hidden" name="idp" value="{{ $idp }}">
-                            <input type="hidden" name="nomdoc" value="INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE SERVICIO">
-                            <input type="hidden" name="idtray" value="{{$trayec->id}}" />
-
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button id="enviarFormulariOS" type="button" class="btn btn-primary">Derivar</button>
                         </div>
                     </form>
                 </div>
