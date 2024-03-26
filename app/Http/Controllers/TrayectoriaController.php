@@ -15,7 +15,8 @@ use App\Models\Etapasproc;
 use App\Models\Docsgen;
 use App\Models\Docstec;
 use App\Models\Listaverif;
-
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -114,15 +115,19 @@ class TrayectoriaController extends Controller
 
         if (!$idDocstec->isEmpty()) {
             // Cunado no esta vacio encuentra especificaciones tecnicas
-            $arrayDetalleTec = Det_docstec::where('id_docstec', $idDocstec[0]->id)->get();
+            $arrayDetalleTec = Det_docstec::where('id_docstec', $idDocstec[0]->id)
+                ->orderBy('id', 'asc')
+                ->get();
         }
+
+        $id_docstec = $idDocstec[0]->id;
 
         // echo '<pre>';
         // print_r($idDocstec);
         // echo '</pre>';
         // die();
 
-        return view('trayectoria.derivar', compact('trayec', 'procesosc', 'arrayDetalleTec'));
+        return view('trayectoria.derivar', compact('trayec', 'procesosc', 'arrayDetalleTec', 'id_docstec'));
     }
 
     public function seguirproc($idproc, $deproc)
@@ -589,5 +594,59 @@ class TrayectoriaController extends Controller
 
         //return response()->download(storage_path($ruta), $arch, $headers);
         return response()->file(storage_path($ruta), $headers);
+    }
+
+
+    function evaluacionActivos(Request $request)
+    {
+        // 1.-Recoger los usuarios por POST
+        $dataEvaluacion = $request->dataEvaluacion;
+
+        $idDocstec = $dataEvaluacion['idDocstec'];
+        $item = $dataEvaluacion['item'];
+        $precio = $dataEvaluacion['precio'];
+        $disponibilidad = $dataEvaluacion['disponibilidad'];
+        $cantNoDisponible = $dataEvaluacion['cantNoDisponible'];
+
+        try {
+            // Iniciar transacción
+            DB::beginTransaction();
+
+            $user = Auth::user(); // Accede al usuario autenticado
+
+            // Tu consulta de actualización aquí
+            Det_docstec::where('id_docstec', $idDocstec)
+                ->where('item', $item)
+                ->update([
+                    'disponibilidad' => $disponibilidad,
+                    'cant_no_disponible' => $cantNoDisponible,
+                    'new_sub_total' => $cantNoDisponible * $precio,
+                ]);
+
+            Docstec::where('id', $idDocstec)
+                ->update([
+                    'idEvaluacion' => $user->id,
+                    'fecha_evaluacion' => DB::raw('now()') // Obtiene la fecha y hora actuales del servidor de la base de datos
+                ]);
+
+            // Commit si todas las operaciones son exitosas
+            DB::commit();
+
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Los datos se guardaron correctamente.',
+            );
+        } catch (Exception $e) {
+            // Rollback en caso de error
+            DB::rollback();
+
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            );
+        }
+        return response()->json($data);
     }
 }

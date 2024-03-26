@@ -14,6 +14,7 @@ use App\Models\Docsgen;
 use App\Models\Docstec;
 use App\Models\Det_docstec;
 use App\Models\Listaverif;
+use App\Models\User;
 use App\View\Components\Prueba;
 //use Barryvdh\DomPDF\PDF;
 //use Barryvdh\DomPDF\Facade as PDF;
@@ -759,6 +760,43 @@ class ProcesoscontController extends Controller
         $pdf->setPaper('Letter');
 
         $filename = 'doctinexact.pdf';
+        return $pdf->stream($filename);
+    }
+
+    // Generación de pdf Evaluacion de bienes o activos
+    function pdfEvaluacion($id)
+    {
+
+        $nombre = '';
+        $dependencia = '';
+
+        $docstec = Docstec::find($id);
+
+        if ($docstec->idEvaluacion != NULL) {
+
+            $usuario = User::find($docstec->idEvaluacion);
+
+            $nombres = $usuario->nombres . ' ' . $usuario->paterno . ' ' . $usuario->materno;
+            $dependencia = $usuario->dependencia;
+        } else {
+            $nombres = 'Debe evaluar y confirmar antes de imprimir';
+            $dependencia = 'Debe evaluar y confirmar antes de imprimir';
+        }
+
+
+        $det_docstec = Det_docstec::where('id_docstec', $id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $proceso = Procesoscont::find($docstec->id_proc);
+
+
+
+        // Envia datos a la vista
+        $pdf = PDF::loadView('procesoscont.pdf_evaluacion', compact('docstec', 'det_docstec', 'proceso', 'nombres', 'dependencia'));
+        $pdf->setPaper('Letter');
+
+        $filename = 'evaluacion.pdf';
         return $pdf->stream($filename);
     }
 }

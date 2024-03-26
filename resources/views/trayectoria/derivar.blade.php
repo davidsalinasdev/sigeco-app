@@ -294,8 +294,24 @@
 
                                                     {{--se sube un archivo lleno, debe tener extensión--}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#evaluacion"><i class="fas fa-pen"></i> Evaluar</a>
-                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Imprimir</a>
+                                                    <a href="#" class="btn btn-info btn-sm" id="btnEvaluacion"><i class="fas fa-pen"></i> Evaluar</a>
+                                                    <!-- Desplegando modal -->
+                                                    <script>
+                                                        document.addEventListener('DOMContentLoaded', function() {
+                                                            $('#btnEvaluacion').click(function() {
+
+                                                                $('#evaluacion').modal('show');
+
+                                                            });
+                                                            $('#evaluacion').on('hidden.bs.modal', function() {
+
+                                                                // Borra la caché del navegador y recarga la página
+                                                                location.reload(true); // true fuerza la recarga desde el servidor ignorando la caché del navegador
+                                                            });
+                                                        });
+                                                    </script>
+
+                                                    <a class="btn btn-primary btn-sm" href="{{route('procesoscont.pdfevaluacion', $id_docstec)}}" target="_blank"><i class="fas fa-file-pdf"></i> Imprimir</a>
 
                                                     <!-- <input type="file" name="files[]" placeholder="Selecciona archivo" id="file" multiple> -->
                                                     @error('file')
@@ -1822,8 +1838,6 @@
         <!-- /.modal-dialog -->
 
 
-
-
         <!-- ********** 2.- MODAL EVALUAR INEXISTENCIA De ACTIVOS FIJOS ************* -->
         <div class="modal fade show" id="evaluacion" style="padding-right: 17px; display: none;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-xl">
@@ -1861,11 +1875,11 @@
                                                 <th>Disponibilidad</th>
                                                 <th>Cantidad no disponible</th>
                                                 <!-- <th style="display: #fff;">Estado</th> -->
-                                                <th style="display: #fff; width: 10%;">Acciones</th>
+                                                <th style="display: #fff; width: 15%;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($arrayDetalleTec as $detalleTec)
+                                            @foreach($arrayDetalleTec as $index => $detalleTec)
                                             @if($detalleTec->item != null)
                                             <tr>
                                                 <td>{{$detalleTec->item}}</td>
@@ -1873,15 +1887,65 @@
                                                 <td>{{$detalleTec->cantidad}}</td>
                                                 <!-- Disponibilidad -->
                                                 <td>
-                                                    <input class="form-control" value="{{$detalleTec->disponibilidad}}" type="number" min="0" step="1">
+                                                    <input id="disponibilidad{{$index}}" class="form-control" value="{{$detalleTec->disponibilidad}}" type="number" min="0" step="1">
                                                 </td>
-                                                <td>{{$detalleTec->cant_no_disponible}}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-primary text-uppercase btn-sm"><i class="fas fa-save"></i> guardar</a>
+                                                    <input id="cant_nodisponible{{$index}}" class="form-control" data-indice="{{$index}}" value="{{$detalleTec->cant_no_disponible}}" disabled>
+                                                    <!-- Input variable global hidden -->
+                                                    <input type="hidden" id="nodisponibleHidden{{$index}}" class="form-control" value="{{$detalleTec->cantidad}}">
                                                 </td>
+                                                <td>
+                                                    <a href="#" onclick="guardarDatos(<?php echo $index; ?>,'<?php echo $detalleTec->item; ?>','<?php echo $detalleTec->id_docstec; ?>','<?php echo $detalleTec->precio; ?>')" class="btn btn-primary text-uppercase btn-sm"><i class="fas fa-check"></i> Confirmar</a>
+                                                </td>
+
+                                                <script>
+                                                    // Metodo que va actualizar datos para cada ITEM
+                                                    function guardarDatos(index, item, idDocstec, precio) {
+
+                                                        // Captura de todos los capos modificados y sin modificar
+                                                        const disponibilidad = document.querySelectorAll("[id^=disponibilidad]");
+                                                        const cantNoDisponible = document.querySelectorAll("[id^=cant_nodisponible]");
+
+
+                                                        const dataEvaluacion = {
+                                                            item: item,
+                                                            idDocstec: idDocstec,
+                                                            precio: precio,
+                                                            disponibilidad: disponibilidad[index].value,
+                                                            cantNoDisponible: cantNoDisponible[index].value
+                                                        }
+
+                                                        // Peticion de actualizacion de datos para cada ITEM
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: '{{ route("trayectoria.evaluacionactivos") }}',
+                                                            data: {
+                                                                _token: '{{ csrf_token() }}',
+                                                                dataEvaluacion: dataEvaluacion
+                                                            },
+                                                            beforeSend: function() {
+                                                                console.log('Esta buscando....aqui_ubicacion');
+                                                            },
+                                                            success: function(response) {
+
+                                                                // console.log(response);
+                                                                toastr.success(`${response.message}`, 'SIGECO');
+                                                            },
+                                                            error: function(xhr, status, error) {
+                                                                spinner.style.display = 'none';
+                                                                console.error(error);
+                                                            }
+                                                        });
+
+                                                    }
+                                                </script>
+
+
+
                                             </tr>
                                             @endif
                                             @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -1897,116 +1961,49 @@
                     document.addEventListener('DOMContentLoaded', () => {
 
 
+                        const disponibilidades = document.querySelectorAll("[id^=disponibilidad]");
+                        let noDisponible = document.querySelectorAll("[id^=cant_nodisponible]");
+                        let noDisponibleHidden = document.querySelectorAll("[id^=nodisponibleHidden]");
 
-                        document.getElementById("enviarFormulariOS").addEventListener("click", () => {
-                            var selectores = ['#benef', '#docref', '#opcionesm'] //'#doctec tbody tr']
-                            if (validarCamposRequeridos(selectores)) {
-                                //todos los elementos
-                                var formulario = document.getElementById("formulOS");
-                                //console.log(formulario);
-                                var elementos = formulario.elements;
-                                //console.log(elementos);
-                                var datosFormulario = {};
+                        disponibilidades.forEach((disponibilidad, index) => {
 
-                                for (var i = 0; i < elementos.length; i++) {
-                                    var elemento = elementos[i];
-                                    if (elemento.type !== "button") {
-                                        datosFormulario[elemento.name] = elemento.value;
+                            disponibilidad.addEventListener("input", function() {
+
+                                const valorDisponibilidad = parseInt(disponibilidad.value);
+
+                                // Para actualizar caja en la vista
+                                let valorNoDisponible = parseInt(noDisponible[index].value);
+
+                                // Para mantener el valor disponible constante
+                                let valorNoDisponibleHidden = parseInt(noDisponibleHidden[index].value);
+
+
+                                // Calcula el cambio en la cantidad no disponible
+                                const cambioCantidadNoDisponible = valorNoDisponibleHidden - valorDisponibilidad;
+
+                                if (valorDisponibilidad > valorNoDisponibleHidden) {
+                                    toastr.error('La disponibilidad no puede ser mayor a la cantidad solicitada, verifique los datos ingresados.', 'SIGECO');
+                                    disponibilidad.value = valorNoDisponibleHidden;
+                                } else {
+                                    // Asigna el nuevo valor a "cant_nodisponible"
+                                    if (isNaN(cambioCantidadNoDisponible)) {
+                                        // disponibilidad.value = 0;
+                                        toastr.warning('<span style="color: black;">El campo disponibilidad no puede estar vacío.</span>', 'SIGECO', {
+                                            escapeHtml: false
+                                        });
+
+                                        noDisponible[index].value = valorNoDisponibleHidden;
+
+                                    } else {
+                                        noDisponible[index].value = cambioCantidadNoDisponible;
                                     }
                                 }
-
-                                // var datosJSON = JSON.stringify(datosFormulario);
-                                // console.log(datosJSON);
-
-                                var filesm = document.getElementsByName("filem[]");
-                                datosFormulario['filem1'] = [];
-                                for (var i = 0; i < filesm.length; i++) {
-                                    var filemValue = filesm[i].value;
-                                    datosFormulario['filem1'][i] = filemValue;
-                                }
-
-                                console.log(datosFormulario);
-
-                                // Realizar la petición AJAX
-                                $.ajax({
-                                    url: '{{route("procesoscont.store_docstec_os")}}',
-                                    type: 'POST',
-
-                                    data: datosFormulario,
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    },
-
-                                    success: function(respuesta) {
-                                        // Manejar la respuesta exitosa del servidor aquí
-                                        console.log(respuesta);
-
-                                        //MODAL
-                                        // Cerrar el modal usando Bootstrap y jQuery
-                                        $('#modalOS').modal('hide');
-                                        // Eliminar la clase 'show' del modal y del backdrop
-                                        $('#modalOS').removeClass('show');
-                                        $('.modal-backdrop').remove(); // Elimina completamente el backdrop
-                                        // Eliminar la clase 'modal-open' del body
-                                        $('body').removeClass('modal-open');
-
-                                        //SIENDO QUE SE GUARDÓ CORRECTAMENTE EN LA BASE DE DATOS
-                                        // Ocultar el botón de crear y mostrar el nuevo botón
-                                        $('#crearBtnOS').addClass('d-none');
-                                        $('#impBtn2OS').removeClass('d-none');
-
-                                        // Puedes mostrar un mensaje al usuario o redirigirlo a otra página después de guardar los datos
-
-                                    },
-
-                                    error: function(error) {
-                                        console.log(error);
-                                        // Manejar cualquier error que ocurra durante la solicitud
-                                    }
-                                });
-                            } else {
-                                alert('Por favor, complete todos los campos requeridos');
-                            }
-
-                            // Función para validar campos requeridos en todas las ubicaciones
-                            function validarCamposRequeridos(selectores) {
-                                var validacionExitosa = true;
-
-                                selectores.forEach(function(selector) {
-                                    var elementos = $(selector);
-
-                                    elementos.each(function() {
-                                        // Verificar si es un textarea o input
-                                        if ($(this).is('textarea, input, select')) {
-                                            if (!$(this).val()) {
-                                                validacionExitosa = false;
-                                                return false; // Salir del bucle each si se encuentra un campo vacío
-                                            }
-                                        } else {
-                                            // Verificar otros elementos (si es necesario)
-                                            var camposRequeridos = $(this).find('[required]');
-
-                                            camposRequeridos.each(function() {
-                                                if (!$(this).val()) {
-                                                    validacionExitosa = false;
-                                                    return false; // Salir del bucle each si se encuentra un campo vacío
-                                                }
-                                            });
-                                        }
-
-                                        if (!validacionExitosa) {
-                                            return false; // Salir del bucle each si se encuentra una fila con campos vacíos
-                                        }
-                                    });
-                                });
-
-                                return validacionExitosa;
-                            }
-
+                            });
                         });
-
                     });
                 </script>
+
+
 
             </div>
             <!-- /.modal-dialog -->

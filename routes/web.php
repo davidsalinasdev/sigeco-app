@@ -142,7 +142,14 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
     Route::post('buscardatos', [ConfiguracionesController::class, 'buscarDatos'])->name('configuraciones.buscardatos');
     Route::get('editaresptecnicas/{id}', [ConfiguracionesController::class, 'editarEspTecnicas'])->name('configuraciones.editaresptecnicas');
 
+    // Ruta pdf inexistencia de activos o bienes
     Route::get('procesoscont/{id}/pdfinexact', [ProcesoscontController::class, 'pdfInexAct'])->name('procesoscont.pdfinexact');
+
+    // Ruta para realizar actualizaciones en evaluacion de activos y bienes
+    Route::post('evaluacionactivos', [TrayectoriaController::class, 'evaluacionActivos'])->name('trayectoria.evaluacionactivos');
+
+    // Imprimir PDF evaluacion de activos o bienes
+    Route::get('procesoscont/{id}/pdfevaluacion', [ProcesoscontController::class, 'pdfEvaluacion'])->name('procesoscont.pdfevaluacion');
 });
 
 Route::middleware('auth')->group(function () {
