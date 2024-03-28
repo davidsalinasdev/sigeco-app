@@ -1857,6 +1857,14 @@
                                 $modalidad = Modalidades::find($proceso->id_mod);
                                 $obsevacionEvaluacion = Docstec::where('id_proc', $idp)->get();
 
+                                if(isset($observacionEvaluacion[0])){
+                                $obsEva = $observacionEvaluacion[0]->obs_evaluacion;
+                                }else{
+                                $obsEva= '';
+                                }
+
+
+
                                 $cont = 1;
                                 $total = 0;
                                 @endphp
@@ -1949,7 +1957,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <label for="observaciontray">Observación<span style="font-weight: lighter;">(Incluya observaciones solo si requiere)</span></label>
-                                    <textarea id="observacionEvaluacion" name="observacionEvaluacion" class="form-control" rows="2" style="width: 50%;">{{$obsevacionEvaluacion[0]->obs_evaluacion}}</textarea>
+                                    <textarea id="observacionEvaluacion" name="observacionEvaluacion" class="form-control" rows="2" style="width: 50%;">{{$obsEva}}</textarea>
                                     <button type="button" id="obs-observacion" class="btn btn-primary mt-2" onclick="guardarObservacion(<?php echo $idp; ?>)"><i class="fas fa-save"></i> Guardar observación</button>
 
                                     <script>
