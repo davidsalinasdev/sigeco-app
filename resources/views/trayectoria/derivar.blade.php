@@ -438,7 +438,7 @@
                                                     </a>
                                                     @else
                                                     {{--BOTON MODAL--}}
-                                                    <button type="button" class="btn btn-primary" id="crearBtnOS" data-toggle="modal" data-target="#modalOS">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="crearBtnOS" data-toggle="modal" data-target="#modalOS">
                                                         + Elaborar
                                                     </button>
 
@@ -490,18 +490,18 @@
                                                     {{-----SI EXISTE EL BENEFICIARIO-----}}
                                                     @if ($benef)
                                                     {{--BOTON Ver/Imprimir--}}
-                                                    <a class="btn btn-primary" id="impBtnOC" href="{{route('procesoscont.pdfoc', ['doctec' => $doctec->id, 'fecha' => 'dateCustom'])}}" target="_blank">
+                                                    <a class="btn btn-primary btn-sm" id="impBtnOC" href="{{route('procesoscont.pdfoc', ['doctec' => $doctec->id, 'fecha' => 'dateCustom'])}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
                                                     @else
                                                     {{--BOTON MODAL--}}
-                                                    <button type="button" class="btn btn-primary" id="crearBtnOC" data-toggle="modal" data-target="#modalOC">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="crearBtnOC" data-toggle="modal" data-target="#modalOC">
                                                         + Elaborar
                                                     </button>
 
                                                     <!-- Botón oculto que se mostrará después de cerrar el modal -->
-                                                    <a class="btn btn-primary d-none" id="impBtn2OC" href="{{route('procesoscont.pdfoc2', $procesosc->id)}}" target="_blank">
+                                                    <a class="btn btn-primary btn-sm d-none" id="impBtn2OC" href="{{route('procesoscont.pdfoc2', $procesosc->id)}}" target="_blank">
                                                         <i class="far fa-file-pdf"></i>
                                                         Imprimir
                                                     </a>
@@ -1166,9 +1166,7 @@
                                     }
                                     datosFormulario['total'] = sumtotal;
 
-                                    // console.log(datosFormulario);
 
-                                    // return;
 
                                     // Realizar la petición AJAX
                                     $.ajax({
@@ -1288,7 +1286,7 @@
                 <div class="modal-content">
                     <form id="formulOS">
                         <div class="modal-header">
-                            <h4 class="modal-title">Crear Orden de Servicio</h4>
+                            <h5 class="modal-title text-uppercase">Crear Orden de Servicio</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -1551,147 +1549,134 @@
                 <div class="modal-content">
                     <form id="formulOC">
                         <div class="modal-header">
-                            <h4 class="modal-title">Crear Orden de Compra</h4>
+                            <h5 class="modal-title text-uppercase">Crear Orden de Compra</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
 
-                                        @php
-                                        $idp = $procesosc->id;
-                                        $proceso = Procesoscont::find($idp);
-                                        $usolic = Unidadesorg::find($proceso->id_unid);
-                                        $modalidad = Modalidades::find($proceso->id_mod);
-                                        $cont = 1;
-                                        $total = 0;
-                                        @endphp
 
-                                        <div class="row">
-                                            <div class="col-12 col-xl-6 card">{{-- col-12 col-xl-4 card MODAL PRIMERA COLUMNA--}}
-                                                <div class="card-body">
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Código</label>
-                                                            {{$proceso->codigo}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Unidad Solicitante</label>
-                                                            {{$usolic->nombre}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Objeto</label>
-                                                            {{$proceso->objeto}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Precio Referencial</label>
-                                                            <label id="precioReferencial">{{$proceso->precio_ref}}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Modalidad</label>
-                                                            {{$modalidad->nombre}}
-                                                        </div>
-                                                    </div>
+                            @php
+                            $idp = $procesosc->id;
+                            $proceso = Procesoscont::find($idp);
+                            $usolic = Unidadesorg::find($proceso->id_unid);
+                            $modalidad = Modalidades::find($proceso->id_mod);
+                            $cont = 1;
+                            $total = 0;
+                            @endphp
+
+                            <div class="row">
+                                <div class="col-12 col-xl-6">{{-- col-12 col-xl-4 card MODAL PRIMERA COLUMNA--}}
+                                    <div class="card">
+                                        <div class="card-header">Datos proceso de contratación</div>
+                                        <div class="card-body">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Código:</label>
+                                                    {{$proceso->codigo}}
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-xl-6 card">{{--MODAL SEGUNDA COLUMNA--}}
-                                                <div class="card-body">
-                                                    <div class="col-xs-12 col-sm-12 col-md-12" id="benefContainer">
-                                                        <div class="form-group">
-                                                            <label>Beneficiario<span class="text-danger">*</span></label>
-                                                            <input type="text" name="benefoc" id="benefoc" class="form-control" required style="width: 85%">
-                                                            <div class="invalid-feedback">
-                                                                Este campo es obligatorio.
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12" id="docrefContainer">
-                                                        <div class="form-group">
-                                                            <label>Documento de Referencia<span class="text-danger">*</span></label>
-                                                            <input type="text" name="docrefoc" id="docrefoc" class="form-control" required style="width: 85%">
-                                                            <div class="invalid-feedback">
-                                                                Este campo es obligatorio.
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Unidad Org. Destino</label>
-                                                            {{-- {{$usolic->nombre}} --}}
-
-                                                            @php
-                                                            $options = Unidadesorg::all();
-                                                            @endphp
-                                                            <label for="opcionesmoc">Unidad Org. Destino</label><span class="text-danger">*</span></label>
-                                                            <select name="opcionesmoc" id="opcionesmoc" style="width: 400px;" required>
-                                                                <option value="">Selecciona una opción</option>
-                                                                @foreach($options as $option)
-                                                                <option value="{{ $option->id }}">{{ $option->nombre }}</option>
-                                                                @endforeach
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="observaciontray">Observación</label>
-                                                            <textarea id="observaciontrayoc" name="observaciontrayoc" class="form-control" rows="2" style="width: 90%;"></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    {{--se sube un archivo lleno, debe tener extensión--}}
-                                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                                        <div class="form-group">
-                                                            <input type="file" name="filemoc[]" placeholder="Selecciona archivo" id="filemoc" multiple>
-                                                            @error('filemoc')
-                                                            <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
-                                                            @enderror
-                                                            <br>
-                                                            <label style="font-size: 11px; color:rgb(189, 141, 68);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                ADJUNTAR{{" "."REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA"}}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                    {{--editor QUILL--}}
-                                                    {{-- <script>
-                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                            var quill = new Quill('#editor', {
-                                                                theme: 'snow' // Puedes ajustar el tema según tus preferencias
-                                                            });
-
-                                                            //Función para guardar el contenido en algún lugar (por ejemplo, en la consola)
-                                                            window.guardarContenido = function() {
-                                                                var contenidoQuill = quill.root.innerHTML;
-                                                                console.log(contenidoQuill);
-                                                                // Aquí podrías enviar el contenido a tu servidor usando AJAX o cualquier otro método.
-                                                            };
-                                                        });
-                                                    </script> --}}
-                                                    {{--editor QUILL--}}
-                                                    <div id="editor" class="w-100" style="height: 200px; border: 1px solid #ccc;"></div>
-
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Unidad Solicitante:</label>
+                                                    {{$usolic->nombre}}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Objeto:</label>
+                                                    {{$proceso->objeto}}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Precio Referencial:</label>
+                                                    <span id="precioReferencial">{{$proceso->precio_ref}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Modalidad:</label>
+                                                    {{$modalidad->nombre}}
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-6">{{--MODAL SEGUNDA COLUMNA--}}
+                                    <div class="card">
+                                        <div class="card-header">Formulario orden de compra</div>
+                                        <div class="card-body">
+                                            <div class="col-xs-12 col-sm-12 col-md-12" id="benefContainer">
+                                                <div class="form-group">
+                                                    <label>Beneficiario<span class="text-danger">*</span></label>
+                                                    <input type="text" name="benefoc" id="benefoc" class="form-control" required style="width: 85%">
+                                                    <div class="invalid-feedback">
+                                                        Este campo es obligatorio.
+                                                    </div>
 
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12" id="docrefContainer">
+                                                <div class="form-group">
+                                                    <label>Documento de Referencia<span class="text-danger">*</span></label>
+                                                    <input type="text" name="docrefoc" id="docrefoc" class="form-control" required style="width: 85%">
+                                                    <div class="invalid-feedback">
+                                                        Este campo es obligatorio.
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>Unidad Org. Destino</label>
+                                                    {{-- {{$usolic->nombre}} --}}
+
+                                                    @php
+                                                    $options = Unidadesorg::all();
+                                                    @endphp
+                                                    <label for="opcionesmoc">Unidad Org. Destino</label><span class="text-danger">*</span></label>
+                                                    <select name="opcionesmoc" id="opcionesmoc" style="width: 400px;" required>
+                                                        <option value="">Selecciona una opción</option>
+                                                        @foreach($options as $option)
+                                                        <option value="{{ $option->id }}">{{ $option->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="observaciontray">Observación</label>
+                                                    <textarea id="observaciontrayoc" name="observaciontrayoc" class="form-control" rows="2" style="width: 90%;"></textarea>
+                                                </div>
+                                            </div>
+
+                                            {{--se sube un archivo lleno, debe tener extensión--}}
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <input type="file" name="filemoc[]" placeholder="Selecciona archivo" id="filemoc" multiple>
+                                                    @error('filemoc')
+                                                    <div class="alert alert-danger mt-1 mb-1">{{$message}}</div>
+                                                    @enderror
+                                                    <br>
+                                                    <label style="font-size: 11px; color:rgb(189, 141, 68);">
+                                                        ADJUNTAR{{" "."REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA"}}
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Quill Editor -->
+                                            <div id="editor" class="w-100" style="height: 200px; border: 1px solid #ccc;"></div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                         <div class="modal-footer justify-content-between">
                             <input type="hidden" name="idp" value="{{ $idp }}">
@@ -1708,12 +1693,24 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
 
-                        //editor QUILL
+                        const btnDerivarOC = document.getElementById("enviarFormulariOC");
+
                         var quill = new Quill('#editor', {
                             theme: 'snow' // Puedes ajustar el tema según tus preferencias
                         });
 
+                        //Función para guardar el contenido en algún lugar (por ejemplo, en la consola)
+                        window.guardarContenido = function() {
+                            var contenidoQuill = quill.root.innerHTML;
+                            console.log(contenidoQuill);
+                            // Aquí podrías enviar el contenido a tu servidor usando AJAX o cualquier otro método.
+                        };
+
+
                         document.getElementById("enviarFormulariOC").addEventListener("click", () => {
+
+                            // Deshabilitar en boton
+                            btnDerivarOC.disabled = true;
 
                             var selectores = ['#benefoc', '#docrefoc', '#opcionesmoc'] //'#doctec tbody tr']
                             if (validarCamposRequeridos(selectores)) {
@@ -1747,6 +1744,7 @@
                                 }
 
                                 console.log(datosFormulario);
+                                // return;
 
                                 // Realizar la petición AJAX
                                 $.ajax({
@@ -1857,6 +1855,7 @@
                                 $proceso = Procesoscont::find($idp);
                                 $usolic = Unidadesorg::find($proceso->id_unid);
                                 $modalidad = Modalidades::find($proceso->id_mod);
+                                $obsevacionEvaluacion = Docstec::where('id_proc', $idp)->get();
 
                                 $cont = 1;
                                 $total = 0;
@@ -1941,13 +1940,59 @@
                                                 </script>
 
 
-
                                             </tr>
                                             @endif
                                             @endforeach
 
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="mt-3">
+                                    <label for="observaciontray">Observación<span style="font-weight: lighter;">(Incluya observaciones solo si requiere)</span></label>
+                                    <textarea id="observacionEvaluacion" name="observacionEvaluacion" class="form-control" rows="2" style="width: 50%;">{{$obsevacionEvaluacion[0]->obs_evaluacion}}</textarea>
+                                    <button type="button" id="obs-observacion" class="btn btn-primary mt-2" onclick="guardarObservacion(<?php echo $idp; ?>)"><i class="fas fa-save"></i> Guardar observación</button>
+
+                                    <script>
+                                        // Metodo que va actualizar datos para cada ITEM
+                                        function guardarObservacion(idProceso) {
+
+
+
+                                            // Captura de todos los capos modificados y sin modificar
+                                            const obsEvaluacion = document.getElementById('observacionEvaluacion').value;
+
+                                            const dataEvaluacion = {
+                                                idProceso: idProceso,
+                                                obsEvaluacion: obsEvaluacion
+                                            }
+
+
+                                            // Peticion de actualizacion de datos para cada ITEM
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '{{ route("trayectoria.obsevaluacion") }}',
+                                                data: {
+                                                    _token: '{{ csrf_token() }}',
+                                                    dataEvaluacion: dataEvaluacion
+                                                },
+                                                beforeSend: function() {
+                                                    console.log('Esta buscando....aqui_ubicacion');
+                                                },
+                                                success: function(response) {
+
+                                                    // console.log(response);
+                                                    toastr.success(`${response.message}`, 'SIGECO');
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    spinner.style.display = 'none';
+                                                    console.error(error);
+                                                }
+                                            });
+
+                                        }
+                                    </script>
+
+
                                 </div>
                             </div>
                         </div>

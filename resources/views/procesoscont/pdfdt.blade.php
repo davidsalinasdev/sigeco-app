@@ -347,10 +347,9 @@
                 </tbody>
             </table>
             <p align="right">TOTAL Bs.&nbsp;{{number_format($total,2,',','.')}}</p>
-            <br>
 
             @if ($doctec->observacion <> "")
-                {!! nl2br(e($doctec->observacion)) !!}
+                <span><span style="font-weight: bold;">Nota aclaratoria:</span> {!! nl2br(e($doctec->observacion)) !!}</span>
                 @endif
                 <br>
                 <br>

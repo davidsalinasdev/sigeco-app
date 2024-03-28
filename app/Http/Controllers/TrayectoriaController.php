@@ -105,6 +105,7 @@ class TrayectoriaController extends Controller
     {
 
         $arrayDetalleTec = [];
+        $id_docstec = null;
 
         $trayec = Trayectoria::find($idtray);
         $procesosc = Procesoscont::find($trayec->id_proceso);
@@ -113,19 +114,17 @@ class TrayectoriaController extends Controller
 
         $idDocstec = Docstec::where('id_proc', $procesosc->id)->get();
 
+
+
         if (!$idDocstec->isEmpty()) {
             // Cunado no esta vacio encuentra especificaciones tecnicas
             $arrayDetalleTec = Det_docstec::where('id_docstec', $idDocstec[0]->id)
                 ->orderBy('id', 'asc')
                 ->get();
+            $id_docstec = $idDocstec[0]->id;
         }
 
-        $id_docstec = $idDocstec[0]->id;
 
-        // echo '<pre>';
-        // print_r($idDocstec);
-        // echo '</pre>';
-        // die();
 
         return view('trayectoria.derivar', compact('trayec', 'procesosc', 'arrayDetalleTec', 'id_docstec'));
     }
@@ -636,6 +635,43 @@ class TrayectoriaController extends Controller
                 'code' => 200,
                 'status' => 'success',
                 'message' => 'Los datos se guardaron correctamente.',
+            );
+        } catch (Exception $e) {
+            // Rollback en caso de error
+            DB::rollback();
+
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'error' => $e->getMessage()
+            );
+        }
+        return response()->json($data);
+    }
+
+    // Actualizacion de observacion activos
+    function obsEvaluacion(Request $request)
+    {
+        // 1.-Recoger los usuarios por POST
+        $dataEvaluacion = $request->dataEvaluacion;
+
+
+        try {
+            // Iniciar transacción
+            DB::beginTransaction();
+
+            Docstec::where('id_proc', $dataEvaluacion['idProceso'])
+                ->update([
+                    'obs_evaluacion' => $dataEvaluacion['obsEvaluacion']
+                ]);
+
+            // Commit si todas las operaciones son exitosas
+            DB::commit();
+
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'La observación se registro correctamente.',
             );
         } catch (Exception $e) {
             // Rollback en caso de error

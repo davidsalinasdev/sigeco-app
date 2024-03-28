@@ -206,15 +206,15 @@
             <br>
             <br>
             <p>De mi mayor consideración:</p>
-            <p>Se procedio a la revisión segun las especificaciones técnicas de <span style="text-transform: lowercase;">{{$proceso->objeto}}</span>, para su disposición.</p>
+            <p>Se procedio a la revisión segun las especificaciones técnicas <span style="text-transform: lowercase;">{{$proceso->objeto}}</span>, debo indicar que no contamos con el requerimiento solicitado que requiere la unidad solicitante <span style="font-weight: bold; font-size: 14px;">{{$unidadSolicitante}}</span> para su disposición.</p>
             <br>
             <table id="detalle">
                 <thead>
                     <tr>
                         <th>Item</th>
                         <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Disponibilidad</th>
+                        <th>Cantidad solicitada</th>
+                        <th>Cantidad disponible</th>
                         <th>Cantidad no disponible</th>
                     </tr>
                 </thead>
@@ -236,6 +236,9 @@
             </table>
 
             <br>
+            @if ($docstec->obs_evaluacion != "" || $docstec->obs_evaluacion != NULL)
+            <span><span style="font-weight: bold;">Nota aclaratoria:</span> {!! nl2br(e($docstec->obs_evaluacion)) !!}</span>
+            @endif
             <p>Es cuanto informo para fines consiguientes</p>
             <p>Atentamente.</p>
             <br>

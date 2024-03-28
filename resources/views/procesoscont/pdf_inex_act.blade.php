@@ -271,7 +271,7 @@
             <p align="right">TOTAL Bs.&nbsp;{{number_format($total,2,',','.')}}</p>
 
             @if ($doctec[0]->observacion <> "")
-                {!! nl2br(e($doctec[0]->observacion)) !!}
+                <span><span style="font-weight: bold;">Nota aclaratoria:</span> {!! nl2br(e($doctec[0]->observacion)) !!}</span>
                 @endif
                 <br>
                 <p>Con este motivo, saludo a usted atentamente.</p>

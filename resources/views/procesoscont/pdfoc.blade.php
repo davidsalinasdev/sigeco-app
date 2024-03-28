@@ -283,30 +283,66 @@
                 </thead>
                 <tbody>
                     @foreach($detdocs as $detdoc)
+
+                    <!-- Primera opción -->
+                    @if($detdoc->cant_no_disponible != NULL )
+
+                    @if($detdoc->cant_no_disponible != 0)
                     <tr>
                         <td align="center" width="3%">{{$detdoc->item}}</td>
+
                         <td align="center" width="8%">
-                            @if ($detdoc->cantidad <> 0)
-                                {{$detdoc->cantidad}}
-                                @endif
+                            {{$detdoc->cant_no_disponible}}
                         </td>
                         <td align="center" width="8%">{{$detdoc->unidad}}</td>
                         <td align="left" width="30%">{!! nl2br(e($detdoc->descripcion)) !!}</td>
                         <td align="right" width="8%">
-                            @if ($detdoc->precio <> 0)
-                                {{number_format($detdoc->precio,2,',','.')}}
-                                @endif
+                            {{number_format($detdoc->precio,2,',','.')}}
                         </td>
                         <td align="right" width="8%">
-                            @if ($detdoc->subtotal <> 0)
-                                {{number_format($detdoc->subtotal,2,',','.')}}
-                                @endif
+                            {{number_format($detdoc->new_sub_total,2,',','.')}}
                         </td>
                         @php
-                        $subtotal = $detdoc->subtotal;
-                        $total = $total + $subtotal;
+
+                        $subtotal = $detdoc->new_sub_total;
+                        $total += $subtotal;
+
                         @endphp
                     </tr>
+                    @endif
+
+                    @endif
+
+                    <!-- Segunda opción -->
+                    @if(is_null($detdoc->cant_no_disponible))
+
+                    @if($detdoc->cantidad != 0)
+                    <tr>
+                        <td align="center" width="3%">{{$detdoc->item}}</td>
+
+                        <td align="center" width="8%">
+                            {{$detdoc->cantidad}}
+                        </td>
+                        <td align="center" width="8%">{{$detdoc->unidad}}</td>
+                        <td align="left" width="30%">{!! nl2br(e($detdoc->descripcion)) !!}</td>
+                        <td align="right" width="8%">
+                            {{number_format($detdoc->precio,2,',','.')}}
+                        </td>
+                        <td align="right" width="8%">
+                            {{number_format($detdoc->subtotal,2,',','.')}}
+                        </td>
+                        @php
+
+                        $subtotal = $detdoc->subtotal;
+                        $total += $subtotal;
+
+                        @endphp
+                    </tr>
+                    @endif
+
+                    @endif
+
+
                     @endforeach
                 </tbody>
             </table>

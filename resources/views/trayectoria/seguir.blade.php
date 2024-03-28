@@ -181,6 +181,13 @@
                                     <a href="{{route('procesoscont.pdfinexact', $proceso->id)}}" class="btn btn-primary" target="_blank"><i class="far fa-file-pdf"></i>Inex.Act.</a>
                                     @break
 
+                                    <!-- MODIFICADO POR DAVID-UGE -->
+                                    @case('INFORME DE INEXISTENCIA DE ACTIVOS')
+
+                                    <a class="btn btn-primary" href="{{route('procesoscont.pdfevaluacion', $doctec->id)}}" target="_blank"><i class="fas fa-file-pdf"></i> Inf.Inex.</a>
+
+                                    @break
+
                                     @case('REPORTE DE PRECIOS E INEXISTENCIAS - INFORME DE SELECCIÓN DE PROVEEDOR - ORDEN DE COMPRA')
 
                                     @php

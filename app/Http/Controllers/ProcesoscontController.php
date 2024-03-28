@@ -182,7 +182,7 @@ class ProcesoscontController extends Controller
         $doctec->lugmed_ent = $request->lugar_entrega;
         $doctec->otro1 = $request->otro1;
         $doctec->otro2 = $request->otro2;
-        $doctec->observacion = $request->observacion;
+        $doctec->observacion = $request->observaciontray;
         $doctec->total = floatval($request->total); //completar
 
 
@@ -646,6 +646,7 @@ class ProcesoscontController extends Controller
     public function pdfoc($id, $fecha)
     {
 
+
         if ($fecha == 'dateCustom') {
             // Obtener la fecha actual
             $fechaActual = Carbon::now();
@@ -653,9 +654,9 @@ class ProcesoscontController extends Controller
             $fechaFormateada = $fechaActual->toDateString(); // Formato: YYYY-MM-DD
             // También puedes formatear la fecha en otros formatos
             $fecha = $fechaActual->format('d/m/Y'); // Formato: DD/MM/YYYY
+        } else {
+            $fecha = Carbon::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
         }
-
-        $fecha = Carbon::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
 
         $doctec = Docstec::find($id);
 
@@ -728,6 +729,9 @@ class ProcesoscontController extends Controller
 
     public function autorizar($idproc, $idtray)
     {
+
+        $arrayDetalleTec = [];
+
         try {
             $procesosc = Procesoscont::find($idproc);
             if (!$procesosc) {
@@ -738,7 +742,7 @@ class ProcesoscontController extends Controller
             $procesosc->save();
 
             $trayec = Trayectoria::find($idtray);
-            return view('trayectoria.derivar', compact('trayec', 'procesosc',));
+            return view('trayectoria.derivar', compact('trayec', 'procesosc', 'arrayDetalleTec'));
 
             //return redirect()->route('trayectoria.index');
             //return redirect()->route('trayectoria/'.$idtray.'/derivar');
@@ -790,10 +794,12 @@ class ProcesoscontController extends Controller
 
         $proceso = Procesoscont::find($docstec->id_proc);
 
-
+        // Sacamos a la unidad solicitante
+        $unidad = Unidadesorg::find($proceso->id_unid);
+        $unidadSolicitante = $unidad->nombre;
 
         // Envia datos a la vista
-        $pdf = PDF::loadView('procesoscont.pdf_evaluacion', compact('docstec', 'det_docstec', 'proceso', 'nombres', 'dependencia'));
+        $pdf = PDF::loadView('procesoscont.pdf_evaluacion', compact('docstec', 'det_docstec', 'proceso', 'nombres', 'dependencia', 'unidadSolicitante'));
         $pdf->setPaper('Letter');
 
         $filename = 'evaluacion.pdf';

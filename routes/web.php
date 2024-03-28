@@ -147,6 +147,8 @@ Route::middleware(['auth', 'role:Operador|Administrador'])->group(function () {
 
     // Ruta para realizar actualizaciones en evaluacion de activos y bienes
     Route::post('evaluacionactivos', [TrayectoriaController::class, 'evaluacionActivos'])->name('trayectoria.evaluacionactivos');
+    // Ruta para realizar actualizaciones de observaciones en evaluacion.
+    Route::post('obsevaluacion', [TrayectoriaController::class, 'obsEvaluacion'])->name('trayectoria.obsevaluacion');
 
     // Imprimir PDF evaluacion de activos o bienes
     Route::get('procesoscont/{id}/pdfevaluacion', [ProcesoscontController::class, 'pdfEvaluacion'])->name('procesoscont.pdfevaluacion');
